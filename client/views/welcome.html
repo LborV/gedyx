@@ -1,2 +1,8 @@
 <h1>Var1 = {{welcomeController.var1}}</h1>
 <h1>Var1 = {{welcomeController.var2()}}</h1>
+
+<ul>
+    {f:welcomeController.arr:el:
+        <li>{{el}}</li>    
+    :!}
+</ul>

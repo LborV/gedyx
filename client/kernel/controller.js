@@ -173,14 +173,45 @@ class Controller {
     }
 
     //Find variables in not compiled doc
-    compileFind(str) {
+    compileFind(str, defineVar = undefined) {
+        if(defineVar !== undefined) {
+            window[defineVar[0]] = defineVar[1];
+        }
+
         for(let i = 0; i < str.length; i++) {
             let start = null;
             if(str[i] == '{') {
                 if(str[i+1] == '{') {
                     start = i + 2;
                     return this.compileFind(this.replaceVariables(str, start));
+                } else if(str[i+1] == 'f') {
+                    start = i +2;
+                    return this.compileFind(this.replaceForLoops(str, start));
                 }
+            }
+        }
+
+        return str;
+    }
+
+    //Replace for loops
+    replaceForLoops(str, start) {
+        for(let end = start; end < str.length; end++) {
+            if(str[end] == '!' && str[end+1] == '}') {
+                let arr = str.substring(start-2, end+2).split(':');
+                arr.pop(); arr.shift();
+
+                let result = '';
+
+                let givenArr = eval(arr[0]);
+
+                console.log(arr)
+
+                givenArr.forEach(el => {
+                    result += this.compileFind(arr[2], [arr[1], el]);
+                });
+
+                return str.substring(0, start-2) + result + str.substring(end+2, str.length);
             }
         }
 
@@ -195,7 +226,7 @@ class Controller {
             }
         }
 
-        return str.substring(0, start-2) + 'Can\'t find end of expression' + str.substring(end+2, str.length);
+        return str;
     }
 
     //Update
