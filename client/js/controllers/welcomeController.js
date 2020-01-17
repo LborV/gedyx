@@ -13,6 +13,11 @@ welcomeController.arr = [
     'c'
 ];
 
+welcomeController.object = {
+    'key1': 'msg1',
+    'key2': 'msg2'
+}
+
 welcomeController.isTitle = false;
 
 welcomeController.loadView('./views/welcome.html');

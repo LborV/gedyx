@@ -202,14 +202,23 @@ class Controller {
                 arr.pop(); arr.shift();
 
                 let result = '';
-
                 let givenArr = eval(arr[0]);
 
-                console.log(arr)
-
-                givenArr.forEach(el => {
-                    result += this.compileFind(arr[2], [arr[1], el]);
-                });
+                if(Array.isArray(givenArr)) {
+                    givenArr.forEach(el => {
+                        result += this.compileFind(arr[2], [arr[1], el]);
+                    });
+                } else if(typeof givenArr === 'object') {
+                    let keys = Object.keys(givenArr);
+                    keys.forEach(key => {
+                        givenArr[key] = {
+                            'key': key,
+                            'val': givenArr[key]
+                        };
+                        
+                        result += this.compileFind(arr[2], [arr[1], givenArr[key]]);
+                    });
+                }
 
                 return str.substring(0, start-2) + result + str.substring(end+2, str.length);
             }
