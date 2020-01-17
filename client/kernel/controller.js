@@ -147,6 +147,8 @@ class Controller {
             }
         });
     
+        response = this.compile(response);
+
         this.updateView(response);
 
         if(returnThis) {
@@ -154,6 +156,40 @@ class Controller {
         }
 
         return response;
+    }
+
+    //Compile loaded view
+    /**
+     * 
+     * @param {string} view 
+     * @param {boolean} load if yes -> this.loadView -> this.updateView
+     */
+    compile(view, load = false) {
+        if(load !== false) {
+            return this.loadView(view);
+        }
+
+        return this.compileFind(view);
+    }
+
+    //Find variables in not compiled doc
+    compileFind(str) {
+        for(let i = 0; i < str.length; i++) {
+            let start = null;
+            if(str[i] == '{' && str[i+1] == '{') {
+                start = i + 2;
+
+                for(let end = start; end < str.length; end++) {
+                    if(str[end] == '}' && str[end+1] == '}') {
+                        str = str.substring(0, start-2) + eval(str.substring(start, end)) + str.substring(end+2, str.length);
+
+                        return this.compileFind(str);
+                    }
+                }
+            }
+        }
+
+        return str;
     }
 
     //Update

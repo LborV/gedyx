@@ -1,3 +1,7 @@
 var welcomeController = new Controller({
     name: 'welcomeController'
-}).loadView('./views/welcome.html');
+});
+
+welcomeController.var1 = 'abc';
+
+welcomeController.loadView('./views/welcome.html');
