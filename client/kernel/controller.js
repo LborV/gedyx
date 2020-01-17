@@ -189,7 +189,31 @@ class Controller {
                 } else if(str[i+1] == 'f') {
                     start = i +2;
                     return this.compileFind(this.replaceForLoops(str, start));
+                } else if(str[i+1] == 'i') {
+                    start = i + 2;
+                    return this.compileFind(this.replaceIf(str, start));
                 }
+            }
+        }
+
+        return str;
+    }
+
+    //Replace if
+    replaceIf(str, start) {
+        for(let end = start; end < str.length; end++) {
+            if(str[end] == '!' && str[end+1] == '}') {
+                let arr = str.substring(start-2, end+2).split(':');
+                arr.pop(); arr.shift();
+
+                let result = '';
+                if(eval(arr[0])) {
+                    result = arr[1];
+                } else {
+                    result = arr[2];
+                }
+
+                return str.substring(0, start-2) + result + str.substring(end+2, str.length);
             }
         }
 

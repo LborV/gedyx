@@ -3,19 +3,14 @@
 
 <ul>
     {f:welcomeController.arr:el:
-        <li>{{el}}</li>    
+        <li>
+            {{el}}
+        </li>    
     :!}
 </ul>
 
-<ul>
-    {f:welcomeController.object:el:
-        <li>
-            {{el.key}}
-            <ul>
-            {f:el.val:el2
-                <li>{{el2.key}}->{{el2.val}}</li>
-            :!}
-            </ul>
-        </li>
-    :!}
-</ul>
+{i:welcomeController.isTitle:
+    <h1>True</h1>
+    :
+    <h1>False</h1>
+:!}
