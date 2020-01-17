@@ -179,19 +179,23 @@ class Controller {
             if(str[i] == '{') {
                 if(str[i+1] == '{') {
                     start = i + 2;
-
-                    for(let end = start; end < str.length; end++) {
-                        if(str[end] == '}' && str[end+1] == '}') {
-                            str = str.substring(0, start-2) + eval(str.substring(start, end)) + str.substring(end+2, str.length);
-
-                            return this.compileFind(str);
-                        }
-                    }
+                    return this.compileFind(this.replaceVariables(str, start));
                 }
             }
         }
 
         return str;
+    }
+
+    //Replace variables
+    replaceVariables(str, start) {
+        for(let end = start; end < str.length; end++) {
+            if(str[end] == '}' && str[end+1] == '}') {
+                return str.substring(0, start-2) + eval(str.substring(start, end)) + str.substring(end+2, str.length);
+            }
+        }
+
+        return str.substring(0, start-2) + 'Can\'t find end of expression' + str.substring(end+2, str.length);
     }
 
     //Update
