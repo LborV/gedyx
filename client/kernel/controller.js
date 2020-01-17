@@ -176,14 +176,16 @@ class Controller {
     compileFind(str) {
         for(let i = 0; i < str.length; i++) {
             let start = null;
-            if(str[i] == '{' && str[i+1] == '{') {
-                start = i + 2;
+            if(str[i] == '{') {
+                if(str[i+1] == '{') {
+                    start = i + 2;
 
-                for(let end = start; end < str.length; end++) {
-                    if(str[end] == '}' && str[end+1] == '}') {
-                        str = str.substring(0, start-2) + eval(str.substring(start, end)) + str.substring(end+2, str.length);
+                    for(let end = start; end < str.length; end++) {
+                        if(str[end] == '}' && str[end+1] == '}') {
+                            str = str.substring(0, start-2) + eval(str.substring(start, end)) + str.substring(end+2, str.length);
 
-                        return this.compileFind(str);
+                            return this.compileFind(str);
+                        }
                     }
                 }
             }
