@@ -18,6 +18,15 @@ welcomeController.object = {
     'key2': 'msg2'
 }
 
+welcomeController.object = {
+    'key1': {
+        'key_small1': 'val_small1'
+    },
+    'key2': {
+        'key_small2': 'val_small2'
+    }
+}
+
 welcomeController.isTitle = false;
 
 welcomeController.loadView('./views/welcome.html');

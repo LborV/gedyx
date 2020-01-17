@@ -178,6 +178,8 @@ class Controller {
             window[defineVar[0]] = defineVar[1];
         }
 
+        let res = str;
+
         for(let i = 0; i < str.length; i++) {
             let start = null;
             if(str[i] == '{') {
@@ -215,7 +217,7 @@ class Controller {
                             'key': key,
                             'val': givenArr[key]
                         };
-                        
+
                         result += this.compileFind(arr[2], [arr[1], givenArr[key]]);
                     });
                 }
