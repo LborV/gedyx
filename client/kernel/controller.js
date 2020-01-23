@@ -149,9 +149,8 @@ class Controller {
     
         response = this.compile(response);
 
-        this.updateView(response);
-
         if(returnThis) {
+            this.updateView(response);
             return this;
         }
 
@@ -231,10 +230,15 @@ class Controller {
                 let givenArr = eval(arr[0]);
 
                 if(Array.isArray(givenArr)) {
-                    givenArr.forEach(el => {
-                        result += this.compileFind(arr[2], [arr[1], el]);
+                    let newArr = {};
+                    givenArr.forEach((el, index) => {
+                        newArr[index] = el;
                     });
-                } else if(typeof givenArr === 'object') {
+
+                    givenArr = newArr;
+                }
+                
+                if(typeof givenArr === 'object') {
                     let keys = Object.keys(givenArr);
                     keys.forEach(key => {
                         givenArr[key] = {
