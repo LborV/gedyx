@@ -10,12 +10,19 @@ var product = new model({
     user: user,
     password: password,
     database: 'order_time',
-    table: 'product'
+    table: 'adress',
 });
 
 
-console.log(product.getData(99));
+for(let i = 0; i < 100; i++) {
+    product.insert({
+        sernr: 'lol',
+        company: 'test',
+        deladdress: 'this',
+        is_default: i
+    });
+}
 
+console.log(product.getData());
 
-product.delete(99);
-product.save();
+// product.save();

@@ -6,7 +6,7 @@ class model {
             return false;
         }
 
-        this.db = config.database;
+        this.database = config.database;
         this.table = config.table;
 
         try {
@@ -23,7 +23,7 @@ class model {
 
 
         if(config.sql === undefined) {
-            this.data = this.getDefaultModel();
+            this.data = this.getDefaultModel(config.where);
         } else {
             this.data = this.execute(config.sql);
         }
@@ -39,6 +39,10 @@ class model {
      * @param {string} sql 
      */
     execute(sql) {
+        if(typeof sql !== 'string') {
+            return [];
+        }
+
         try {
             return this.connection.query(sql);
         } catch(err) {
@@ -47,10 +51,27 @@ class model {
         }
     }
 
+    //Execute async way, created for save method
+    /**
+     * 
+     * @param {string} sql 
+     */
+    async executeAsync(sql) {
+        if(typeof sql !== 'string') {
+            return;
+        }
+
+        this.connection.query(sql);
+    }
+
     //Default sql => select * from TableName
-    getDefaultModel() {
+    getDefaultModel(where = '') {
+        if(typeof where !== 'string') {
+            where = '';
+        }
+
         return this.normalize(
-            this.execute("SELECT * FROM `"+this.table+"`")
+            this.execute("SELECT * FROM `"+this.table+"` " +where)
         );
     }
 
@@ -74,12 +95,13 @@ class model {
     }
 
     //Save all changes into db
-    save() {
+    async save() {
         this.todo.forEach(sql => {
-            this.execute(sql);
+            this.executeAsync(sql);
         })
 
         this.todo = [];
+        this.next = undefined;
         return this;
     }
 
@@ -136,6 +158,48 @@ class model {
         }
 
         return false;
+    }
+
+    //return next id
+    nextId() {
+        return this.execute(`
+            SELECT AUTO_INCREMENT
+            FROM information_schema.TABLES
+            WHERE TABLE_SCHEMA = "`+this.database+`"
+            AND TABLE_NAME = "`+this.table+`"
+        `)[0].AUTO_INCREMENT;
+    }
+
+    //insert
+    /**
+     * 
+     */
+    insert(data) {
+        if(this.next === undefined) {
+            this.next = this.nextId();
+        } else {
+            this.next++;
+        }
+
+        this.data[this.next] = data;
+
+        Object.keys(data).map(function(key, index) {
+            if(typeof data[key] === 'string') {
+                data[key] = '\'' + data[key] + '\'';
+            }
+        });
+            
+
+        this.todo.push(`
+            INSERT INTO \``+this.table+`\`
+            (`+Object.keys(data)+`)
+            VALUES(`+Object.values(data)+`);
+        `);
+    }
+
+    //Describe table
+    describe() {
+        return this.execute('describe ' + this.table + ';');
     }
 }
 
