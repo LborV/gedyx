@@ -89,9 +89,54 @@ class Controller {
         return true;
     }
 
+    //On hide function
+    onHide() {
+
+    }
+
+    //On show function
+    onShow() {
+
+    }
+
+    //Fade in
+    fadeIn(param = undefined, callBack = false) {
+        if({}.toString.call(callBack) === '[object Function]') {
+            callBack();
+        }
+
+        this.onShow();
+
+        if(param != undefined) {
+            $('#' + this.name).fadeIn(param);
+        } else {
+            $('#' + this.name).fadeIn();
+        }
+
+        return this;
+    }
+
+    //Fade out
+    fadeOut(param = undefined, callBack = false) {
+        if({}.toString.call(callBack) === '[object Function]') {
+            callBack();
+        }
+
+        this.onHide();
+
+        if(param != undefined) {
+            $('#' + this.name).fadeOut(param);
+        } else {
+            $('#' + this.name).fadeOut();
+        }
+
+        return this;
+    }
+
     //Show
     show(isShow = true, time = 0) {
         if(isShow) {
+            this.onShow();
             $('#' + this.name).show(time);
         } else {
             $('#' + this.name).hide(time);
@@ -100,8 +145,19 @@ class Controller {
         return this;
     }
 
+    //Get HTML
+    getHTML() {
+        return $('#' + this.name).html();
+    }
+
+    //Set HTML
+    html(str) {
+        $('#' + this.name).html(str);
+    }
+
     //Hide
     hide(time = 0) {
+        this.onHide();
         return this.show(false, time);
     }
 
@@ -177,8 +233,6 @@ class Controller {
             window[defineVar[0]] = defineVar[1];
         }
 
-        let res = str;
-
         for(let i = 0; i < str.length; i++) {
             let start = null;
             if(str[i] == '{') {
@@ -241,10 +295,10 @@ class Controller {
                 if(typeof givenArr === 'object') {
                     let keys = Object.keys(givenArr);
                     keys.forEach(key => {
-                        givenArr[key] = {
-                            'key': key,
-                            'val': givenArr[key]
-                        };
+                        // givenArr[key] = {
+                        //     'key': key,
+                        //     'val': givenArr[key]
+                        // };
 
                         result += this.compileFind(arr[2], [arr[1], givenArr[key]]);
                     });
