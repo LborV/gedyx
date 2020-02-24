@@ -108,6 +108,11 @@ class model {
         this.data.splice(index, 1);
         this.data = this.normalize(this.data);
 
+        this.todo.push(`
+            DELETE FROM `+this.table+`
+            WHERE id = `+index+`;
+        `)
+
         return this;
     }
 
@@ -122,6 +127,15 @@ class model {
         }
 
         return this.data;
+    }
+
+    //Get like getData only one row
+    get(index = false) {
+        if(index in this.data) {
+            return this.getData(index);
+        }
+
+        return false;
     }
 }
 

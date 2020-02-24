@@ -14,5 +14,8 @@ var product = new model({
 });
 
 
-console.log(product.getData(98));
+console.log(product.getData(99));
 
+
+product.delete(99);
+product.save();
