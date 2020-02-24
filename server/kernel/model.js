@@ -201,6 +201,11 @@ class model {
     describe() {
         return this.execute('describe ' + this.table + ';');
     }
+
+    //get all records
+    all() {
+        return this.getData();
+    }
 }
 
 module.exports = model;
