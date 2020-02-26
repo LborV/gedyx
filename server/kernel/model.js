@@ -195,6 +195,8 @@ class model {
             (`+Object.keys(data)+`)
             VALUES(`+Object.values(data)+`);
         `);
+
+        return this;
     }
 
     //Describe table
