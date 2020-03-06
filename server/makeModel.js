@@ -15,6 +15,7 @@ function main(arg) {
         fs.open('./models/' + modelName + '.js', 'wx+', (err, file) => {
             if(err) {
                 console.log('Something wrong with ./models/' + modelName + '.js file, check it out');
+                return;
             }
 
             let buf = Buffer.from(makeFileContent(modelName));
@@ -23,7 +24,10 @@ function main(arg) {
             fs.write(file, buf, 0, len, 0, (err) => {
                 if(err) {
                     console.log('Can\'t write content to file ./models/' + modelName + '.js');
+                    return;
                 }
+
+                console.log('File ./models/' + modelName + '.js created!');
             });
         });
     });
@@ -34,23 +38,26 @@ function makeFileContent(modelName) {
     modelName = modelName.charAt(0).toUpperCase() + modelName.slice(1);
 
     return `
-    var model = require('../kernel/model.js');
-    var config = require('../configs/configs.js');
+//This file was automaticaly generated
+//Feel free to edit :)
 
-    class `+modelName+` extends model {
+var model = require('../kernel/model.js');
+var config = require('../configs/configs.js');
 
-    }
+class `+modelName+` extends model {
 
-    let obj = new `+modelName+`({
-        host: config.host,
-        user: config.user,
-        password: config.password,
-        database: config.db,
-        table: '`+table+`',
-    });
+}
 
-    module.exports = obj;
-    `;
+let obj = new `+modelName+`({
+    host: config.host,
+    user: config.user,
+    password: config.password,
+    database: config.db,
+    table: '`+table+`',
+});
+
+module.exports = obj;
+`;
 }
 
 function checkDir(path = './models') {
