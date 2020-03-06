@@ -21,6 +21,69 @@ class model {
             return false;
         }
 
+         //Operators
+        this.operators = {
+            '>': function(key, value, data) {
+                let result = [];
+                data.forEach(el => {
+                    if(key in el && el[key] > value) {
+                        result[el.id] = el;
+                    }
+                });
+
+                return result;
+            },
+            '>=': function(key, value, data) {
+                let result = [];
+                data.forEach(el => {
+                    if(key in el && el[key] >= value) {
+                        result[el.id] = el;
+                    }
+                });
+
+                return result;
+            },
+            '<': function(key, value, data) {
+                let result = [];
+                data.forEach(el => {
+                    if(key in el && el[key] < value) {
+                        result[el.id] = el;
+                    }
+                });
+
+                return result;
+            },
+            '<=': function(key, value, data) {
+                let result = [];
+                data.forEach(el => {
+                    if(key in el && el[key] <= value) {
+                        result[el.id] = el;
+                    }
+                });
+
+                return result;
+            },
+            '!=': function(key, value, data) {
+                let result = [];
+                data.forEach(el => {
+                    if(key in el && el[key] != value) {
+                        result[el.id] = el;
+                    }
+                });
+
+                return result;
+            },
+            'like': function(key, value, data) {
+                let result = [];
+                data.forEach(el => {
+                    if(key in el && String(el[key]).toLowerCase().includes(String(value).toLowerCase())) {
+                        result[el.id] = el;
+                    }
+                });
+
+                return result;
+            }
+        };
 
         if(config.sql === undefined) {
             this.data = this.getDefaultModel(config.where);
@@ -207,6 +270,56 @@ class model {
     //get all records
     all() {
         return this.getData();
+    }
+
+    //Find function
+    find(key, value, operator = false, data) {
+        if(operator === false) {
+            let result = [];
+            data.forEach(el => {
+                if(key in el && el[key] == value) {
+                    result[el.id] = el;
+                }
+            });
+
+            return result;
+        }
+
+        if(typeof operator !== 'string' && !(operator instanceof String)) {
+            return [];
+        }
+
+        if(operator == '=') {
+            return this.find(key, value, false, data);
+        }
+
+        if(!(operator in this.operators)) {
+            return [];
+        }
+
+       return this.operators[operator](key, value, data);
+    }
+
+    //Where {May be slow}
+    /***
+     * @param options array of array
+     */
+    where(options) {
+        let data = this.data;
+        options.forEach(option => {
+            if(data.length == 0) {
+                return;
+            }
+
+            if(option.length == 2) {
+                data = this.find(option[0], option[1], false, data);
+                return;
+            }
+            
+            data = this.find(option[0], option[2], option[1], data);
+        });
+
+        return data;
     }
 }
 

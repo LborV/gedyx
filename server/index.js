@@ -14,15 +14,9 @@ var product = new model({
 });
 
 
-for(let i = 0; i < 100; i++) {
-    product.insert({
-        sernr: 'lol',
-        company: 'test',
-        deladdress: 'this',
-        is_default: i
-    });
-}
 
-console.log(product.getData());
+console.log(product.where([
+    ['id', '>', 100],
+]));
 
 // product.save();
