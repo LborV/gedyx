@@ -44,16 +44,16 @@ function makeFileContent(modelName) {
 var model = require('../kernel/model.js');
 var config = require('../configs/config.js');
 
-class `+modelName+` extends model {
+class ${modelName} extends model {
 
 }
 
-let obj = new `+modelName+`({
+let obj = new ${modelName} ({
     host: config.host,
     user: config.user,
     password: config.password,
     database: config.db,
-    table: '`+table+`',
+    table: '${table}',
 });
 
 module.exports = obj;

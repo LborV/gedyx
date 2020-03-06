@@ -134,7 +134,7 @@ class model {
         }
 
         return this.normalize(
-            this.execute("SELECT * FROM `"+this.table+"` " +where)
+            this.execute(`SELECT * FROM \`${this.table}\` ${where}`)
         );
     }
 
@@ -176,9 +176,9 @@ class model {
         }
 
         this.todo.push(`
-            UPDATE `+this.table+`
-            SET \``+field+`\` = `+value+`
-            WHERE id = `+index+`;
+            UPDATE ${this.table}
+            SET \`${field}\` = ${value}
+            WHERE id = ${index};
         `)
 
         return this;
@@ -194,8 +194,8 @@ class model {
         this.data = this.normalize(this.data);
 
         this.todo.push(`
-            DELETE FROM `+this.table+`
-            WHERE id = `+index+`;
+            DELETE FROM ${this.table}
+            WHERE id = ${index};
         `)
 
         return this;
@@ -228,8 +228,8 @@ class model {
         return this.execute(`
             SELECT AUTO_INCREMENT
             FROM information_schema.TABLES
-            WHERE TABLE_SCHEMA = "`+this.database+`"
-            AND TABLE_NAME = "`+this.table+`"
+            WHERE TABLE_SCHEMA = "${this.database}"
+            AND TABLE_NAME = "${this.table}"
         `)[0].AUTO_INCREMENT;
     }
 
@@ -248,15 +248,15 @@ class model {
 
         Object.keys(data).map(function(key, index) {
             if(typeof data[key] === 'string') {
-                data[key] = '\'' + data[key] + '\'';
+                data[key] = `'${data[key]}'`;
             }
         });
             
 
         this.todo.push(`
-            INSERT INTO \``+this.table+`\`
-            (`+Object.keys(data)+`)
-            VALUES(`+Object.values(data)+`);
+            INSERT INTO \`${this.table}\`
+            (${Object.keys(data)})
+            VALUES(${Object.values(data)});
         `);
 
         return this;
@@ -264,7 +264,7 @@ class model {
 
     //Describe table
     describe() {
-        return this.execute('describe ' + this.table + ';');
+        return this.execute(`escribe ${this.table};`);
     }
 
     //get all records
