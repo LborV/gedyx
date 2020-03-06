@@ -42,7 +42,7 @@ function makeFileContent(modelName) {
 //Feel free to edit :)
 
 var model = require('../kernel/model.js');
-var config = require('../configs/configs.js');
+var config = require('../configs/config.js');
 
 class `+modelName+` extends model {
 

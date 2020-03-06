@@ -1,9 +1,10 @@
 var model = require('./kernel/model.js');
+var config = require('./configs/config.js');
 
 var product = new model({
-    host: host,
-    user: user,
-    password: password,
+    host: config.host,
+    user: config.user,
+    password: config.password,
     database: 'order_time',
     table: 'adress',
 });
