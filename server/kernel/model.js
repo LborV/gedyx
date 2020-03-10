@@ -27,7 +27,11 @@ class model {
                 let result = [];
                 data.forEach(el => {
                     if(key in el && el[key] > value) {
-                        result[el.id] = el;
+                        if(el.id && el.id !== null && el.id !== undefined) {
+                            result[el.id] = el;
+                        } else {
+                            result.push(el);
+                        }
                     }
                 });
 
@@ -37,7 +41,11 @@ class model {
                 let result = [];
                 data.forEach(el => {
                     if(key in el && el[key] >= value) {
-                        result[el.id] = el;
+                        if(el.id && el.id !== null && el.id !== undefined) {
+                            result[el.id] = el;
+                        } else {
+                            result.push(el);
+                        }
                     }
                 });
 
@@ -47,7 +55,11 @@ class model {
                 let result = [];
                 data.forEach(el => {
                     if(key in el && el[key] < value) {
-                        result[el.id] = el;
+                        if(el.id && el.id !== null && el.id !== undefined) {
+                            result[el.id] = el;
+                        } else {
+                            result.push(el);
+                        }
                     }
                 });
 
@@ -57,7 +69,11 @@ class model {
                 let result = [];
                 data.forEach(el => {
                     if(key in el && el[key] <= value) {
-                        result[el.id] = el;
+                        if(el.id && el.id !== null && el.id !== undefined) {
+                            result[el.id] = el;
+                        } else {
+                            result.push(el);
+                        }
                     }
                 });
 
@@ -67,7 +83,11 @@ class model {
                 let result = [];
                 data.forEach(el => {
                     if(key in el && el[key] != value) {
-                        result[el.id] = el;
+                        if(el.id && el.id !== null && el.id !== undefined) {
+                            result[el.id] = el;
+                        } else {
+                            result.push(el);
+                        }
                     }
                 });
 
@@ -77,7 +97,25 @@ class model {
                 let result = [];
                 data.forEach(el => {
                     if(key in el && String(el[key]).toLowerCase().includes(String(value).toLowerCase())) {
-                        result[el.id] = el;
+                        if(el.id && el.id !== null && el.id !== undefined) {
+                            result[el.id] = el;
+                        } else {
+                            result.push(el);
+                        }
+                    }
+                });
+
+                return result;
+            },
+            'whereIn': function(key, value, data) {
+                let result = [];
+                data.forEach(el => {
+                    if(key in el && value.includes(el[key])) {
+                        if(el.id && el.id !== null && el.id !== undefined) {
+                            result[el.id] = el;
+                        } else {
+                            result.push(el);
+                        }
                     }
                 });
 
@@ -151,6 +189,8 @@ class model {
         raw.forEach(row => {
             if(row && row.id != undefined) {
                 data[row.id] = row;
+            } else {
+                data.push(row);
             }
         });
 
@@ -278,7 +318,11 @@ class model {
             let result = [];
             data.forEach(el => {
                 if(key in el && el[key] == value) {
-                    result[el.id] = el;
+                    if(el.id && el.id !== null && el.id !== undefined) {
+                        result[el.id] = el;
+                    } else {
+                        result.push(el);
+                    }
                 }
             });
 
@@ -319,7 +363,16 @@ class model {
             data = this.find(option[0], option[2], option[1], data);
         });
 
-        return data;
+        let result = [];
+        if(data.length > 0) {
+            data.forEach(e => {
+                if(e != null && e && e !== undefined) {
+                    result.push(e);
+                }
+            });
+        }
+
+        return result;
     }
 }
 
