@@ -224,6 +224,14 @@ class model {
         return this;
     }
 
+    update(index, options) {
+        for(const[key, value] of Object.entries(options)) {
+            this.set(index, key, value);
+        }
+
+        return this;
+    }
+
     //Delete row
     delete(index) {
         if(!index) {
