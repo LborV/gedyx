@@ -126,6 +126,7 @@ class model {
         if(config.sql === undefined) {
             this.data = this.getDefaultModel(config.where);
         } else {
+            this.sql = config.sql;
             this.data = this.execute(config.sql);
         }
 
@@ -150,6 +151,21 @@ class model {
             console.log(err);
             return [];
         }
+    }
+
+    //Refresh
+    refresh(ignoreToDo = true, where = '') {
+        if(!ignoreToDo) {
+            this.save();
+        }
+
+        if(this.sql !== undefined && this.sql) {
+            this.data = this.execute(this.sql);
+        } else {
+            this.data = this.getDefaultModel(where);
+        }
+
+        return this;
     }
 
     //Execute async way, created for save method
