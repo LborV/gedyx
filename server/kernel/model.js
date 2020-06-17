@@ -328,7 +328,7 @@ class model {
 
     //Describe table
     describe() {
-        return this.execute(`escribe ${this.table};`);
+        return this.execute(`describe ${this.table};`);
     }
 
     //get all records

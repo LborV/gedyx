@@ -1,18 +1,11 @@
-var model = require('./kernel/model.js');
+var model = require('./kernel/model-db.js');
 var config = require('./configs/config.js');
 
-var product = new model({
+var base = new model({
     host: config.host,
     user: config.user,
     password: config.password,
-    database: 'order_time',
-    table: 'adress',
+    database: config.db,
 });
 
-
-
-console.log(product.where([
-    ['id', '>', 100],
-]));
-
-// product.save();
+console.log(base.loadAll());
