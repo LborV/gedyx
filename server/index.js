@@ -8,4 +8,9 @@ var base = new model({
     database: config.db,
 });
 
+base.setTables([
+    'customer_activity_emails',
+    'customer_attributes'
+])
+
 console.log(base.loadAll());

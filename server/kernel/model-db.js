@@ -27,14 +27,22 @@ class model {
         return this;
     }
 
-    getTables() {
+    getAllTables() {
         return this.execute('SHOW TABLES;').map(item => item.Tables_in_platform);
     }
 
-    loadAll() {
-        this.tables = {};
+    setTables(t) {
+        this.tables_list = t;
+    }
 
-        this.getTables().forEach(table => {
+    loadAll(getAllTables = false) {
+        console.log(this.tables_list)
+        if(getAllTables) {
+            this.tables = this.getAllTables();
+        }
+
+        this.tables_list.forEach(table => {
+            console.log(`Getting ${table}...`);
             this.tables[table] = this.execute(`SELECT * FROM \`${table}\``);
         });
 
