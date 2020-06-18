@@ -12,5 +12,8 @@ var _migration = new migration({
 }, true);
 
 _migration.migrate([
-    {table: 'test', drop: false, name: 'b', type: 'text', action: 'ADD'}
+    {table: 'temp', drop: false, name: 'data', type: 'date'},
+    {table: 'temp', drop: false, name: 'temp', type: 'float'},
+    {table: 'temp', drop: false, name: 'camera', type: 'text'},
+    {table: 'temp', drop: false, name: 'pacient_id', type: 'int'}
 ]);

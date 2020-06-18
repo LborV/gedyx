@@ -9,5 +9,5 @@ var base = new model({
 }, true);
 
 base.migrate([
-    {table: 'test', drop: true, name: 'test', type: 'int'}
+    {table: 'test', drop: false, name: 'test', type: 'text', action: 'MODIFY'}
 ]);

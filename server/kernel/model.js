@@ -334,7 +334,7 @@ class model {
 
     //Return list of all tables in db
     getAllTables() {
-        return this.execute('SHOW TABLES;').map(item => item.Tables_in_platform);
+        return this.execute('SHOW TABLES;').map(item => item[Object.keys(item)[0]]);
     }
 
     //Describe table

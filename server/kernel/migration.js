@@ -4,7 +4,7 @@ class migration extends model {
     migrate(options) {
         this.query = [];
         options.forEach(option => {
-            if(!(this.getAllTables().includes(option.table)) && !option.drop) {
+            if(!(this.getAllTables().includes(option.table)) && (option.drop == undefined || option.drop == false)) {
                 this.createTable(option.table);
             }
 
@@ -33,14 +33,14 @@ class migration extends model {
 
     parseQuery(q) {
         if(q.action == undefined) {
-            q.action = 'ADD';
+            q.action = 'ADD COLUMN';
         }
 
         if(q.name === undefined || q.type === undefined) {
             return false;
         }
 
-        return `ALTER TABLE \`${this.database}\`.\`${q.table}\` ${q.action} COLUMN ${q.name} ${q.type}`;
+        return `ALTER TABLE \`${this.database}\`.\`${q.table}\` ${q.action} \`${q.table}\`.\`${q.name}\` ${q.type};`;
     }
 
     alter(options) {
