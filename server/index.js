@@ -1,4 +1,4 @@
-var model = require('./kernel/model-db.js');
+var model = require('./kernel/migration.js');
 var config = require('./configs/config.js');
 
 var base = new model({
@@ -6,11 +6,8 @@ var base = new model({
     user: config.user,
     password: config.password,
     database: config.db,
-});
+}, true);
 
-base.setTables([
-    'customer_activity_emails',
-    'customer_attributes'
-])
-
-console.log(base.loadAll());
+base.migrate([
+    {table: 'test', drop: true, name: 'test', type: 'int'}
+]);
