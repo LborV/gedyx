@@ -32,7 +32,7 @@ class migration extends model {
     }
 
     parseQuery(q) {
-        if(q.action === undefined) {
+        if(q.action == undefined) {
             q.action = 'ADD';
         }
 
