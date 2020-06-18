@@ -6,11 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "makeModels": "node makeModel.js",
-    "makeMigration": "node makeMigration.js"
+    "makeMigration": "node makeMigration.js",
+    "migrate": "node migrate.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async": "^3.2.0",
     "mysql": "^2.18.1",
     "sync-mysql": "^3.0.1"
   }

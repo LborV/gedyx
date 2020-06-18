@@ -12,5 +12,9 @@ var _migration = new migration({
 }, true);
 
 _migration.migrate([
-    {table: '', drop: false, name: '', type: ''}
+    {table: 'test', drop: false, name: 'a', type: 'int'},
+    {table: 'test', drop: false, name: 'b', type: 'int'},
+    {table: 'test', drop: false, name: 'b', type: 'text', action: 'ALTER'},
+    {table: 'test', drop: false, name: 'd', type: 'int'},
+    {table: 'test', drop: false, name: 'c', type: 'int'}
 ]);
