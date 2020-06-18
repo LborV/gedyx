@@ -1,11 +1,7 @@
 var mysql = require('sync-mysql');
 
 class model {
-    constructor(config, migration = false) {
-        if(migration) {
-            config.table = '';
-        }
-
+    constructor(config) {
         if(config.table === undefined || config.host === undefined || config.user === undefined || config.password === undefined || config.database === undefined) {
             return false;
         }
@@ -127,15 +123,13 @@ class model {
             }
         };
 
-        if(!migration) {
-            if(config.sql === undefined) {
-                this.data = this.getDefaultModel(config.where);
-            } else {
-                this.sql = config.sql;
-                this.data = this.execute(config.sql);
-            }
+        if(config.sql === undefined) {
+            this.data = this.getDefaultModel(config.where);
+        } else {
+            this.sql = config.sql;
+            this.data = this.execute(config.sql);
         }
-       
+
         this.todo = [];
 
         return this;
@@ -330,11 +324,6 @@ class model {
         `);
 
         return this;
-    }
-
-    //Return list of all tables in db
-    getAllTables() {
-        return this.execute('SHOW TABLES;').map(item => item.Tables_in_platform);
     }
 
     //Describe table
