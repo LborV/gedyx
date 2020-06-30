@@ -40,7 +40,7 @@ class migration extends model {
             return false;
         }
 
-        return `ALTER TABLE \`${this.database}\`.\`${q.table}\` ${q.action} \`${q.table}\`.\`${q.name}\` ${q.type};`;
+        return `ALTER TABLE \`${this.database}\`.\`${q.table}\` ${q.action} \`${q.name}\` ${q.type};`;
     }
 
     alter(options) {
