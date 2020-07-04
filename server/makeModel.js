@@ -18,7 +18,9 @@ function main(arg) {
                 return;
             }
 
-            let buf = Buffer.from(makeFileContent(modelName));
+            let model_name = modelName.match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g).map(x => x.toLowerCase()).join('_');
+
+            let buf = Buffer.from(makeFileContent(modelName, model_name));
             let len = buf.length;
 
             fs.write(file, buf, 0, len, 0, (err) => {
@@ -28,15 +30,13 @@ function main(arg) {
                 }
 
                 console.log('File ./models/' + modelName + '.js created!');
+                includeGlobalyModel(modelName, model_name);
             });
         });
     });
 }
 
-function makeFileContent(modelName) {
-    let table = modelName;
-    modelName = modelName.charAt(0).toUpperCase() + modelName.slice(1);
-
+function makeFileContent(modelName, model_name) {
     return `
 //This file was automaticaly generated
 //Feel free to edit :)
@@ -44,20 +44,27 @@ function makeFileContent(modelName) {
 var model = require('../kernel/model.js');
 var config = require('../configs/config.js');
 
-class ${modelName} extends model {
+class ${model_name} extends model {
 
 }
 
-let obj = new ${modelName} ({
+let obj = new ${model_name} ({
     host: config.host,
     user: config.user,
     password: config.password,
     database: config.db,
-    table: '${table}',
+    table: '${modelName}',
 });
 
 module.exports = obj;
 `;
+}
+
+function includeGlobalyModel(modelName, model_name) {
+    fs.appendFile('./include.js', `\nglobal.${model_name} = require('./models/${modelName}');`, function (err) {
+        if (err) console.log(err);
+        console.log(model_name + ' included globaly in include.js');
+      });
 }
 
 function checkDir(path = './models') {
