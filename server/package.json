@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "makeModels": "node makeModel.js",
-    "makeMigration": "node makeMigration.js",
+    "models": "node makeModel.js",
+    "migration": "node makeMigration.js",
     "migrate": "node migrate.js"
   },
   "author": "",
