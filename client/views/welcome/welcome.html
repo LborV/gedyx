@@ -1,10 +1,10 @@
 <h1>Var1 = {{welcomeController.var1}}</h1>
-<h1>Var1 = {{welcomeController.var2()}}</h1>
+<h1>Var2 = {{welcomeController.var2()}}</h1>
 
 
 <ul>
     {f:welcomeController.arr:el:
-        <li>{{welcomeController.list(el.val)}}</li>
+        <li>{{el}}</li>
     :!}
 </ul>
 
@@ -15,4 +15,4 @@
     <h1>False</h1>
 :!}
 
-<h1>Test mirror</h1>
+<h1>TEXT</h1>

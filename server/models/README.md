@@ -4,6 +4,8 @@
     - [Миграции](server/migrations)
     - [Модель](server/models)
 - Фронтенд
+    - [View](client/views)
+    - [Контролер](client/js/controllers)
 
 # Модели
 Для создания моделей заупстите команду:
