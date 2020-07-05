@@ -3,10 +3,13 @@ var model = require('./model.js');
 class migration extends model {
     migrate(options) {
         this.query = [];
+        this.migrations_exist = false;
         options.forEach(option => {
-            if(!(this.getAllTables().includes(option.table)) && (option.drop == undefined || option.drop == false)) {
+            if(!(this.getAllTables().includes(option.table)) && (option.drop == undefined || option.drop == false) && !this.migrations_exist) {
                 this.createTable(option.table);
             }
+
+            this.migrations_exist = true;
 
             if(option.drop) {
                 this.query.push(this.dropTable(option.table));
