@@ -67,7 +67,7 @@ welcomeController.loadView('./views/welcome/welcome.html');
 ```
 
 Тогда в результате на странице будет слудующий код:
-
+```
 <div id="welcomeController"><h1>Var1 = 12</h1>
 <h1>Var2 = 4</h1>
 
@@ -88,3 +88,4 @@ welcomeController.loadView('./views/welcome/welcome.html');
     
 
 <h1>TEXT</h1></div>
+```
