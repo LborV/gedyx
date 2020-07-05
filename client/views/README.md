@@ -44,9 +44,7 @@ welcomeController.isTitle = true
 
 welcomeController.loadView('./views/welcome/welcome.html');
 ```
-
-----
-
+А View выглядит так:
 ```
 <h1>Var1 = {{welcomeController.var1}}</h1>
 <h1>Var2 = {{welcomeController.var2()}}</h1>
@@ -68,9 +66,7 @@ welcomeController.loadView('./views/welcome/welcome.html');
 <h1>TEXT</h1>
 ```
 
-----
 Тогда в результате на странице будет слудующий код:
-----
 
 <div id="welcomeController"><h1>Var1 = 12</h1>
 <h1>Var2 = 4</h1>
