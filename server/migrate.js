@@ -31,7 +31,7 @@ const scriptsFolder = './migrations/'
 const files = fs.readdirSync(scriptsFolder)
 
 files.map(function(file) {
-  if(migration_table.where(['file_name', file]).length) {
+  if(migration_table.where([['file_name', file]]).length || file.indexOf('.js') <= 0 ) {
     return;
   }
 
