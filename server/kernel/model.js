@@ -25,6 +25,13 @@ class model {
             return false;
         }
 
+        this.cacheWhereEnable = false;
+
+        if(config.cacheWhereEnable !== false) {
+            this.cacheWhereEnable = true;
+            this.cacheWhere = [];
+        } 
+
          //Operators
         this.operators = {
             '>': function(key, value, data) {
@@ -100,7 +107,7 @@ class model {
             'like': function(key, value, data) {
                 let result = [];
                 data.forEach(el => {
-                    if(key in el && String(el[key]).toLowerCase().includes(String(value).toLowerCase())) {
+                    if(key in el && String(el[key]).includes(String(value))) {
                         if(el.id && el.id !== null && el.id !== undefined) {
                             result[el.id] = el;
                         } else {
@@ -161,6 +168,10 @@ class model {
 
     //Refresh
     refresh(ignoreToDo = true, where = '') {
+        if(this.cacheWhereEnable) {
+            this.cacheWhere = [];
+        } 
+
         if(!ignoreToDo) {
             this.save();
         }
@@ -189,6 +200,10 @@ class model {
 
     //Default sql => select * from TableName
     getDefaultModel(where = '') {
+        if(this.cacheWhereEnable) {
+            this.cacheWhere = [];
+        } 
+
         if(typeof where !== 'string') {
             where = '';
         }
@@ -231,6 +246,10 @@ class model {
     }
 
     set(index, field, value) {
+        if(this.cacheWhereEnable) {
+            this.cacheWhere = [];
+        } 
+
         this.data[index][field] = value;
 
         if(typeof value === 'string') {
@@ -247,6 +266,10 @@ class model {
     }
 
     update(index, options) {
+        if(this.cacheWhereEnable) {
+            this.cacheWhere = [];
+        } 
+
         for(const[key, value] of Object.entries(options)) {
             this.set(index, key, value);
         }
@@ -256,6 +279,10 @@ class model {
 
     //Delete row
     delete(index) {
+        if(this.cacheWhereEnable) {
+            this.cacheWhere = [];
+        } 
+
         if(!index) {
             return false;
         } 
@@ -308,6 +335,10 @@ class model {
      * 
      */
     insert(data) {
+        if(this.cacheWhereEnable) {
+            this.cacheWhere = [];
+        } 
+
         if(this.next === undefined) {
             this.next = this.nextId();
         } else {
@@ -379,23 +410,43 @@ class model {
        return this.operators[operator](key, value, data);
     }
 
+    setCacheWhere(cacheWhere) {
+        this.cacheWhere = cacheWhere;
+        return this;
+    }
+
+    getCacheWhere() {
+        return this.cacheWhere;
+    }
+
     //Where {May be slow}
     /***
      * @param options array of array
      */
     where(options) {
         let data = this.data;
+        let optionStringNatation = '';
+
+        if(this.cacheWhereEnable) {
+            optionStringNatation = options.toString();
+
+            if(optionStringNatation in this.cacheWhere) {
+                return this.cacheWhere[optionStringNatation];
+            }
+        }
+
         options.forEach(option => {
             if(data.length == 0) {
                 return;
             }
 
-            if(option.length == 2) {
-                data = this.find(option[0], option[1], false, data);
-                return;
+            let operator = '=';
+            if(option.length > 2) {
+                option[1] = option[1].replace(/\s/g, '');
+                operator = option[1];
             }
-            
-            data = this.find(option[0], option[2], option[1], data);
+
+            data = this.find(option[0], option[2], operator, data);            
         });
 
         let result = [];
@@ -407,6 +458,10 @@ class model {
             });
         }
 
+        if(this.cacheWhereEnable) {
+            this.cacheWhere[optionStringNatation] = result;
+        }
+            
         return result;
     }
 }
