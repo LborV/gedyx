@@ -134,6 +134,13 @@ class model {
             }
         };
 
+        if(Array.isArray(config.data)) {
+            this.data = this.normalize(config.data);
+            this.todo = [];
+
+            return this;
+        }
+
         if(!migration) {
             if(config.sql === undefined) {
                 this.data = this.getDefaultModel(config.where);
