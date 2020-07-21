@@ -446,7 +446,7 @@ class model {
                 operator = option[1];
             }
 
-            data = this.find(option[0], option[2], operator, data);            
+            data = this.find(option[0], option[2] ? option[2] : option[1], operator, data);            
         });
 
         let result = [];
