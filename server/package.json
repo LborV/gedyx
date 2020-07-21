@@ -4,7 +4,7 @@
   "description": "Server part for js-mvc framework",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "models": "node makeModel.js",
     "migration": "node makeMigration.js",
     "migrate": "node migrate.js"
@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "async": "^3.2.0",
+    "mocha": "^8.0.1",
     "mysql": "^2.18.1",
     "sync-mysql": "^3.0.1"
   }

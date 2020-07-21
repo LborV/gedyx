@@ -6,23 +6,25 @@ class model {
             config.table = '';
         }
 
-        if(config.table === undefined || config.host === undefined || config.user === undefined || config.password === undefined || config.database === undefined) {
-            return false;
-        }
+        if(!Array.isArray(config.data)) {
+            if(config.table === undefined || config.host === undefined || config.user === undefined || config.password === undefined || config.database === undefined) {
+                return false;
+            }
 
-        this.database = config.database;
-        this.table = config.table;
+            this.database = config.database;
+            this.table = config.table;
 
-        try {
-            this.connection = new mysql({
-                host: config.host,
-                user: config.user,
-                password: config.password,
-                database: config.database
-            });
-        } catch(err) {
-            console.log(err);
-            return false;
+            try {
+                this.connection = new mysql({
+                    host: config.host,
+                    user: config.user,
+                    password: config.password,
+                    database: config.database
+                });
+            } catch(err) {
+                console.log(err);
+                return false;
+            }
         }
 
         this.cacheWhereEnable = false;
@@ -238,7 +240,9 @@ class model {
             }
         });
 
-        return data;
+        return data.filter(function (el) {
+            return el != null;
+        });
     }
 
     //Save all changes into db
