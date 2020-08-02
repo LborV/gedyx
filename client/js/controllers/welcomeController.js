@@ -4,7 +4,7 @@ var welcomeController = new Controller({
 
 welcomeController.var1 = 12
 welcomeController.var2 = function() {return 2*2}
-welcomeController.arr = [1, 2, 3]
+welcomeController.arr = ['a', 'b', 'c'];
 welcomeController.isTitle = true
 
 welcomeController.loadView('./views/welcome/welcome.html');

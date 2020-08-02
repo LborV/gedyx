@@ -228,25 +228,30 @@ class Controller {
     }
 
     //Find variables in not compiled doc
-    compileFind(str, defineVar = undefined) {
-        if(defineVar !== undefined) {
-            window[defineVar[0]] = defineVar[1];
+    compileFind(str) {
+        let forLoops = [...str.matchAll(/\{f/g)];
+        if(forLoops.length) {
+            forLoops.reverse().forEach(i => {
+                str = this.replaceForLoops(str, i.index+2);
+            });
+
+            return this.compileFind(str);
         }
 
-        for(let i = 0; i < str.length; i++) {
-            let start = null;
-            if(str[i] == '{') {
-                if(str[i+1] == '{') {
-                    start = i + 2;
-                    return this.compileFind(this.replaceVariables(str, start));
-                } else if(str[i+1] == 'f') {
-                    start = i +2;
-                    return this.compileFind(this.replaceForLoops(str, start));
-                } else if(str[i+1] == 'i') {
-                    start = i + 2;
-                    return this.compileFind(this.replaceIf(str, start));
-                }
-            }
+        let ifs = [...str.matchAll(/\{i/g)];
+        if(ifs.length) {
+            ifs.forEach(i => {
+                str = this.replaceIf(str, i.index+2);
+            });
+
+            return this.compileFind(str);
+        }
+
+        let variables = [...str.matchAll(/\{\{/g)];
+        if(variables.length) {
+            variables.forEach(i => {
+                str = this.compileFind( this.replaceVariables(str, i.index+2));
+            });
         }
 
         return str;
@@ -295,12 +300,12 @@ class Controller {
                 if(typeof givenArr === 'object') {
                     let keys = Object.keys(givenArr);
                     keys.forEach(key => {
-                        // givenArr[key] = {
-                        //     'key': key,
-                        //     'val': givenArr[key]
-                        // };
-
-                        result += this.compileFind(arr[2], [arr[1], givenArr[key]]);
+                        let i = [...arr[2].matchAll(/\{\{/g)];
+                        if(i.length) {
+                            result += this.replaceVariables(arr[2], i[0].index+2, givenArr[key]);
+                        } else {
+                            result += arr[2];
+                        }
                     });
                 }
 
@@ -312,10 +317,14 @@ class Controller {
     }
 
     //Replace variables
-    replaceVariables(str, start) {
+    replaceVariables(str, start, value = undefined) {
         for(let end = start; end < str.length; end++) {
             if(str[end] == '}' && str[end+1] == '}') {
-                return str.substring(0, start-2) + eval(str.substring(start, end)) + str.substring(end+2, str.length);
+                if(value === undefined) {
+                    return str.substring(0, start-2) + eval(str.substring(start, end)) + str.substring(end+2, str.length);
+                } else {
+                    return str.substring(0, start-2) + value + str.substring(end+2, str.length);
+                }
             }
         }
 
