@@ -300,12 +300,20 @@ class Controller {
                 if(typeof givenArr === 'object') {
                     let keys = Object.keys(givenArr);
                     keys.forEach(key => {
-                        let i = [...arr[2].matchAll(/\{\{/g)];
-                        if(i.length) {
-                            result += this.replaceVariables(arr[2], i[0].index+2, givenArr[key]);
-                        } else {
-                            result += arr[2];
+                        let str = arr[2];
+                        if([...str.matchAll(/\{\{/g)].length > 0) {
+                            let i = [];
+                            do {
+                                i = [...str.matchAll(/\{\{/g)];
+                                if(i.length > 0) {
+                                    window[arr[1]] = givenArr[key];
+                                    str = this.replaceVariables(str, i[0].index+2);
+                                    delete window[arr[1]];
+                                }
+                            } while(i.length > 0);
                         }
+
+                        result += str;
                     });
                 }
 

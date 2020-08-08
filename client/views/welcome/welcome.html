@@ -1,21 +1,16 @@
+ 
 <h1>Var1 = {{welcomeController.var1}}</h1>
 <h1>Var2 = {{welcomeController.var2()}}</h1>
 <h1>Var2 = {{welcomeController.var2()+1}}</h1>
 <h1>Var2 = {{welcomeController.var2()+2}}</h1>
 <h1>Var2 = {{welcomeController.var2()+3}}</h1>
 
-
-<ul>
+<ol>
     {f:welcomeController.arr:el:
-        <li>
-            <ol>
-                {f:welcomeController.arr:el:
-                    <li>{{el}}</li>
-                :!}
-            </ol>
-        </li>
+            <li style="{{el.style}}">{{el.test}}</li>
     :!}
-</ul>
+</ol>
+
 
 <hr>
 
