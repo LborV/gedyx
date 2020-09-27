@@ -7,7 +7,8 @@
     "test": "mocha",
     "models": "node makeModel.js",
     "migration": "node makeMigration.js",
-    "migrate": "node migrate.js"
+    "migrate": "node migrate.js",
+    "action": "node makeActoin.js"
   },
   "author": "",
   "license": "ISC",
