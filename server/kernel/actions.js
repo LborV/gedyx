@@ -1,16 +1,22 @@
 class actions {
     constructor(configs) {        
-        if(!configs.actionList || !configs.io) {
+        if(!configs.io) {
            return; 
         }
 
         this.actionList = [];
-        for(let key in configs.actionList) {
-            let action = require(`../actions/${configs.actionList[key]}`);
-            this.actionList.push({key: action});
-        }
-        this.io = configs.io;
+        var normalizedPath = require("path").join('', "actions");
+        require("fs").readdirSync(normalizedPath).forEach((file) => {
+            if(!file.includes('.js')) {
+                return;
+            }
 
+            let action = require(`../actions/${file}`);
+            let actionName = file.replace('.js', '');
+            this.actionList[actionName] = action;
+        });
+
+        this.io = configs.io;
         return this.listener();
     }
 
@@ -26,9 +32,9 @@ class actions {
         this.io.on('connection', (socket) => {
             this.onConnect(socket);
 
-            this.actionList.forEach(action => {
-                socket.on(action.methodName, (data) => {action.requestIn(data, socket);});
-            });
+            for(let actionName in this.actionList) {
+                socket.on(actionName, (data) => {this.actionList[actionName].requestIn(data, socket);});
+            }
 
             socket.on('disconnect', () => {
                 this.onDisconnect(socket);

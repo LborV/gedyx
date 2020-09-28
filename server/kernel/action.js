@@ -1,6 +1,7 @@
 class action {
     constructor(actionName) {
         this.actionName = actionName;
+        return this;
     }
 
     requestIn(data, socket) {

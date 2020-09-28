@@ -4,6 +4,5 @@ const
     server = io.listen(3000);
 
 let actionsPool = new actions({
-    io: server,
-    actionList: config.actionList
+    io: server
 });
