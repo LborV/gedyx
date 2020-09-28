@@ -71,4 +71,4 @@ function checkDir(path = './models') {
    return fs.existsSync(path);
 }
 
-console.log(main(process.argv));
+main(process.argv);

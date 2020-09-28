@@ -26,9 +26,9 @@ function checkDir(path = './migrations') {
     return fs.existsSync(path);
  }
 
- console.log(main(process.argv));
+main(process.argv);
 
- function makeFileContent() {
+function makeFileContent() {
     return `
 //This file was automaticaly generated
 //Feel free to edit :)
