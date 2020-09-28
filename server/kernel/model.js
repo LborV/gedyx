@@ -215,6 +215,10 @@ class model {
 
         if(typeof where !== 'string') {
             where = '';
+        } 
+
+        if(where) {
+            where = 'WHERE ' + where;
         }
 
         return this.normalize(
