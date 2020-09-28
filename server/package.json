@@ -8,7 +8,7 @@
     "models": "node makeModel.js",
     "migration": "node makeMigration.js",
     "migrate": "node migrate.js",
-    "action": "node makeActoin.js"
+    "action": "node makeAction.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +16,7 @@
     "async": "^3.2.0",
     "mocha": "^8.0.1",
     "mysql": "^2.18.1",
+    "socket.io": "^2.3.0",
     "sync-mysql": "^3.0.1"
   }
 }
