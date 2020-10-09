@@ -15,35 +15,35 @@ describe('Model without db', function () {
 
     describe('Get all data', function() {
         it('Should return all data from model', function() {
-            assert.equal(m.all().length, d.length);
+            assert.strictEqual(m.all().length, d.length);
         });
 
         it('Should return data from model where id == 1', function() {
-            assert.equal(m.get(1).id, 1);
+            assert.strictEqual(m.get(1).id, 1);
         });
     });
 
     describe('Where statements', function() {
         it('Should return 3 (where status == active)', function() {
-            assert.equal(m.where([['status', 'active']]).length, 3);
-            assert.equal(m.where([['status', '=', 'active']]).length, 3);
+            assert.strictEqual(m.where([['status', 'active']]).length, 3);
+            assert.strictEqual(m.where([['status', '=', 'active']]).length, 3);
         });
 
         it('Should return 1 (where status == active and id > 2)', function() {
-            assert.equal(m.where([['status', 'active'], ['id', '>', 2]]).length, 1);
+            assert.strictEqual(m.where([['status', 'active'], ['id', '>', 2]]).length, 1);
         });
 
         it('Should return 2 (where status == active and id >= 1)', function() {
-            assert.equal(m.where([['status', 'active'], ['id', '>=', 1]]).length, 2);
+            assert.strictEqual(m.where([['status', 'active'], ['id', '>=', 1]]).length, 2);
         });
 
         it('Should return 5 (like)', function() {
-            assert.equal(m.where([['status', 'like', 'e']]).length, 5);
+            assert.strictEqual(m.where([['status', 'like', 'e']]).length, 5);
         });
 
 
         it('Should return 2 (whereIn)', function() {
-            assert.equal(m.where([['id', 'whereIn', [0, 3]]]).length, 2);
+            assert.strictEqual(m.where([['id', 'whereIn', [0, 3]]]).length, 2);
         });
     });
 
@@ -53,18 +53,37 @@ describe('Model without db', function () {
                 status: 'active'
             });
 
-            assert.equal(m.get(4).status, 'active');
+            assert.strictEqual(m.get(4).status, 'active');
 
             m.set(2, 'status', 'active');
 
-            assert.equal(m.get(2).status, 'active');
+            assert.strictEqual(m.get(2).status, 'active');
         });
     });
 
     describe('Delete', function() {
         it('Should return new count of elements == 4', function() {
             m.delete(1);
-            assert.equal(m.all().length, 4);
+            assert.strictEqual(m.all().length, 4);
+        });
+    });
+
+    describe('Insert', function() {
+        it('Should return new count of elements == 5', function() {
+            m.insert({id: 5, status: 'disable', count: 0});
+            assert.strictEqual(m.all().length, 5);
+        });
+
+        it('Should return new count of elements == 6', function() {
+            m.insert({status: 'disable', count: 0});
+            assert.strictEqual(m.all().length, 6);
+        });
+
+        it('Should return new count of elements == 100', function() {
+            for(let i = 0; i < 94; i++) {
+                m.insert({status: 'disable', count: i});                
+            }
+            assert.strictEqual(m.all().length, 100);
         });
     });
 });

@@ -337,6 +337,10 @@ class model {
 
     //return next id
     nextId() {
+        if(this.table == undefined) {
+            return this.data[this.data.length - 1]['id'] ? this.data[this.data.length - 1]['id'] : null;
+        }
+
         return this.execute(`
             SELECT AUTO_INCREMENT
             FROM information_schema.TABLES
