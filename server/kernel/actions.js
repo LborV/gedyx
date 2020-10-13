@@ -43,6 +43,11 @@ class actions {
 
         return this;
     }
+
+    call(actionName, data, socket = undefined) {
+        this.actionList[actionName].requestIn(data, socket);
+        return this;
+    }
 }
 
 module.exports = actions;
