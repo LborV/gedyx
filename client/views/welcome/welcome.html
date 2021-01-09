@@ -4,16 +4,16 @@
         <li style="{{el.style}}"><ol>
             {f:el.arr:el_child:
                 {i:Array.isArray(el_child):
-                    <li style="{{el.style}}">
+                    <li>
                         <ul>
                         {f:el_child:el_child_child:
-                            <li>{{el_child}}</li>
+                            <li style="color: pink">{{el_child_child}}</li>
                         :!}
                         </ul>
                     </li>
                     :
-                    <li style="{{el.style}}">
-                        <i>{{el_child}}</i>
+                    <li>
+                        <i style="color: black">{{el_child}}</i>
                     </li>
                 :!}
             :!} 

@@ -228,6 +228,15 @@ class Controller {
         return parser.makeTreeFromString(view).parse();
     }
 
+    compileFromTree(tree, load = false) {
+        if(load !== false) {
+            return this.loadView(view);
+        }
+
+        let parser = new Parser();
+        return parser.parse(tree);
+    }
+
     //Update
     update() {
         console.log('Redefine this method');
