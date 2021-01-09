@@ -139,6 +139,7 @@ class model {
         if(Array.isArray(config.data)) {
             this.data = this.normalize(config.data);
             this.todo = [];
+            this.next = 0;
 
             return this;
         }

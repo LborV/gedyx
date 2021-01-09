@@ -1,29 +1,30 @@
- 
-<h1>Var1 = {{welcomeController.var1}}</h1>
-<h1>Var2 = {{welcomeController.var2()}}</h1>
-<h1>Var2 = {{welcomeController.var2()+1}}</h1>
-<h1>Var2 = {{welcomeController.var2()+2}}</h1>
-<h1>Var2 = {{welcomeController.var2()+3}}</h1>
-
-<ol>
-    {f:welcomeController.arr:el:
-            <li style="{{el.style}}">{{el.test}}</li>
-    :!}
-</ol>
-
-
-<hr>
-
 <ul>
-    {f:welcomeController.arr:el:
-        <li>test</li>
+{f:welcomeController.arr:el:
+    {i:el.arr:
+        <li style="{{el.style}}"><ol>
+            {f:el.arr:el_child:
+                {i:Array.isArray(el_child):
+                    <li style="{{el.style}}">
+                        <ul>
+                        {f:el_child:el_child_child:
+                            <li>{{el_child}}</li>
+                        :!}
+                        </ul>
+                    </li>
+                    :
+                    <li style="{{el.style}}">
+                        <i>{{el_child}}</i>
+                    </li>
+                :!}
+            :!} 
+        </ol></li>
+        :
+        <li style="{{el.style}}">{{el.test}}</li>
     :!}
-</ul>
-
-{i:welcomeController.isTitle:
-    <h1>True</h1>
-    :
-    <h1>False</h1>
+        
 :!}
+</ul>
+TEST
 
-<h1>TEXT</h1>
+<h1>{{welcomeController.var1}}</h1>
+<h2>{{welcomeController.var2()}}</h2>
