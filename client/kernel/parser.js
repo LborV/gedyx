@@ -130,7 +130,7 @@ class Parser {
         return this;
     }
 
-    parse(tree) {
+    parse(tree = false, _this = false) {
         let t = this.tree[0];
         if(tree) {
             t = tree;
@@ -138,6 +138,10 @@ class Parser {
 
         if(t.childs.length == 0) {
             return false;
+        }
+
+        if(_this) {
+            window['_this'] = _this;
         }
 
         t.childs.forEach(child => {
@@ -166,12 +170,14 @@ class Parser {
                         window[iteratorName] = arr[key];
                         return this.parse(child);
                     });
+                    delete window[iteratorName];
                     return;
                 } else if(Array.isArray(arr)) {
                     arr.forEach(item => {
                         window[iteratorName] = item;
                         return this.parse(child);
                     });
+                    delete window[iteratorName];
                     return;
                 }
 
@@ -198,6 +204,7 @@ class Parser {
                 return;
             }
         });
+        delete window['_this'];
 
         return this.result;
     }

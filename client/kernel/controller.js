@@ -225,7 +225,7 @@ class Controller {
         }
 
         let parser = new Parser();
-        return parser.makeTreeFromString(view).parse();
+        return parser.makeTreeFromString(view).parse(false, this);
     }
 
     compileFromTree(tree, load = false) {
@@ -234,7 +234,7 @@ class Controller {
         }
 
         let parser = new Parser();
-        return parser.parse(tree);
+        return parser.parse(tree, this);
     }
 
     //Update
