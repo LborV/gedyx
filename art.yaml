@@ -1,0 +1,30 @@
+config:
+  target: "http://localhost:3000"
+  ensure:
+    max: 500 # fail if max response time exceeds 500ms
+    maxErrorRate: 1 # fail if error rate exceeds 1%
+  phases:
+    - duration: 120
+      arrivalRate: 10
+      rampTo: 50
+      name: "Warm up phase"
+    - duration: 600
+      arrivalRate: 50
+      name: "Sustained max load"
+scenarios:
+  - engine: "socketio"
+    flow:
+      - emit:
+          channel: "getTest"
+          data: ""
+      - think: 10 # stay connected for 10 seconds
+      - emit:
+          channel: "addTest"
+          data: "test"
+      - emit:
+          channel: "getTest"
+          data: ""
+      - think: 10 # stay connected for 10 seconds
+      - emit:
+          channel: "getTest"
+          data: ""
