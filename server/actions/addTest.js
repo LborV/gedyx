@@ -9,10 +9,10 @@ class addTest extends action {
         test_table.insert({
             testColumn_first: data,
             testColumn_second: (new Date()).getTime()
-        }).save().then(() => {
-            console.log(`Added new record, total: ${test_table.data.length}`);
-            this.response(data);
         });
+            
+        console.log(`Added new record, total: ${test_table.all().length}`);
+        this.response(data);
     }
 }
 

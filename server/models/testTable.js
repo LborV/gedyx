@@ -2,7 +2,7 @@
 //This file was automaticaly generated
 //Feel free to edit :)
 
-var model = require('../kernel/model.js');
+var model = require('../kernel/model/model.js');
 var config = require('../configs/config.js');
 
 class test_table extends model {
