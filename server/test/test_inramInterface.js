@@ -1,32 +1,29 @@
 var assert = require('assert');
-var model = require('../kernel/model/model.js');
+global.ModelInterface = require('../kernel/interfaces/ModelInterface');
+const InRamInterface = require('../kernel/interfaces/InRamInterface');
+const Model = require('../kernel/model/Model');
 
 describe('Model and migrations with db', function () {
-    let config = {
-        host: "localhost",
-        user: "login",
-        password: "pass",
-        db: 'testDatabase'
-    }
+    //In ram database interface
+    const inRamInterface = new InRamInterface({
+        cacheWhereEnable: true,
+        data: [
+            {testColumn_second: 'test'}
+        ]
+    });
 
     //Model
-    class testModel extends model {
-
-    }
-    
-    m = new testModel ({
-        host: config.host,
-        user: config.user,
-        password: config.password,
-        database: config.db,
-        table: 'testTable',
-    });
+    class testModel extends Model {}
+    m = new testModel(inRamInterface);
 
     //Migration
     describe('Model', function() {
-        describe('Raw sql', function() {
+        describe('Default data', function() {
+            it('Data by default', function(){
+                assert.strictEqual(m.all().length, 1);
+            });
             it('Truncate table', function() {
-                m.execute('TRUNCATE `testTable`');
+                m.getInterface().clear();
                 assert.strictEqual(m.all().length, 0);
             });
         });
@@ -38,8 +35,6 @@ describe('Model and migrations with db', function () {
             });
     
             it('Should return new count of elements == 100', function() {
-                console.log(m.all())
-
                 for(let i = 0; i < 99; i++) {
                     m.insert({testColumn_first: 'disable', testColumn_second: 'testMe'});                
                 }
@@ -50,13 +45,13 @@ describe('Model and migrations with db', function () {
 
         describe('Where', function() {
             it('Should find elements count == 1', function() {
-                assert.strictEqual(m.where([['testColumn_first', `'enable'`]]).length, 1);
+                assert.strictEqual(m.where([['testColumn_first', `enable`]]).length, 1);
             });
             it('Should find elements count == 1', function() {
-                assert.strictEqual(m.where([['testColumn_first', '=', `'enable'`]]).length, 1);
+                assert.strictEqual(m.where([['testColumn_first', '=', `enable`]]).length, 1);
             });
             it('Should find elements count == 5', function() {
-                assert.strictEqual(m.where([['id', '>=', '1'], ['id', '<=', '5']]).length, 5);
+                assert.strictEqual(m.where([['id', '>=', 1], ['id', '<=', 5]]).length, 5);
             });
         });
 

@@ -5,16 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "models": "node makeModel.js",
-    "migration": "node makeMigration.js",
-    "migrate": "node migrate.js",
-    "action": "node makeAction.js"
+    "actions": "node makeAction.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "async": "^3.2.0",
-    "mocha": "^8.0.1",
+    "mocha": "^8.2.1",
     "mysql": "^2.18.1",
     "socket.io": "^2.4.1",
     "socket.io-redis": "^6.0.1",

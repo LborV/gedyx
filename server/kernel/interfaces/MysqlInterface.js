@@ -1,10 +1,11 @@
-var mysql = require('sync-mysql');
+const mysql = require('sync-mysql');
 
-class model {
+class MysqlInterface extends ModelInterface {
     constructor(config) {
+        super();
         if(!Array.isArray(config.data)) {
             if(config.table === undefined || config.host === undefined || config.user === undefined || config.password === undefined || config.database === undefined) {
-                return false;
+                return undefined;
             }
 
             this.database = config.database;
@@ -15,11 +16,11 @@ class model {
                     host: config.host,
                     user: config.user,
                     password: config.password,
-                    database: config.database
+                    database: config.database,
                 });
             } catch(err) {
-                console.log(err);
-                return false;
+                console.error(err);
+                return undefined;
             }
         }
     }
@@ -32,7 +33,7 @@ class model {
         try {
             return this.connection.query(sql);
         } catch(err) {
-            console.log(err);
+            console.error(err);
             return [];
         }
     }
@@ -42,7 +43,11 @@ class model {
             return;
         }
 
-        this.connection.query(sql);
+        try {
+            this.connection.query(sql);
+        } catch(err) {
+            console.error(err);
+        }
     }
 
     set(index, field, value) {
@@ -59,7 +64,7 @@ class model {
         return this;
     }
 
-    update(index, options) {
+    update(index, options) {        
         for(const[key, value] of Object.entries(options)) {
             this.set(index, key, value);
         }
@@ -76,23 +81,12 @@ class model {
         return this;
     }
 
-    //Get all data or one row
-    getData(index = false) {
-        if(index === false) {
-            return this.execute(`
-            SELECT * FROM \`${this.table}\`
-        `);
-        }
-
+    get(index) {
         return this.execute(`
             SELECT * FROM \`${this.table}\`
             WHERE \`id\` = ${index}
             LIMIT 1;
         `)[0];
-    }
-
-    get(index = false) {
-        return this.getData(index);
     }
 
     insert(data) {
@@ -110,16 +104,10 @@ class model {
         `);
     }
 
-    getAllTables() {
-        return this.execute('SHOW TABLES;').map(item => item[Object.keys(item)[0]]);
-    }
-
-    describe() {
-        return this.execute(`describe ${this.table};`);
-    }
-
     all() {
-        return this.getData();
+        return this.execute(`
+            SELECT * FROM \`${this.table}\`
+        `);
     }
 
     where(options) {
@@ -154,4 +142,4 @@ class model {
     }
 }
 
-module.exports = model;
+module.exports = MysqlInterface;
