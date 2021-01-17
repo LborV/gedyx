@@ -9,10 +9,7 @@ var config = require('../configs/config.js');
 const MysqlInterface = require('../kernel/interfaces/MysqlInterface');
 //Mysql interface configuration 
 const mysqlInterface = new MysqlInterface({
-    host: config.host,
-    user: config.user,
-    password: config.password,
-    database: config.db,
+    connection: mysqlConnection,
     table: 'testTable'
 });
 

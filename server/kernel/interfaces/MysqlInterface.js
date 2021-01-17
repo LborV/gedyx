@@ -4,24 +4,12 @@ class MysqlInterface extends ModelInterface {
     constructor(config) {
         super();
         if(!Array.isArray(config.data)) {
-            if(config.table === undefined || config.host === undefined || config.user === undefined || config.password === undefined || config.database === undefined) {
+            if(config.table === undefined || config.connection === undefined) {
                 return undefined;
             }
 
-            this.database = config.database;
             this.table = config.table;
-
-            try {
-                this.connection = new mysql({
-                    host: config.host,
-                    user: config.user,
-                    password: config.password,
-                    database: config.database,
-                });
-            } catch(err) {
-                console.error(err);
-                return undefined;
-            }
+            this.connection = config.connection;
         }
     }
 
