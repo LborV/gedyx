@@ -13,12 +13,13 @@ class Controller {
             return null;
         }
 
-        if($("#" + this.name).length != 0) {
+        this.element = document.getElementById(config.name);
+        if(this.element != null) {
             console.log('This id exist');
             return null;
         }
 
-        if(config.parent !== undefined && $('#' + config.parent).length != 0) {
+        if(config.parent !== undefined && document.getElementById(config.parent) != undefined) {
             this.parent = config.parent;
         } else {
             this.parent = null;
@@ -38,8 +39,6 @@ class Controller {
                 this.hide();
             }
         } else {
-            this.hide();
-            console.log('View was not given. Use updateView method');
             return this;
         }
     }
@@ -56,29 +55,30 @@ class Controller {
 
     //Update DOM existing dom element
     updateDOM(view) {
-        if($("#" + this.name).length == 0) {
+        if(this.element == null) {
             if(this.createDOM()) {
-                $("#" + this.name).html(view);
+                this.element.innerHTML = view;
             } else {
                 return false;
             }
         }
 
-        $("#" + this.name).html(view);
+        this.element.innerHTML = view;
         return true;
     }
 
     //Create new DOM element
     createDOM() {
-        if($("#content").length == 0) {
-            $('body').append('<div id=content></div>');
+        if(document.getElementById('content') == undefined) {
+            document.body.innerHTML = document.body.innerHTML + '<div id="content"></div>';
         }
 
         if(this.parent == null) {
-            $('#content').append('<div id='+this.name+'></div>');
+            document.getElementById('content').innerHTML = document.getElementById('content').innerHTML + '<div id='+this.name+'></div>';
         } else {
-            $('#' + this.parent).append('<div id='+this.name+'></div>');
+            document.getElementById(this.parent).innerHTML = document.getElementById(this.parent).innerHTML + '<div id='+this.name+'></div>';
         }
+        this.element = document.getElementById(this.name);
 
         if(this.classes !== undefined) {
             if(!this.addClass(this.classes, false)) {
@@ -99,47 +99,13 @@ class Controller {
 
     }
 
-    //Fade in
-    fadeIn(param = undefined, callBack = false) {
-        if({}.toString.call(callBack) === '[object Function]') {
-            callBack();
-        }
-
-        this.onShow();
-
-        if(param != undefined) {
-            $('#' + this.name).fadeIn(param);
-        } else {
-            $('#' + this.name).fadeIn();
-        }
-
-        return this;
-    }
-
-    //Fade out
-    fadeOut(param = undefined, callBack = false) {
-        if({}.toString.call(callBack) === '[object Function]') {
-            callBack();
-        }
-
-        this.onHide();
-
-        if(param != undefined) {
-            $('#' + this.name).fadeOut(param);
-        } else {
-            $('#' + this.name).fadeOut();
-        }
-
-        return this;
-    }
-
     //Show
     show(isShow = true, time = 0) {
         if(isShow) {
             this.onShow();
-            $('#' + this.name).show(time);
+            this.element.style.display = 'block';
         } else {
-            $('#' + this.name).hide(time);
+            this.element.style.display = 'none';
         }
 
         return this;
@@ -147,12 +113,12 @@ class Controller {
 
     //Get HTML
     getHTML() {
-        return $('#' + this.name).html();
+        return this.element.innerHTML;
     }
 
     //Set HTML
     html(str) {
-        $('#' + this.name).html(str);
+        this.element.innerHTML = str;
     }
 
     //Hide
@@ -163,7 +129,11 @@ class Controller {
 
     //Toggle
     toggle(time = 100) {
-        $('#' + this.name).toggle(time);
+        if(this.element.style.display == 'none') {
+            this.show(true, time);
+        } else {
+            this.hide(time);
+        }
 
         return this;
     }
@@ -172,7 +142,7 @@ class Controller {
     addClass(classes, returnThis = true) {
         this.classes = classes;
 
-        if($("#" + this.name).length == 0) {
+        if(this.element == null) {
             console.log('Id not found');
             return false;
         }
@@ -182,8 +152,7 @@ class Controller {
             return false;
         }
 
-        $('#' + this.name).addClass(this.classes);
-
+        this.element.classList.add(this.classes);
         if(returnThis) {
             return this;
         }
@@ -192,25 +161,28 @@ class Controller {
     }
 
     //Load view from file
-    loadView(url, returnThis = true) {
+    loadView(url, tree = false) {
         var response = 'Cant get view';
-        $.ajax({
-            type: "GET",   
-            url: url,   
-            async: false,
-            success : function(text) {
-                response = text;
-            }
-        });
-    
-        response = this.compile(response);
+        var xhttp = new XMLHttpRequest();
+        let _controller = this;
 
-        if(returnThis) {
-            this.updateView(response);
-            return this;
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                response = this.responseText;
+
+                if(tree) {
+                    return _controller.updateView(_controller.compileFromTree(response));
+                }
+
+                return _controller.updateView(_controller.compile(response));
+            } else {
+                return _controller.updateView(_controller.compile(response));
+            }
         }
 
-        return response;
+        xhttp.open("GET", url, true);
+        xhttp.send();
+        return _controller;
     }
 
     //Compile loaded view
@@ -219,20 +191,12 @@ class Controller {
      * @param {string} view 
      * @param {boolean} load if yes -> this.loadView -> this.updateView
      */
-    compile(view, load = false) {
-        if(load !== false) {
-            return this.loadView(view);
-        }
-
+    compile(view) {
         let parser = new Parser();
         return parser.makeTreeFromString(view).parse(false, this);
     }
 
-    compileFromTree(tree, load = false) {
-        if(load !== false) {
-            return this.loadView(view);
-        }
-
+    compileFromTree(tree) {
         let parser = new Parser();
         return parser.parse(tree, this);
     }
@@ -240,25 +204,6 @@ class Controller {
     //Update
     update() {
         console.log('Redefine this method');
-        return this;
-    }
-
-    //Open another page
-    open(name, delay = 0) {
-        if(name == undefined) {
-            console.log('You must give a name of page or object');
-            return this;
-        }
-
-        this.hide();
-
-        if(typeof name == 'string') {
-            $('#' + name).show(delay);
-        } else {
-            name.show(true, delay);
-            return name;
-        }
-
         return this;
     }
 }
