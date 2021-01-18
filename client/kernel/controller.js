@@ -232,10 +232,4 @@ class Controller {
         
         return parser.parse(tree, this);
     }
-
-    //Update
-    update() {
-        console.log('Redefine this method');
-        return this;
-    }
 }
