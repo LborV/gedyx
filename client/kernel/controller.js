@@ -43,6 +43,7 @@ class Controller {
                 globalThis.views = [];
             }
 
+            this.createDOM();
             return this;
         }
     }
@@ -61,12 +62,14 @@ class Controller {
     updateDOM(view) {
         if(this.element == null) {
             if(this.createDOM()) {
+                this.element = document.getElementById(this.name);
                 this.element.innerHTML = view;
             } else {
                 return false;
             }
         }
 
+        this.element = document.getElementById(this.name);
         this.element.innerHTML = view;
         return true;
     }
@@ -166,19 +169,18 @@ class Controller {
 
     //Load view from file
     loadView(url, tree = false) {
-        var response = 'Cant get view';
-        var xhttp = new XMLHttpRequest();
+        let response = 'Cant get view';
         let _controller = this;
-
 
         if(globalThis.views.length > 0) {
             let view = globalThis.views.find(el => el.url == url);
             if(view) {
-                _controller.updateView(_controller.compileFromTree(view.tree));
+                _controller.updateView(_controller.compileFromTree(JSON.parse(view.tree), url));
                 return _controller;
             }
         }
 
+        let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 response = this.responseText;
@@ -187,8 +189,6 @@ class Controller {
                     return _controller.updateView(_controller.compileFromTree(JSON.parse(response), url));
                 }
 
-                return _controller.updateView(_controller.compile(response), url);
-            } else {
                 return _controller.updateView(_controller.compile(response), url);
             }
         }
@@ -221,7 +221,7 @@ class Controller {
 
     compileFromTree(tree, url) {
         let parser = new Parser();
-        
+
         if(url) {
             //Save tree in window for this session
             globalThis.views.push({
