@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "actions": "node makeAction.js"
+    "actions": "node makeAction.js",
+    "models": "node makeModels.js"
   },
   "author": "",
   "license": "ISC",

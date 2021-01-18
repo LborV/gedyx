@@ -1,16 +1,14 @@
 //In this file will be aotomaticaly included your models
-global.config = require('./configs/config.js');
+globalThis.config = require('./configs/config.js');
+globalThis.ModelInterface = require('./kernel/interfaces/ModelInterface');
+globalThis.Actions = require('./kernel/Actions');
+globalThis.Models = require('./kernel/Models');
 
 //Mysql Connection
 const mysql = require('sync-mysql');
-global.mysqlConnection = new mysql({
+globalThis.mysqlConnection = new mysql({
     host: config.host,
     user: config.user,
     password: config.password,
     database: config.db,
 });
-
-
-global.ModelInterface = require('./kernel/interfaces/ModelInterface');
-global.actions = require('./kernel/actions.js');
-global.test_table = require('./models/testTable');

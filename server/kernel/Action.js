@@ -1,4 +1,4 @@
-class action {
+class Action {
     constructor(actionName) {
         this.actionName = actionName;
         return this;
@@ -22,4 +22,4 @@ class action {
     }
 }
 
-module.exports = action;
+module.exports = Action;

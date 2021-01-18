@@ -1,20 +1,30 @@
-class actions {
+const Action = require('./Action');
+class Actions {
     constructor(configs) {        
         if(!configs.io) {
            return; 
         }
 
         this.actionList = [];
-        var normalizedPath = require("path").join('', "actions");
-        require("fs").readdirSync(normalizedPath).forEach((file) => {
-            if(!file.includes('.js')) {
-                return;
-            }
+        
+        try {
+            let normalizedPath = require("path").join('', "actions");
+            require("fs").readdirSync(normalizedPath).forEach((file) => {
+                if(!file.includes('.js')) {
+                    return;
+                }
 
-            let action = require(`../actions/${file}`);
-            let actionName = file.replace('.js', '');
-            this.actionList[actionName] = action;
-        });
+                let action = require(`../actions/${file}`);
+                if(action instanceof Action) {
+                    let actionName = file.replace('.js', '');
+                    this.actionList[actionName] = action;
+                } else {
+                    throw 'Inccorect class!';
+                }
+            });
+        } catch(e) {
+            console.error(e);
+        }
 
         this.io = configs.io;
         return this.listener();
@@ -50,4 +60,4 @@ class actions {
     }
 }
 
-module.exports = actions;
+module.exports = Actions;

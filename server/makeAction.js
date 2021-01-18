@@ -40,9 +40,9 @@ function makeFileContent(actionName, action_name) {
 //This file was automaticaly generated
 //Feel free to edit :)
 
-var action = require('../kernel/action.js');
+var Action = require('../kernel/Action');
 
-class ${actionName} extends action {
+class ${actionName} extends Action {
     request(data) {
         this.response(data);
     }

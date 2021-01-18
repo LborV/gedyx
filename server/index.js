@@ -8,7 +8,7 @@ const
     io = require("socket.io"),
     server = io.listen(3030);
 
-let actionsPool = new actions({
+let actionsPool = new Actions({
     io: server
 });
-
+let modelsPool = new Models();

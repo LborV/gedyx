@@ -2,8 +2,7 @@
 //This file was automaticaly generated
 //Feel free to edit :)
 
-var Model = require('../kernel/model/Model.js');
-var config = require('../configs/config.js');
+var Model = require('../kernel/model/Model');
 
 //Include interfaces manualy
 const MysqlInterface = require('../kernel/interfaces/MysqlInterface');
@@ -13,11 +12,9 @@ const mysqlInterface = new MysqlInterface({
     table: 'testTable'
 });
 
-
-class test_table extends Model {
+class testTable extends Model {
 
 }
 
-let obj = new test_table(mysqlInterface);
-
+let obj = new testTable (mysqlInterface);
 module.exports = obj;

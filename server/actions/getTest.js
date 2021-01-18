@@ -2,11 +2,11 @@
 //This file was automaticaly generated
 //Feel free to edit :)
 
-var action = require('../kernel/action.js');
+var Action = require('../kernel/Action');
 
-class getTest extends action {
+class getTest extends Action {
     request(data) {
-        this.response(test_table.all());
+        this.response(testTable.all());
     }
 }
 

@@ -2,17 +2,11 @@
 //This file was automaticaly generated
 //Feel free to edit :)
 
-var action = require('../kernel/action.js');
+var Action = require('../kernel/Action');
 
-class addTest extends action {
+class addTest extends Action {
     request(data) {
-        test_table.insert({
-            testColumn_first: data,
-            testColumn_second: (new Date()).getTime()
-        });
-            
-        console.log(`Added new record, total: ${test_table.all().length}`);
-        this.response(data);
+        this.response(testTable.insert(data).all());
     }
 }
 
