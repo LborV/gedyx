@@ -141,7 +141,7 @@ class Parser {
         }
 
         if(_this) {
-            window['_this'] = _this;
+            globalThis._this = _this;
         }
 
         t.childs.forEach(child => {
@@ -167,17 +167,17 @@ class Parser {
                 if(typeof arr === 'object') {
                     let keys = Object.keys(arr);
                     keys.forEach(key => {
-                        window[iteratorName] = arr[key];
+                        globalThis[iteratorName] = arr[key];
                         return this.parse(child);
                     });
-                    delete window[iteratorName];
+                    delete globalThis[iteratorName];
                     return;
                 } else if(Array.isArray(arr)) {
                     arr.forEach(item => {
-                        window[iteratorName] = item;
+                        globalThis[iteratorName] = item;
                         return this.parse(child);
                     });
-                    delete window[iteratorName];
+                    delete globalThis[iteratorName];
                     return;
                 }
 
@@ -204,7 +204,7 @@ class Parser {
                 return;
             }
         });
-        delete window['_this'];
+        delete globalThis._this;
 
         return this.result;
     }
