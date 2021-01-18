@@ -10,4 +10,12 @@ welcomeController.arr = [
     {test: 'c', style: "color: blue", arr: [[1, 2, 3], [4, 5, 6], [7, 8, 9]]}];
 welcomeController.isTitle = true
 
-welcomeController.loadView('./views/welcome/welcome.html');
+welcomeController.loadView('./views/welcome/welcome.json', true);
+
+welcomeController.loadW2 = () => {
+    welcomeController.loadView('./views/welcome/welcome2.json', true);
+}
+
+welcomeController.loadW = () => {
+    welcomeController.loadView('./views/welcome/welcome.json', true);
+}
