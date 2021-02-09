@@ -52,7 +52,7 @@ const MysqlInterface = require('../kernel/interfaces/MysqlInterface');
 //Mysql interface configuration 
 const mysqlInterface = new MysqlInterface({
     connection: mysqlConnection,
-    table: 'testTable'
+    table: '${modelName}'
 });
 
 class ${model_name} extends Model {
