@@ -1,4 +1,4 @@
-class Parser {
+export class Parser {
     constructor(config = {}) {
         this.tree = config.tree || [];
         this.result = '';
@@ -215,6 +215,11 @@ class Parser {
             value: '',
             childs: []
         });
+    }
+
+    clear() {
+        this.result = '';
+        return this;
     }
 
     setTree(tree) {

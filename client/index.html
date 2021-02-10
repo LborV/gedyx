@@ -11,18 +11,43 @@
     <title>Example</title>
 </head>
 <body>
-    <script src="./kernel/functions.js"></script>
-    <script src="./kernel/controller.js"></script>
-    <script src="./kernel/parser.js"></script>
-
-    <!-- Controllers -->
-    <!-- <script src="./js/controllers/welcomeController.js"></script> -->
+    <script src="./kernel/Application.js"></script>
     <script>
-        // globalThis.socket = io('ws://localhost:3030');
-        // socket.on('getTest', data => console.log(data));
-        // socket.on('connect', () => {
-        //     socket.emit('getTest', {});
-        // });
+        var application = null;
+        window.addEventListener('load', () => {
+            application = new Application({
+                useSockets: false,
+                socketsURL: 'ws://localhost:3000',
+                routing: {
+                //     '/welcome2': 'welcome2, welcome3',
+                //     '/welcome3': 'welcome3',
+                //     '/': ['welcome', 'welcome4'],
+                //     '/welcome4': 'welcome4'
+                },
+                controllers: [
+                    // {
+                    //     name: 'welcome', 
+                    //     url: '/js/controllers/welcomeController.js', 
+                    //     settings: {name: 'welcome'}
+                    // },
+                    // {
+                    //     name: 'welcome2', 
+                    //     url: '/js/controllers/welcomeController.js', 
+                    //     settings: {name: 'welcome2'}
+                    // },
+                    // {
+                    //     name: 'welcome3', 
+                    //     url: '/js/controllers/welcomeController.js', 
+                    //     settings: {name: 'welcome3'}
+                    // },
+                    // {
+                    //     name: 'welcome4', 
+                    //     url: '/js/controllers/welcomeController.js', 
+                    //     settings: {name: 'welcome4'}
+                    // }
+                ]
+            });
+        });
     </script>
 </body>
 </html>

@@ -1,9 +1,11 @@
+import {Parser} from '/kernel/Parser.js';
+
 /**
  * Every page base class
  */
-class Controller {
+export class Controller {
     //Constructor
-    constructor(config) {
+    constructor(config = {}) {
         if(typeof config == 'string') {
             config = JSON.parse(config);
         }
@@ -27,6 +29,8 @@ class Controller {
 
         this.name = config.name;
         this.classes = config.classes;
+        this.isLoaded = false;
+        this.parser = new Parser();        
 
         if(config.view !== undefined) {
             if(this.updateView(config.view) == false) {
@@ -69,6 +73,7 @@ class Controller {
             }
         }
 
+        this.isLoaded = true;
         this.element = document.getElementById(this.name);
         this.element.innerHTML = view;
         return true;
@@ -172,14 +177,15 @@ class Controller {
         let response = 'Cant get view';
         let _controller = this;
 
+        let view = globalThis.views.find(el => el.url == url);
         if(globalThis.views.length > 0) {
-            let view = globalThis.views.find(el => el.url == url);
             if(view) {
-                _controller.updateView(_controller.compileFromTree(JSON.parse(view.tree), url));
+                _controller.updateView(_controller.compileFromTree(view.tree));
                 return _controller;
             }
         }
 
+        this.isLoaded = false;
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -205,31 +211,32 @@ class Controller {
      * @param {boolean} load if yes -> this.loadView -> this.updateView
      */
     compile(view, url) {
-        let parser = new Parser();        
-        let tree = parser.makeTreeFromString(view);
+        let tree = this.parser.clear().makeTreeFromString(view);
         
         if(url) {
-            //Save tree in window for this session
+            //Save tree in globalThis for this session
             globalThis.views.push({
                 url: url,
                 tree: tree
             });
         }
 
-        return parser.parse(false, this);
+        return this.parser.clear().parse(false, this);
     }
 
     compileFromTree(tree, url) {
-        let parser = new Parser();
-
         if(url) {
-            //Save tree in window for this session
+            //Save tree in globalThis for this session
             globalThis.views.push({
                 url: url,
                 tree: tree
             });
         }
         
-        return parser.parse(tree, this);
+        return this.parser.clear().parse(tree, this);
+    }
+
+    onLoad() {
+        console.log('Redifine me');
     }
 }
