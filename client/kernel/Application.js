@@ -79,7 +79,6 @@ class Application {
             });
         })
 
-        console.log(searchParams)
         let names = [];
         if(typeof this.routing[url.pathname] === 'string') {
             names = this.routing[url.pathname].split(',');

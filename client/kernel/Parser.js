@@ -168,14 +168,14 @@ export class Parser {
                     let keys = Object.keys(arr);
                     keys.forEach(key => {
                         globalThis[iteratorName] = arr[key];
-                        return this.parse(child);
+                        return this.parse(child, _this);
                     });
                     delete globalThis[iteratorName];
                     return;
                 } else if(Array.isArray(arr)) {
                     arr.forEach(item => {
                         globalThis[iteratorName] = item;
-                        return this.parse(child);
+                        return this.parse(child, _this);
                     });
                     delete globalThis[iteratorName];
                     return;
@@ -193,11 +193,11 @@ export class Parser {
                 }
 
                 if(eval(params.value[0])) {
-                    return this.parse(child);
+                    return this.parse(child, _this);
                 } else {
                     let elsePart = child.childs.find(el => el.type == 'else');
                     if(elsePart) {
-                        return this.parse(elsePart);
+                        return this.parse(elsePart, _this);
                     }
                 }
 
