@@ -70,7 +70,13 @@ class Application {
     }
 
     changePath(route) {
-        let url = new URL(route, location.href);
+        let url;
+        if(!(route instanceof URL)) {
+            url = new URL(route, location.href);
+        } else {
+            url = route;
+        }
+        
         let searchParams = [];
         url.searchParams.forEach((value, name) => {
             searchParams.push({
@@ -106,10 +112,15 @@ class Application {
         console.error('This method is for 404 error');
     }
 
-    changePage(url = '', title = '') {
+    changePage(url = '', args = [], title = '') {
         try{
-            this.changePath(url);
-            history.pushState(null, title, url);
+            let newUrl = new URL(url, location.href);
+            args.forEach(arg => {
+                newUrl.searchParams.append(arg.name, arg.value);
+            });
+
+            this.changePath(newUrl);
+            history.pushState(null, title, newUrl);
             return true;
         } catch {
             return false;
