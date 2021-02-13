@@ -8,11 +8,11 @@ class Application {
             this.routing = configuration.routing;
         } else {
             this.routing = [];
-           if(configuration.controllers !== undefined) {
+            if(configuration.controllers !== undefined) {
                 configuration.controllers.forEach(controller => {
                     this.routing[`/${controller.name}`] = controller.name;
                 });
-           } 
+            } 
         }
 
         if(configuration.useSockets !== undefined && configuration.socketsURL !== undefined) {
@@ -62,8 +62,7 @@ class Application {
         console.log('Application started');
 
         //Redirect on page by url
-        let url = new URL(window.location.href);
-        this.changePage(url.pathname);
+        this.changePage(window.location.href);
     }
 
     getController(name) {
@@ -71,15 +70,23 @@ class Application {
     }
 
     changePath(route) {
-        console.info('This method can be redifined');
-        
+        let url = new URL(route);
+        let searchParams = [];
+        url.searchParams.forEach((value, name) => {
+            searchParams.push({
+                name: name,
+                value: value
+            });
+        })
+
+        console.log(searchParams)
         let names = [];
-        if(typeof this.routing[route] === 'string') {
-            names = this.routing[route].split(',');
+        if(typeof this.routing[url.pathname] === 'string') {
+            names = this.routing[url.pathname].split(',');
         } else {
-            names = this.routing[route];
+            names = this.routing[url.pathname];
         }
-        if(route === undefined) {
+        if(url.pathname === undefined) {
             return false;
         }
 
@@ -89,7 +96,7 @@ class Application {
 
         try {
             names.forEach(name => {
-                this.getController(name.replace(/\s/g, '')).onLoad();
+                this.getController(name.replace(/\s/g, '')).onLoad(searchParams);
             });
         } catch {
             this.show404();
