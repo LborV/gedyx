@@ -70,7 +70,7 @@ class Application {
     }
 
     changePath(route) {
-        let url = new URL(route);
+        let url = new URL(route, location.href);
         let searchParams = [];
         url.searchParams.forEach((value, name) => {
             searchParams.push({
