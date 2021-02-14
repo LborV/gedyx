@@ -86,6 +86,9 @@ class Application {
                 this.socketConnected = false;
                 this.onSocketDisconnected();
             });
+        } else {
+            //Redirect on page by url
+            this.changePage(window.location.href);
         }
     }
 
