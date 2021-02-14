@@ -1,5 +1,3 @@
-const mysql = require('sync-mysql');
-
 class MysqlInterface extends ModelInterface {
     constructor(config) {
         super();

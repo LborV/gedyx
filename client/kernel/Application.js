@@ -52,17 +52,41 @@ class Application {
         }
     }
 
-    startApplication(callback = () => {console.log('Redifine startup function')}) {
+    onStartApp() {
+        console.log('Redifine startup function');
+    }
+
+    onSocketConnected() {
+        console.log('Custom callback on socket connected');
+    }
+
+    onSocketDisconnected() {
+        console.log('Custom callback on socket disconnected');
+    }
+
+    startApplication() {
+        console.info('Application started');
+        this.onStartApp();
+
         this.socket = undefined;
+        this.socketConnected = false;
         if(this.useSockets && this.socketsURL) {
             this.socket = io(this.socketsURL);
-        }
-        
-        callback();
-        console.log('Application started');
+            
+            //socket connected
+            this.socket.on('connect', () => {
+                this.socketConnected = true;
+                this.onSocketConnected();
 
-        //Redirect on page by url
-        this.changePage(window.location.href);
+                //Redirect on page by url
+                this.changePage(window.location.href);
+            });
+
+            this.socket.on('disconnect', () => {
+                this.socketConnected = false;
+                this.onSocketDisconnected();
+            });
+        }
     }
 
     getController(name) {
@@ -95,9 +119,10 @@ class Application {
             return false;
         }
 
-        Object.keys(this.controllers).forEach(key => {
-            this.controllers[key].hide();
-        });
+        // Hide all controllers
+        // Object.keys(this.controllers).forEach(key => {
+        //     this.controllers[key].hide();
+        // });
 
         try {
             names.forEach(name => {
