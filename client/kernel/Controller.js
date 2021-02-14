@@ -48,8 +48,25 @@ export class Controller {
             }
 
             this.createDOM();
-            return this;
         }
+        if(config.app) {
+            this.app = config.app;
+        }
+
+        try {
+            if(config.url) {
+                this.url = config.url;
+                this.fetchView(config.url)
+                .then((response) => {
+                    return this.loadView(response, config.url, true);
+                })
+                .catch(error => console.error(error));
+            }
+        } catch (error) {
+            throw error;
+        }
+
+        return this;
     }
 
     //Update view
@@ -66,8 +83,11 @@ export class Controller {
     updateDOM(view) {
         if(this.element == null) {
             if(this.createDOM()) {
+                this.isLoaded = true;
                 this.element = document.getElementById(this.name);
                 this.element.innerHTML = view;
+                this.onViewLoaded();
+                return true;
             } else {
                 return false;
             }
@@ -76,6 +96,7 @@ export class Controller {
         this.isLoaded = true;
         this.element = document.getElementById(this.name);
         this.element.innerHTML = view;
+        this.onViewLoaded();
         return true;
     }
 
@@ -113,6 +134,7 @@ export class Controller {
 
     //Show
     show(isShow = true, time = 0) {
+        this.element = document.getElementById(this.name);
         if(isShow) {
             this.onShow();
             this.element.style.display = 'block';
@@ -172,36 +194,53 @@ export class Controller {
         return true;
     }
 
-    //Load view from file
-    loadView(url, tree = false) {
-        let response = 'Cant get view';
-        let _controller = this;
+    reload() {
+        let view = globalThis.views.find(el => el.url == this.url);
+        if(globalThis.views.length > 0) {
+            if(view) {
+                this.updateView(this.compileFromTree(view.tree));
+                return this;
+            }
+        }
 
+        return false;
+    }
+
+    //Load view from file
+    loadView(response, url, tree = false) {
         let view = globalThis.views.find(el => el.url == url);
         if(globalThis.views.length > 0) {
             if(view) {
-                _controller.updateView(_controller.compileFromTree(view.tree));
-                return _controller;
+                this.updateView(this.compileFromTree(view.tree));
+                return this;
             }
         }
 
-        this.isLoaded = false;
-        let xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                response = this.responseText;
-
-                if(tree) {
-                    return _controller.updateView(_controller.compileFromTree(JSON.parse(response), url));
-                }
-
-                return _controller.updateView(_controller.compile(response), url);
-            }
+        if(tree) {
+            this.updateView(this.compileFromTree(JSON.parse(response), url));
+            return this;
         }
 
-        xhttp.open("GET", url, true);
-        xhttp.send();
-        return _controller;
+        this.updateView(this.compile(response), url);
+        return this;        
+    }
+
+    async fetchView(url) {
+        const result = await fetch(url);
+        if(result.status == 200) {
+            return result.text();
+        } else {
+            throw `Can't fetch view, request status ${result.status}`;
+        }
+    }
+
+    // App count how many loaded
+    onViewLoaded() {
+        if(this.app) {
+            return this.app.viewLoaded();
+        }
+
+        return false;
     }
 
     //Compile loaded view

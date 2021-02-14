@@ -3,6 +3,8 @@ class Application {
         this.controllers = {};    
         this.useSockets = false;
         this.socketsURL = false;
+        this.appStarted = false;
+        this.viewsLoadedCount = 0;
 
         if(configuration.routing !== undefined) {
             this.routing = configuration.routing;
@@ -26,8 +28,9 @@ class Application {
 
         try {
         this.loadControllers()
-            .then(() => this.startApplication())
-            .catch(() => {console.error('Failed to start application!');});
+            // .then(() => this.startApplication())
+            .then(() => {console.log('Waiting while views be loaded')})
+            .catch(error => console.error(error));
             return this;
         } catch {
             return false;
@@ -43,12 +46,24 @@ class Application {
 
             await import(controller.url)
                 .then(module => {
+                    controller.settings.app = this;
                     this.controllers[controller.name] = new module.default(controller.settings);
+                    
                 })
-                .catch(() => {
-                    console.error(`Can't load '${controller.name}' module`);
-                    throw `Can't load '${controller.name}' module`;
-                });
+                .catch(error => console.error(error));
+        }
+    }
+
+    viewLoaded() {
+        if(this.appStarted == true) {
+            return;
+        }
+
+        this.viewsLoadedCount++;
+        if(this.controllers_configuration.length === this.viewsLoadedCount) {
+            console.log('All views loaded');
+            this.appStarted = true;
+            this.startApplication();
         }
     }
 
@@ -65,11 +80,15 @@ class Application {
     }
 
     startApplication() {
+        this.socket = undefined;
+        this.socketConnected = false;
+        
         console.info('Application started');
         this.onStartApp();
 
-        this.socket = undefined;
-        this.socketConnected = false;
+        //Redirect on page by url
+        this.changePage(window.location.href);
+
         if(this.useSockets && this.socketsURL) {
             this.socket = io(this.socketsURL);
             
@@ -77,18 +96,12 @@ class Application {
             this.socket.on('connect', () => {
                 this.socketConnected = true;
                 this.onSocketConnected();
-
-                //Redirect on page by url
-                this.changePage(window.location.href);
             });
 
             this.socket.on('disconnect', () => {
                 this.socketConnected = false;
                 this.onSocketDisconnected();
             });
-        } else {
-            //Redirect on page by url
-            this.changePage(window.location.href);
         }
     }
 
@@ -119,7 +132,7 @@ class Application {
             names = this.routing[url.pathname];
         }
         if(url.pathname === undefined) {
-            return false;
+            this.show404();
         }
 
         // Hide all controllers
@@ -129,7 +142,7 @@ class Application {
 
         try {
             names.forEach(name => {
-                this.getController(name.replace(/\s/g, '')).onLoad(searchParams);
+                this.getController(name.replace(/\s/g, '')).show().onLoad(searchParams);
             });
         } catch {
             this.show404();
@@ -151,6 +164,7 @@ class Application {
             history.pushState(null, title, newUrl);
             return true;
         } catch {
+            console.error('Error on change page');
             return false;
         }
     }
