@@ -29,7 +29,10 @@ class Application {
         try {
         this.loadControllers()
             // .then(() => this.startApplication())
-            .then(() => {console.log('Waiting while views be loaded')})
+            .then(() => {
+                console.log('Waiting while views be loaded');
+                window.onpopstate = (event) => this.changePath(event.target.location.href);
+            })
             .catch(error => console.error(error));
             return this;
         } catch {
@@ -123,7 +126,7 @@ class Application {
                 name: name,
                 value: value
             });
-        })
+        });
 
         let names = [];
         if(typeof this.routing[url.pathname] === 'string') {
@@ -143,10 +146,17 @@ class Application {
         try {
             names.forEach(name => {
                 this.getController(name.replace(/\s/g, '')).show().onLoad(searchParams);
+                this.searchParams = searchParams;
+                this.pathname = url.pathname;
+                this.onPageChange(this.searchParams, this.pathname);
             });
         } catch {
             this.show404();
         }
+    }
+
+    onPageChange() {
+
     }
 
     show404() {
