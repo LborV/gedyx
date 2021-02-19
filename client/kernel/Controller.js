@@ -237,7 +237,7 @@ export class Controller {
     // App count how many loaded
     onViewLoaded() {
         if(this.app) {
-            return this.app.viewLoaded();
+            return this.app.viewLoaded(this.name);
         }
 
         return false;

@@ -5,6 +5,7 @@ class Application {
         this.socketsURL = false;
         this.appStarted = false;
         this.viewsLoadedCount = 0;
+        this.firstLoadElementId = configuration.firstLoadElementId;
 
         if(configuration.routing !== undefined) {
             this.routing = configuration.routing;
@@ -57,17 +58,25 @@ class Application {
         }
     }
 
-    viewLoaded() {
+    viewLoaded(controllerName) {
         if(this.appStarted == true) {
             return;
         }
 
         this.viewsLoadedCount++;
+        this.onControllerLoaded(controllerName);
         if(this.controllers_configuration.length === this.viewsLoadedCount) {
+            if(this.firstLoadElementId) {
+                document.getElementById(this.firstLoadElementId).style.display = 'none';
+            }
             console.log('All views loaded');
             this.appStarted = true;
             this.startApplication();
         }
+    }
+
+    onControllerLoaded(name) {
+
     }
 
     onStartApp() {
