@@ -10,12 +10,12 @@ export class Controller {
             config = JSON.parse(config);
         }
 
-        if(config.name === undefined) {
-            console.log('You most give a name');
+        if(config.id === undefined) {
+            console.log('You most give a id');
             return null;
         }
 
-        this.element = document.getElementById(config.name);
+        this.element = document.getElementById(config.id);
         if(this.element != null) {
             console.log('This id exist');
             return null;
@@ -27,7 +27,7 @@ export class Controller {
             this.parent = null;
         }
 
-        this.name = config.name;
+        this.id = config.id;
         this.classes = config.classes;
         this.isLoaded = false;
         this.parser = new Parser({noData: config.onError || false});        
@@ -84,7 +84,7 @@ export class Controller {
         if(this.element == null) {
             if(this.createDOM()) {
                 this.isLoaded = true;
-                this.element = document.getElementById(this.name);
+                this.element = document.getElementById(this.id);
                 this.element.innerHTML = view;
                 this.onViewLoaded();
                 return true;
@@ -94,7 +94,7 @@ export class Controller {
         }
 
         this.isLoaded = true;
-        this.element = document.getElementById(this.name);
+        this.element = document.getElementById(this.id);
         this.element.innerHTML = view;
         this.onViewLoaded();
         return true;
@@ -107,11 +107,11 @@ export class Controller {
         }
 
         if(this.parent == null) {
-            document.getElementById('content').innerHTML = document.getElementById('content').innerHTML + '<div id='+this.name+'></div>';
+            document.getElementById('content').innerHTML = document.getElementById('content').innerHTML + '<div id='+this.id+'></div>';
         } else {
-            document.getElementById(this.parent).innerHTML = document.getElementById(this.parent).innerHTML + '<div id='+this.name+'></div>';
+            document.getElementById(this.parent).innerHTML = document.getElementById(this.parent).innerHTML + '<div id='+this.id+'></div>';
         }
-        this.element = document.getElementById(this.name);
+        this.element = document.getElementById(this.id);
 
         if(this.classes !== undefined) {
             if(!this.addClass(this.classes, false)) {
@@ -134,7 +134,7 @@ export class Controller {
 
     //Show
     show(isShow = true, time = 0) {
-        this.element = document.getElementById(this.name);
+        this.element = document.getElementById(this.id);
         if(isShow) {
             this.onShow();
             this.element.style.display = 'block';
@@ -237,7 +237,7 @@ export class Controller {
     // App count how many loaded
     onViewLoaded() {
         if(this.app) {
-            return this.app.viewLoaded(this.name);
+            return this.app.viewLoaded(this.id);
         }
 
         return false;
