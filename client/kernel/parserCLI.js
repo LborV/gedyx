@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 module.exports = class Parser {
     constructor(config = {}) {
         this.tree = config.tree || [];
@@ -27,6 +29,18 @@ module.exports = class Parser {
             return false;
         }
         this.addChild(this.tree[0], 'text');
+
+        let includes = [...string.matchAll(/{include .*\.html}/g)];
+        if(includes?.length) {
+            let include = includes[0];
+            let link = include[0].replace('{include ', '').replace('}', '');
+            try {
+                let data = fs.readFileSync('./views/' + link);
+                return this.makeTreeFromString(string.replace(include[0], data.toString()))
+            } catch(e) {
+                console.log(e);
+            }
+        } 
 
         return this.iteract(this.tree[0], this.tree[0].childs[0], string, 0);
     }

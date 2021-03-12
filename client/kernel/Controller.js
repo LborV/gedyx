@@ -30,7 +30,7 @@ export class Controller {
         this.name = config.name;
         this.classes = config.classes;
         this.isLoaded = false;
-        this.parser = new Parser();        
+        this.parser = new Parser({noData: config.onError || false});        
 
         if(config.view !== undefined) {
             if(this.updateView(config.view) == false) {

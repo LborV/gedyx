@@ -2,6 +2,8 @@ export class Parser {
     constructor(config = {}) {
         this.tree = config.tree || [];
         this.result = '';
+
+        this.noData = config.noData || false;
     }
 
     /**
@@ -158,7 +160,7 @@ export class Parser {
             if(child.type == 'loop') {
                 let params = child.childs.find(el => el.type == 'params');
                 if(!params) {
-                    this.result += '!Can\'t find params!';
+                    this.result += this.noData || '!Can\'t find params!';
                     return;
                 }
 
@@ -181,14 +183,14 @@ export class Parser {
                     return;
                 }
 
-                this.result += '!Wrong type of array!';
+                this.result += this.noData || '!Wrong type of array!';
                 return;
             }
 
             if(child.type == 'if') {
                 let params = child.childs.find(el => el.type == 'params');
                 if(!params) {
-                    this.result += '!Can\'t find params!';
+                    this.result += this.noData || '!Can\'t find params!';
                     return;
                 }
 

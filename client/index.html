@@ -19,32 +19,18 @@
                 useSockets: false,
                 socketsURL: 'ws://localhost:3000',
                 routing: {
-                //     '/welcome2': 'welcome2, welcome3',
-                //     '/welcome3': 'welcome3',
-                //     '/': ['welcome', 'welcome4'],
-                //     '/welcome4': 'welcome4'
+                    '/': 'welcome'
                 },
                 controllers: [
-                    // {
-                    //     name: 'welcome', 
-                    //     url: '/js/controllers/welcomeController.js', 
-                    //     settings: {name: 'welcome'}
-                    // },
-                    // {
-                    //     name: 'welcome2', 
-                    //     url: '/js/controllers/welcomeController.js', 
-                    //     settings: {name: 'welcome2'}
-                    // },
-                    // {
-                    //     name: 'welcome3', 
-                    //     url: '/js/controllers/welcomeController.js', 
-                    //     settings: {name: 'welcome3'}
-                    // },
-                    // {
-                    //     name: 'welcome4', 
-                    //     url: '/js/controllers/welcomeController.js', 
-                    //     settings: {name: 'welcome4'}
-                    // }
+                    {
+                        name: 'welcomeController', 
+                        url: '/js/controllers/welcomeController.js', 
+                        settings: {
+                            name: 'welcome',
+                            url: '/views/welcome/index.json',
+                            onError: '<div style="color: red">HI</div>'
+                        }
+                    },
                 ]
             });
         });

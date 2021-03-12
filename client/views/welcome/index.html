@@ -1,0 +1,9 @@
+<h3>{{_this.name}}</h3>
+
+<span>{include welcome/included.html}</span>
+
+<ul>
+    {f:_this.arr:item:
+        <li>{{item}}</li>
+    :!}
+</ul>
