@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Example</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -8,7 +9,20 @@
     <!-- Socket io CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha512-59oxERSDGj1eMzmFW3acSaBHEMNi2GaeQC7nQYcTqM0vgcnavi4BpUhLkcJQE2G6fdtn8JVj7brt0EZuBV0ogQ==" crossorigin="anonymous"></script>
 
-    <title>Example</title>
+    <!-- Manifest For PWA -->
+    <link rel="manifest" href="pwa.json">
+
+    <script>
+        console.log("serviceWorker" in navigator);
+        if ("serviceWorker" in navigator) {
+            self.addEventListener("load", async () => {
+                const container = navigator.serviceWorker;
+                if (container.controller === null) {
+                    const reg = await container.register("./js/sw.js");
+                }
+            });
+        }
+    </script>
 </head>
 <body>
     <script src="./kernel/Application.js"></script>

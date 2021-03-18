@@ -1,0 +1,14 @@
+{
+    "name": "My App",
+    "icons": [
+        {
+          "src": "images/icons/icon.png",
+          "sizes": "144x144"
+        }
+    ],
+
+    "background_color": "#FFFFFF",
+    "theme_color": "#FFFFFF",
+    "display": "standalone",
+    "start_url": "http://jsmvc.local"
+  }
