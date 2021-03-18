@@ -82,6 +82,14 @@ class Model {
         }
     }
 
+    getLastId() {
+        try {
+            return this.interface?.getLastId() ?? [];
+        } catch(e) {
+            console.error(e);
+        }
+    }
+
     getInterface() {
         return this.interface;
     }

@@ -41,38 +41,57 @@ class MysqlInterface extends ModelInterface {
             value = "'"+value+"'";
         }
 
-        this.execute(`
-            UPDATE \`${this.table}\`
-            SET \`${field}\` = ${value}
-            WHERE id = ${index};
-        `);
+        try {
+            this.execute(`
+                UPDATE \`${this.table}\`
+                SET \`${field}\` = ${value}
+                WHERE id = ${index};
+            `);
 
-        return this;
+            return this;
+        } catch(e) {
+            throw e;
+        }
     }
 
     update(index, options) {        
         for(const[key, value] of Object.entries(options)) {
-            this.set(index, key, value);
+            if(Array.isArray(index)) {
+                index.forEach(i => this.set(i, key, value));
+            } else {
+                this.set(index, key, value);
+            }
         }
 
         return this;
     }
 
     delete(index) {
-        this.execute(`
-            DELETE FROM \`${this.table}\`
-            WHERE \`id\` = ${index};
-        `)
+        try {
+            this.execute(`
+                DELETE FROM \`${this.table}\`
+                WHERE \`id\` = ${index};
+            `);
 
-        return this;
+            return this;
+        } catch(e) {
+            throw e;
+        }
+
     }
 
     get(index) {
-        return this.execute(`
-            SELECT * FROM \`${this.table}\`
-            WHERE \`id\` = ${index}
-            LIMIT 1;
-        `)[0];
+        try {
+            const res = this.execute(`
+                SELECT * FROM \`${this.table}\`
+                WHERE \`id\` = ${index}
+                LIMIT 1;
+            `);
+
+            return res[0] ?? [];
+        } catch(e) {
+            throw e;
+        }
     }
 
     insert(data) {
@@ -81,19 +100,36 @@ class MysqlInterface extends ModelInterface {
                 data[key] = `'${data[key]}'`;
             }
         });
-            
 
-        return this.execute(`
-            INSERT INTO \`${this.table}\`
-            (${Object.keys(data)})
-            VALUES(${Object.values(data)});
-        `);
+        try {
+            const res = this.execute(`
+                INSERT INTO \`${this.table}\`
+                (${Object.keys(data)})
+                VALUES(${Object.values(data)});
+            `);
+
+            this.lastId = res?.insertId ?? undefined;
+        } catch(e) {
+            throw e;
+        }
+
+        return this;
+    }
+
+    getLastId() {
+        return this.lastId;
     }
 
     all() {
-        return this.execute(`
-            SELECT * FROM \`${this.table}\`
-        `);
+        try {
+            const res = this.execute(`
+                SELECT * FROM \`${this.table}\`
+            `);
+
+            return res ?? [];
+        } catch(e) {
+            throw e;
+        }
     }
 
     where(options) {
@@ -114,14 +150,24 @@ class MysqlInterface extends ModelInterface {
             }
 
             let value = option[2] ? option[2] : option[1];
+            if(typeof value === 'string') {
+                value = `'${value}'`;
+            }
+
             where += ` \`${option[0]}\` ${operator} ${value}`;
         });
 
         if(where != '') {
-            return this.execute(`
-                SELECT * FROM \`${this.table}\` 
-                ${where}
-            `);
+            try {
+                const res = this.execute(`
+                    SELECT * FROM \`${this.table}\` 
+                    ${where}
+                `);
+
+                return res ?? [];
+            } catch(e) {
+                throw e;
+            }
         } else {
             return [];
         }
