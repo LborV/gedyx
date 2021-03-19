@@ -213,6 +213,10 @@ class InRamInterface extends ModelInterface {
         return this;
     }
 
+    getLastId() {
+        return this.next;
+    }
+
     all() {
         return this.data;
     }
