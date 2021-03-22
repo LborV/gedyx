@@ -13,5 +13,4 @@ if(config.mysql && config.mysql.host && config.mysql.user && config.mysql.user &
         password: config.mysql.password,
         database: config.mysql.db,
     });
-
 }
