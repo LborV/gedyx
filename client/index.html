@@ -13,7 +13,6 @@
     <link rel="manifest" href="pwa.json">
 
     <script>
-        console.log("serviceWorker" in navigator);
         if ("serviceWorker" in navigator) {
             self.addEventListener("load", async () => {
                 const container = navigator.serviceWorker;
