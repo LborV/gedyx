@@ -12,4 +12,8 @@ export default class welcomeController extends Controller{
     onShow() {
         console.log(`${this.id} controller showed`);
     }
+
+    onLoad() {
+        console.log('TEST');
+    }
 };
