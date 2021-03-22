@@ -1,7 +1,17 @@
 class Action {
     constructor(actionName) {
+        console.log(actionName);
         this.actionName = actionName;
         return this;
+    }
+
+    setParent(parent) {
+        this.parent = parent;
+        return this;
+    }
+
+    getName() {
+        return this.actionName;
     }
 
     requestIn(data, socket) {
@@ -19,6 +29,10 @@ class Action {
 
     broadcast(data) {
         this.socket.broadcast.emit(this.actionName, data);
+    }
+
+    call(actionName, data) {
+        return this.parent.call(actionName, data, this.socket);
     }
 }
 

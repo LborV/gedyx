@@ -14,9 +14,9 @@ class Actions {
                     return;
                 }
 
-                let action = require(`../actions/${file}`);
+                let action = require(`../actions/${file}`).setParent(this);
                 if(action instanceof Action) {
-                    let actionName = file.replace('.js', '');
+                    let actionName = action.getName();
                     this.actionList[actionName] = action;
                 } else {
                     throw 'Inccorect class!';
@@ -55,7 +55,10 @@ class Actions {
     }
 
     call(actionName, data, socket = undefined) {
-        this.actionList[actionName].requestIn(data, socket);
+        if(actionName in this.actionList) {
+            return this.actionList[actionName].requestIn(data, socket);
+        }
+
         return this;
     }
 }
