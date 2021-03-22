@@ -6,7 +6,7 @@ var Action = require('../kernel/Action');
 
 class test extends Action {
     request(data) {
-        this.call('test2', ['test']);
+        this.call('test2', data);
         this.response(data);
     }
 }

@@ -1,10 +1,10 @@
 <h3>{{_this.id}}</h3>
 
-<span>{include welcome/included.html}</span>
+
 
 <ul>
     {f:_this.arr:item:
-        <li>{{item}}</li>
+        <span>{include welcome/included.html}</span>
     :!}
 </ul>
 

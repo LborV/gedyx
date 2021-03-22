@@ -13,6 +13,11 @@ export default class welcomeController extends Controller{
         this.colorIsRed = true;
     }
 
+    newData(data) {
+        this.arr = data;
+        return this.reload();
+    }
+
     onShow() {
         console.log(`${this.id} controller showed`);
     }

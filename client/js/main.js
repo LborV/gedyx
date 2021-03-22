@@ -3,6 +3,20 @@ window.addEventListener('load', () => {
         onStartApp() {
             this.getController('welcomeController').show();
         }
+
+        onSocketConnected() {
+            this.socket.emit('test', {});
+
+            this.socket.on('test', data => {
+                console.info('TEST');
+            });
+
+            this.socket.on('test2', data => {
+                if(confirm('New data?')) {
+                    this.getController('welcomeController').newData(data);
+                }
+            });
+        }
     }
 
     let app = new MyApp({
