@@ -5,10 +5,13 @@ globalThis.Actions = require('./kernel/Actions');
 globalThis.Models = require('./kernel/Models');
 
 //Mysql Connection
-const mysql = require('sync-mysql');
-globalThis.mysqlConnection = new mysql({
-    host: config.host,
-    user: config.user,
-    password: config.password,
-    database: config.db,
-});
+if(config.mysql && config.mysql.host && config.mysql.user && config.mysql.user && config.mysql.password && config.mysql.db) {
+    const mysql = require('sync-mysql');
+    globalThis.mysqlConnection = new mysql({
+        host: config.mysql.host,
+        user: config.mysql.user,
+        password: config.mysql.password,
+        database: config.mysql.db,
+    });
+
+}

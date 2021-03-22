@@ -4,15 +4,17 @@ require('./include.js');
 // const redisAdapter = require('socket.io-redis');
 // let server = io.adapter(redisAdapter({host: 'localhost', port: 6379, password: '123'}));
 //Single thread
-const
-    io = require("socket.io"),
-    server = io.listen(3030);
+if(config.socket && config.socket.port) {
+    const
+        io = require("socket.io"),
+        server = io.listen(config.socket.port);
 
-let actionsPool = new Actions({
-    io: server
-});
+    let actionsPool = new Actions({
+        io: server
+    });
+}
+
 let modelsPool = new Models();
-
 
 console.log(
     testTable
