@@ -7,6 +7,10 @@ export default class welcomeController extends Controller{
         this.arr = [
             1, 2, 3, 4
         ];
+
+        this.isBool = true;
+
+        this.colorIsRed = true;
     }
 
     onShow() {

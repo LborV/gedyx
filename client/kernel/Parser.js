@@ -111,21 +111,21 @@ export class Parser {
                         return this.iteract(parent, parent.childs[parent.childs.length - 1], string, index);
                     //Just text
                     default:
-                        node.value += ch;
+                        node.value += ch != '\\' ? ch : '';
                         break;
                 }
             } else if(ch == '}' && nextCh == '}') {
                 return index + 2;
-            } else if(ch == ':' && nextCh == '!' && string[index+2] == '}') {
+            } else if((ch == ':' && string[index-1] !== '\\') && nextCh == '!' && string[index+2] == '}') {
                 return index + 3;
-            } else if(ch == ':' && parent.type == 'if') {
+            } else if((ch == ':' && string[index-1] !== '\\') && parent.type == 'if') {
                 this.addChild(parent, 'else');
 
                 this.addChild(parent.childs[parent.childs.length - 1], 'text');
 
                 return this.iteract(parent.childs[parent.childs.length - 1], parent.childs[parent.childs.length - 1].childs[0], string, index + 1);
             } else {
-                node.value += ch;
+                node.value += ch != '\\' ? ch : '';
             }
         }
 

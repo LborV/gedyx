@@ -25,28 +25,6 @@
 </head>
 <body>
     <script src="./kernel/Application.js"></script>
-    <script>
-        var application = null;
-        window.addEventListener('load', () => {
-            application = new Application({
-                useSockets: true,
-                socketsURL: 'ws://localhost:3030',
-                routing: {
-                    '/': 'welcome'
-                },
-                controllers: [
-                    {
-                        name: 'welcomeController', 
-                        url: '/js/controllers/welcomeController.js', 
-                        settings: {
-                            id: 'welcome',
-                            url: '/views/welcome/index.json',
-                            onError: '<div style="color: red">HI</div>'
-                        }
-                    },
-                ]
-            });
-        });
-    </script>
+    <script src="./js/main.js"> </script>
 </body>
 </html>
