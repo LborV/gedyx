@@ -51,8 +51,8 @@ class Application {
             await import(controller.url)
                 .then(module => {
                     controller.settings.app = this;
+                    controller.settings.name = controller.name;
                     this.controllers[controller.name] = new module.default(controller.settings);
-                    
                 })
                 .catch(error => console.error(error));
         }
@@ -62,6 +62,9 @@ class Application {
         if(this.appStarted == true) {
             return;
         }
+
+        console.log(controllerName);
+        this.getController(controllerName).hide();
 
         this.viewsLoadedCount++;
         this.onControllerLoaded(controllerName);

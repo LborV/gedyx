@@ -10,7 +10,6 @@ export default class welcomeController extends Controller{
     }
 
     onShow() {
-        console.log(`${this.name} controller showed`);
+        console.log(`${this.id} controller showed`);
     }
-
 };

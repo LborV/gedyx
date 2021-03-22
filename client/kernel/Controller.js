@@ -27,6 +27,10 @@ export class Controller {
             this.parent = null;
         }
 
+        if(config.name) {
+            this.name = config.name;
+        }
+
         this.id = config.id;
         this.classes = config.classes;
         this.isLoaded = false;
@@ -237,7 +241,7 @@ export class Controller {
     // App count how many loaded
     onViewLoaded() {
         if(this.app) {
-            return this.app.viewLoaded(this.id);
+            return this.app.viewLoaded(this.name);
         }
 
         return false;
