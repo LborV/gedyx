@@ -90,6 +90,30 @@ class Model {
         }
     }
 
+    createTable(tableName, options) {
+        try {
+            return this.interface?.createTable(tableName, options) ?? [];
+        } catch(e) {
+            console.error(e);
+        }
+    }
+
+    dropTable(tableName) {
+        try {
+            return this.interface?.dropTable(tableName) ?? [];
+        } catch(e) {
+            console.error(e);
+        }
+    }
+
+    updateTable(tableName, options) {
+        try {
+            return this.interface?.updateTable(tableName, options) ?? [];
+        } catch(e) {
+            console.error(e);
+        }
+    }
+
     getInterface() {
         return this.interface;
     }

@@ -38,6 +38,22 @@ class ModelInterface {
     where(options) {
         console.error('where function is not realized in this interface');
     }
+
+    createTable(tableName, options) {
+        console.error('createTable function is not realized in this interface');
+    }
+
+    dropTable(tableName) {
+        console.error('dropTable function is not realized in this interface');
+    }
+
+    updateTable(tableName, options) {
+        console.error('updateTable function is not realized in this interface');
+    }
+
+    getLastId() {
+        console.error('getLastId function is not realized in this interface');
+    }
 }
 
 module.exports = ModelInterface;
