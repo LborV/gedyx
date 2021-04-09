@@ -14,3 +14,20 @@ if(config.mysql && config.mysql.host && config.mysql.user && config.mysql.user &
         database: config.mysql.db,
     });
 }
+
+//Cluster mode
+// const io = require('socket.io')(3030);
+// const redisAdapter = require('socket.io-redis');
+// let server = io.adapter(redisAdapter({host: 'localhost', port: 6379, password: '123'}));
+//Single thread
+if(config.socket && config.socket.port) {
+    const
+        io = require("socket.io"),
+        server = io.listen(config.socket.port);
+
+    globalThis.actionsPool = new Actions({
+        io: server
+    });
+}
+
+globalThis.modelsPool = new Models();

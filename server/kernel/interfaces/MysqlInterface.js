@@ -172,6 +172,30 @@ class MysqlInterface extends ModelInterface {
             return [];
         }
     }
+
+    dropTable(tableName) {
+        try {
+            this.execute(`DROP TABLE IF EXISTS \`${tableName}\``);
+        } catch(e) {
+            throw e;
+        }
+    }
+
+    createTable(tableName, options) {
+        try {
+            // BIG TODO
+        } catch(e) {
+            throw e;
+        }
+    }
+
+    updateTable(tableName, options) {
+        try {
+            // BIG TODO
+        } catch(e) {
+            throw e;
+        }
+    }
 }
 
 module.exports = MysqlInterface;
