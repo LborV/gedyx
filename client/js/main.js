@@ -1,7 +1,7 @@
 window.addEventListener('load', () => {
     class MyApp extends Application {
         onStartApp() {
-            this.getController('welcomeController').show();
+            // this.getController('welcomeController').show();
         }
 
         onSocketConnected() {
@@ -13,17 +13,18 @@ window.addEventListener('load', () => {
 
             this.socket.on('test2', data => {
                 if(confirm('New data?')) {
-                    this.getController('welcomeController').newData(data);
+                    // this.getController('welcomeController').newData(data);
                 }
             });
         }
     }
 
-    let app = new MyApp({
-        useSockets: true,
+    globalThis.app = new MyApp({
+        useSockets: false,
         socketsURL: 'ws://localhost:3030',
         routing: {
-            '/': 'welcome'
+            '/': 'welcomeController, welcomeController2',
+            '/test': 'welcomeController2'
         },
         controllers: [
             {
@@ -32,8 +33,29 @@ window.addEventListener('load', () => {
                 settings: {
                     id: 'welcome',
                     url: '/views/welcome/index.json',
-                    onError: '<div style="color: red">HI</div>'
+                    onError: '<div style="color: red">Error</div>',
+                    showOnLoad: true
                 }
+            },
+            {
+                name: 'welcomeController2', 
+                url: '/js/controllers/welcomeController.js', 
+                settings: {
+                    id: 'welcome2',
+                    url: '/views/welcome/index.json',
+                    onError: '<div style="color: red">Error</div>',
+                }
+            },
+            {
+                name: 'controller3', 
+                url: '/js/controllers/welcomeController.js', 
+                settings: {
+                    id: 'Loaded_any_way',
+                    url: '/views/welcome/index.json',
+                    onError: '<div style="color: red">Error</div>',
+                    showOnLoad: true
+                },
+                load: true
             },
         ]
     });

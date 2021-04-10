@@ -23,6 +23,10 @@ export default class welcomeController extends Controller{
     }
 
     onLoad() {
-        console.log('TEST');
+        console.log('Started:'+this.name);
+
+        if(!app.getController('welcomeController')) {
+            this.show();
+        }
     }
 };

@@ -36,15 +36,14 @@ export class Controller {
         this.isLoaded = false;
         this.parser = new Parser({noData: config.onError || false});        
 
+        this.showOnLoad = false;
+        if(config.showOnLoad !== undefined) {
+            this.showOnLoad = config.showOnLoad;
+        }
+
         if(config.view !== undefined) {
             if(this.updateView(config.view) == false) {
                 return null;
-            }
-
-            if(config.show !== undefined) {
-                this.show(config.show);
-            } else {
-                this.hide();
             }
         } else {
             if(globalThis.views === undefined) {
@@ -240,12 +239,11 @@ export class Controller {
 
     // App count how many loaded
     onViewLoaded() {
-        this.onLoad();
         if(this.app && this.name) {
-            return this.app.viewLoaded(this.name);
+            this.app.viewLoaded(this.name);
         }
 
-        return false;
+        return this.onLoad();
     }
 
     //Compile loaded view

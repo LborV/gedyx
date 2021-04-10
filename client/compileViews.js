@@ -15,35 +15,27 @@ async function* getFiles(dir) {
   }
 }
 
-let compile = (f) => {
-  fs.readFile(f, (error, data) => {
-      if(error) {
-        throw error;
-      }
-      if(!f.includes('.html')) {
-        return;
-      }
-
-      let res = p.makeTreeFromString(data.toString());
-      fs.writeFile(f.replace('.html', '.json'), JSON.stringify(res.tree[0]), (err) => {
-          if (err) return console.log(err);
-          console.log('File created: ', f);
-      });
-  });
-}
-
 const p = new Parser();
 (async () => {
     let normalizedPath = require("path").join('', "views");
     for await (const f of getFiles(normalizedPath)) {
-      compile(f);
-      fs.watch(f, (eventType, filename) => {
         try {
-          compile(f);
+            fs.readFile(f, (error, data) => {
+                if(error) {
+                    throw error;
+                }
+                if(!f.includes('.html')) {
+                    return;
+                }
+
+                let res = p.makeTreeFromString(data.toString());
+                fs.writeFile(f.replace('.html', '.json'), JSON.stringify(res.tree[0]), (err) => {
+                    if (err) return console.log(err);
+                    console.log('File created: ', f);
+                });
+            });
         } catch(e) {
             console.error(e);
         }
-      });
     }
 })();
-    

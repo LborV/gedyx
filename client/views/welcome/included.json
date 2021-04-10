@@ -1,1 +1,1 @@
-{"type":"core","value":"","childs":[{"type":"text","value":"<h1>TEST INCLUDE</h1>","childs":[]}]}
+{"type":"core","value":"","childs":[{"type":"text","value":"<li>\n    <span>","childs":[]},{"type":"variable","value":"item","childs":[]},{"type":"text","value":"</span>\n</li>\n","childs":[]}]}

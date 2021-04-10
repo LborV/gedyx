@@ -42,9 +42,20 @@ class Application {
     }
 
     async loadControllers() {
+        this.controllersToLoad = [];
+        if(Object.keys(this.routing).includes((new URL(location.href)).pathname)) {
+            this.controllersToLoad = this.routing[(new URL(location.href)).pathname].split(',').map(item => item.trim());
+        }
+
         for(let i = 0; i < this.controllers_configuration.length; i++) {
             let controller = this.controllers_configuration[i];
-            if(controller.name === undefined || controller.url === undefined) {
+            if(!this.controllersToLoad.includes(controller.name)) {
+                if(controller.load !== undefined && controller.load == true) {
+                    this.controllersToLoad.push(controller.name);
+                }
+            }
+
+            if(controller.name === undefined || controller.url === undefined || !this.controllersToLoad.includes(controller.name)) {
                 continue;
             }
 
@@ -63,12 +74,17 @@ class Application {
             return;
         }
 
-        console.log(controllerName);
-        this.getController(controllerName).hide();
+        console.log(this.getController(controllerName).showOnLoad)
 
+        if(this.getController(controllerName).showOnLoad) {
+            this.getController(controllerName).show();
+        } else {
+            this.getController(controllerName).hide();
+        }
+        
         this.viewsLoadedCount++;
         this.onControllerLoaded(controllerName);
-        if(this.controllers_configuration.length === this.viewsLoadedCount) {
+        if(this.controllersToLoad.length === this.viewsLoadedCount) {
             if(this.firstLoadElementId) {
                 document.getElementById(this.firstLoadElementId).style.display = 'none';
             }
@@ -102,7 +118,7 @@ class Application {
         this.onStartApp();
 
         //Redirect on page by url
-        this.changePage(window.location.href);
+        // this.changePage(window.location.href);
 
         if(this.useSockets && this.socketsURL) {
             this.socket = io(this.socketsURL);
@@ -176,14 +192,27 @@ class Application {
     }
 
     changePage(url = '', args = [], title = '') {
+        // try{
+        //     let newUrl = new URL(url, location.href);
+        //     args.forEach(arg => {
+        //         newUrl.searchParams.append(arg.name, arg.value);
+        //     });
+
+        //     this.changePath(newUrl);
+        //     history.pushState(null, title, newUrl);
+        //     return true;
+        // } catch {
+        //     console.error('Error on change page');
+        //     return false;
+        // }
+
         try{
             let newUrl = new URL(url, location.href);
             args.forEach(arg => {
                 newUrl.searchParams.append(arg.name, arg.value);
             });
 
-            this.changePath(newUrl);
-            history.pushState(null, title, newUrl);
+            location.href = newUrl.href;
             return true;
         } catch {
             console.error('Error on change page');
