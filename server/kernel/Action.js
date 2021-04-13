@@ -1,6 +1,5 @@
 class Action {
     constructor(actionName) {
-        console.log(actionName);
         this.actionName = actionName;
         return this;
     }
