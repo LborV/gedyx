@@ -13,6 +13,7 @@ export default class welcomeController extends Controller{
         this.colorIsRed = true;
         
         console.log(this.app.slugData)
+        console.log(this.app.searchParams)
     }
 
     newData(data) {

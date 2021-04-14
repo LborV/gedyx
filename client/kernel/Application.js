@@ -41,12 +41,29 @@ class Application {
         }
     }
 
+    getSearchParams(url = false) {
+        let newUrl = false;
+        if(url) {
+            newUrl = new URL(url);
+        }
+        newUrl = new URL(location.href);
+
+        if(newUrl.searchParams) {
+            let res = {};
+            for(let p of newUrl.searchParams) {
+                res[p[0]] = p[1];
+            }
+
+            return res;
+        }
+
+        return [];
+    }
+
     async loadControllers() {
         this.controllersToLoad = [];
         if(Object.keys(this.routing).includes((new URL(location.href)).pathname)) {
             this.controllersToLoad = this.routing[(new URL(location.href)).pathname].split(',').map(item => item.trim());
-        } else {
-            this.show404();
         }
 
         // Parse slug urls
@@ -78,6 +95,7 @@ class Application {
             }
 
             this.slugData = [];
+            this.controllersToLoad = this.routing[url].split(',').map(item => item.trim());
             for(let i = 0; i < urlDetails.length; i++) {
                 let slug = urlDetails[i].match(/{.*}+/g);
                 if(slug) {
@@ -105,6 +123,8 @@ class Application {
                     controller.settings.app = this;
                     controller.settings.name = controller.name;
                     this.controllers[controller.name] = new module.default(controller.settings);
+
+                    this.searchParams = this.getSearchParams();
                 })
                 .catch(error => console.error(error));
         }
