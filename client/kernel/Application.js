@@ -135,8 +135,6 @@ class Application {
             return;
         }
 
-        console.log(this.getController(controllerName).showOnLoad)
-
         if(this.getController(controllerName).showOnLoad) {
             this.getController(controllerName).show();
         } else {

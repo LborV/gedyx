@@ -24,7 +24,7 @@ window.addEventListener('load', () => {
         socketsURL: 'ws://localhost:3030',
         routing: {
             '/': 'welcomeController, welcomeController2',
-            '/test/{slug}': 'welcomeController, welcomeController',
+            '/test/{slug}': 'welcomeController2',
             '/test/{slug}/some/{slug2}/link': 'welcomeController, welcomeController2',
             '/test': 'welcomeController2'
         },
