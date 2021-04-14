@@ -20,10 +20,12 @@ window.addEventListener('load', () => {
     }
 
     globalThis.app = new MyApp({
-        useSockets: true,
+        useSockets: false,
         socketsURL: 'ws://localhost:3030',
         routing: {
             '/': 'welcomeController, welcomeController2',
+            '/test/{slug}': 'welcomeController, welcomeController2',
+            '/test/{slug}/some/{slug2}/link': 'welcomeController, welcomeController2',
             '/test': 'welcomeController2'
         },
         controllers: [

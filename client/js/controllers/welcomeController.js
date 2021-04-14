@@ -11,6 +11,8 @@ export default class welcomeController extends Controller{
         this.isBool = true;
 
         this.colorIsRed = true;
+        
+        console.log(this.app.slugData)
     }
 
     newData(data) {

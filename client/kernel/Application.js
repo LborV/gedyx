@@ -45,7 +45,48 @@ class Application {
         this.controllersToLoad = [];
         if(Object.keys(this.routing).includes((new URL(location.href)).pathname)) {
             this.controllersToLoad = this.routing[(new URL(location.href)).pathname].split(',').map(item => item.trim());
+        } else {
+            this.show404();
         }
+
+        // Parse slug urls
+        let currentUrlDetails = (new URL(location.href)).pathname.split('/');
+        Object.keys(this.routing).forEach(url => {
+            let slugs = url.match(/{.*}+/g);
+            if(!slugs) {
+                return;
+            }
+
+            let urlDetails = url.split('/');
+            if(urlDetails.length != currentUrlDetails.length) {
+                return;
+            }
+
+            if(urlDetails.length != currentUrlDetails.length) {
+                return;
+            }
+
+
+            for(let i = 0; i < urlDetails.length; i++) {
+                if(urlDetails[i].match(/{.*}+/g) && currentUrlDetails[i] != '') {
+                    continue;
+                }
+
+                if(urlDetails[i] != currentUrlDetails[i]) {
+                    return;
+                }
+            }
+
+            this.slugData = [];
+            for(let i = 0; i < urlDetails.length; i++) {
+                let slug = urlDetails[i].match(/{.*}+/g);
+                if(slug) {
+                    let varName = slug[0].replace('{', '').replace('}', '');
+                    let value = currentUrlDetails[i];
+                    this.slugData[varName] = value;
+                }
+            }
+        });
 
         for(let i = 0; i < this.controllers_configuration.length; i++) {
             let controller = this.controllers_configuration[i];
