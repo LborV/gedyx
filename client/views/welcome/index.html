@@ -9,7 +9,7 @@
 </ul>
 
 {i:_this.isBool:
-    <h5>Is Bool</h5>
+    <h2>Is Bool</h2>
 :!}
 
 {i:_this.colorIsRed:
@@ -28,4 +28,9 @@
 
 <button onclick="app.changePage('/')">
     HOME
+</button>
+
+<!-- May be somehow simplify cases like this one -->
+<button onclick="app.getController('{{_this.name}}').toggleIsBool()">
+    Toggle Is Bool
 </button>

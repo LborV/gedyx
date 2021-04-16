@@ -21,6 +21,11 @@ export default class welcomeController extends Controller{
         return this.reload();
     }
 
+    toggleIsBool() {
+        this.isBool = !this.isBool;
+        this.reload();
+    }
+
     onShow() {
         console.log(`${this.id} controller showed`);
     }
