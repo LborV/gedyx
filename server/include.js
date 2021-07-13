@@ -6,21 +6,29 @@ globalThis.Models = require('./kernel/Models');
 
 // Mysql Connection
 if(config.mysql && config.mysql.host && config.mysql.user && config.mysql.user && config.mysql.password && config.mysql.db) {
-    const mysql = require('sync-mysql');
-    globalThis.mysqlConnection = new mysql({
-        host: config.mysql.host,
-        user: config.mysql.user,
-        password: config.mysql.password,
-        database: config.mysql.db,
-    });
+    try {
+        const mysql = require('sync-mysql');
+        globalThis.mysqlConnection = new mysql({
+            host: config.mysql.host,
+            user: config.mysql.user,
+            password: config.mysql.password,
+            database: config.mysql.db,
+        });
+    } catch(error) {
+        console.error(error);
+    }
 }
 
 // Redis connection
 if(config.redis && config.redis.port && config.redis.host && config.redis.password) {
-    globalThis.redis = require('redis');
-    const util = require('util');
-    globalThis.redisConnection = redis.createClient();
-    globalThis.redisConnection.get = util.promisify(globalThis.redisConnection.get);
+    try {
+        globalThis.redis = require('redis');
+        const util = require('util');
+        globalThis.redisConnection = redis.createClient();
+        globalThis.redisConnection.get = util.promisify(globalThis.redisConnection.get);
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 // Cluster mode
@@ -30,13 +38,17 @@ if(config.redis && config.redis.port && config.redis.host && config.redis.passwo
 
 // Single thread
 if(config.socket && config.socket.port) {
-    const
-        io = require("socket.io"),
-        server = io.listen(config.socket.port);
+    try {
+        const
+            io = require("socket.io"),
+            server = io.listen(config.socket.port);
 
-    globalThis.actionsPool = new Actions({
-        io: server
-    });
+        globalThis.actionsPool = new Actions({
+            io: server
+        });
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 globalThis.modelsPool = new Models();
