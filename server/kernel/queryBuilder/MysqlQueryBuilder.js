@@ -62,6 +62,15 @@ class MysqlQueryBuilder extends QueryBuilder {
             sql += `FROM \`${obj.table}\` `;
         }
 
+        if(obj.join.length) {
+            this.isJoin = true;
+            obj.join.forEach(j => {
+                sql += j.operator + ` \`${j.table}\` `;
+                sql += this.makeWhere(j.value);
+            });
+            this.isJoin = false;
+        }
+
         sql += this.makeWhere(obj);
 
         if(obj.union) {
@@ -103,8 +112,12 @@ class MysqlQueryBuilder extends QueryBuilder {
         let sql = '';
         if(obj.where.length) {
             obj.where.forEach((where, index) => {
-                if(index == 0 && (obj.select.length || obj.update.length || obj.delete)) {
-                    sql += 'WHERE ';
+                if(index == 0 && (obj.select.length || obj.update.length || obj.delete || this.isJoin)) {
+                    if(!this.isJoin) {
+                        sql += 'WHERE ';
+                    } else {
+                        sql += 'ON ';
+                    }
                 }
 
                 if(where.subWhere) {
@@ -112,7 +125,7 @@ class MysqlQueryBuilder extends QueryBuilder {
                     sql += this.makeSelectQuery(where.subWhere);
                     sql += ') ';
                 } else {
-                    sql += `\`${where.a1}\` ${where.operator} ${where.a2} `;
+                    sql += `${where.a1} ${where.operator} ${where.a2} `;
                 }
 
                 let delimetr = 'AND ';

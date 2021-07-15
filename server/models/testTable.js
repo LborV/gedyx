@@ -65,6 +65,14 @@ class testTable extends MysqlQueryBuilder {
         //     .select('id', 'testColumn_first')
         //     .groupBy('id')
         //     .execute();
+
+        return this
+            .select('id')
+            .leftJoin('a', (query) => {
+                return query
+                    .where('a.a', this.tableName+'.id');
+            })
+            .getSql();
     }
 
     getLast() {

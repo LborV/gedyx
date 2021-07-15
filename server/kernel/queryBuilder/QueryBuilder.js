@@ -273,6 +273,62 @@ class QueryBuilder {
 
         return this;
     }
+
+    join(table, callback) {
+        if(typeof table !== 'string' || typeof callback !== 'function') {
+            throw 'Inccorect input';
+        }
+
+        this.queryObject.join.push({
+            table: table,
+            value: callback(new QueryBuilder()).getQueryObject(),
+            operator: 'JOIN'
+        });
+
+        return this;
+    }
+
+    leftJoin(table, callback) {
+        if(typeof table !== 'string' || typeof callback !== 'function') {
+            throw 'Inccorect input';
+        }
+
+        this.queryObject.join.push({
+            table: table,
+            value: callback(new QueryBuilder()).getQueryObject(),
+            operator: 'LEFT JOIN'
+        });
+
+        return this;
+    }
+
+    rightJoin(table, callback) {
+        if(typeof table !== 'string' || typeof callback !== 'function') {
+            throw 'Inccorect input';
+        }
+
+        this.queryObject.join.push({
+            table: table,
+            value: callback(new QueryBuilder()).getQueryObject(),
+            operator: 'RIGHT JOIN'
+        });
+
+        return this;
+    }
+
+    innerJoin(table, callback) {
+        if(typeof table !== 'string' || typeof callback !== 'function') {
+            throw 'Inccorect input';
+        }
+
+        this.queryObject.join.push({
+            table: table,
+            value: callback(new QueryBuilder()).getQueryObject(),
+            operator: 'INNER JOIN'
+        });
+
+        return this;
+    }
 }
 
 module.exports = QueryBuilder;
