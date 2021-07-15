@@ -5,9 +5,9 @@
 var Model = require('../kernel/model/Model');
 
 //Include interfaces manualy
-const MysqlInterface = require('../kernel/interfaces/MysqlInterface');
+const MysqlQueryBuilder = require('../kernel/queryBuilder/MysqlQueryBuilder');
 //Mysql interface configuration 
-const mysqlInterface = new MysqlInterface({
+const mysqlQueryBuilder = new MysqlQueryBuilder({
     connection: mysqlConnection,
     table: 'testTable'
 });
@@ -16,5 +16,5 @@ class testTable extends Model {
 
 }
 
-let obj = new testTable (mysqlInterface);
+let obj = new testTable(mysqlQueryBuilder);
 module.exports = obj;

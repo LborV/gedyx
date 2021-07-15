@@ -1,6 +1,6 @@
 // In this file will be aotomaticaly included your models
 globalThis.config = require('./configs/config.js');
-globalThis.ModelInterface = require('./kernel/interfaces/ModelInterface');
+globalThis.QueryBuilder = require('./kernel/queryBuilder/QueryBuilder');
 globalThis.Actions = require('./kernel/Actions');
 globalThis.Models = require('./kernel/Models');
 

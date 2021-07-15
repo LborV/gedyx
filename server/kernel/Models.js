@@ -1,4 +1,4 @@
-const Model = require('./model/Model');
+const QueryBuilder = require('./queryBuilder/QueryBuilder');
 class Models {
     constructor() {
         try{
@@ -9,7 +9,7 @@ class Models {
                 }
 
                 let model = require(`../models/${file}`);
-                if(model instanceof Model) {
+                if(model instanceof QueryBuilder) {
                     let modelName = file.replace('.js', '');
                     globalThis[modelName] = model;
                 } else {
