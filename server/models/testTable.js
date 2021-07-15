@@ -24,20 +24,43 @@ class testTable extends MysqlQueryBuilder {
         //     .orderByDesc('id')
         //     .execute();
 
-        return this
-            .select(
-                'testColumn_first',
-                'testColumn_second',
-                'id'
-            )
-            .where((query) => {
-                return query
-                    .where('id', 120)
-                    .orWhere('id', 130);
-            })
-            .orWhere('id', '>', 150)
-            .limit(10)
-            .execute();
+        // return this
+        //     .select(
+        //         'testColumn_first',
+        //         'testColumn_second',
+        //         'id'
+        //     )
+        //     .where((query) => {
+        //         return query
+        //             .where('id', 120)
+        //             .orWhere('id', 130);
+        //     })
+        //     .orWhere('id', '>', 150)
+        //     .limit(10)
+        //     .execute();
+    
+        // return this
+        //     .select('id')
+        //     .union((query) => {
+        //         return query
+        //             .table('testTable')
+        //             .select('id')
+        //             .where('id', 10);
+        //     })
+        //     .where('id', '<', 11)
+        //     .execute();
+    
+        // return this
+        //     .select('id')
+        //     .unionAll((query) => {
+        //         return query
+        //             .table('testTable')
+        //             .select('id')
+        //             .where('id', 10);
+        //     })
+        //     .where('id', '<', 11)
+        //     .execute();
+
     }
 
     getLast() {

@@ -21,6 +21,19 @@ class MysqlQueryBuilder extends QueryBuilder {
         return res;
     }
 
+    executeRaw(sql) {
+        if(typeof sql !== 'string') {
+            throw 'Inccorect input';
+        }
+
+        this.resetQuery();
+        if(this.tableName) {
+            this.table(this.tableName); 
+        }
+
+        return this.connection.query(sql);
+    }
+
     makeSelectQuery(subWhere) {
         let obj = this.queryObject;
         if(subWhere) {
@@ -50,6 +63,14 @@ class MysqlQueryBuilder extends QueryBuilder {
         }
 
         sql += this.makeWhere(obj);
+
+        if(obj.union) {
+            sql += 'UNION ';
+            if(obj.union.all) {
+                sql += 'ALL ';
+            } 
+            sql += this.makeSelectQuery(obj.union.value);
+        }
 
         if(obj.order.length) {
             sql += 'ORDER BY ';

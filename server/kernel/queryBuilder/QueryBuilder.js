@@ -14,7 +14,8 @@ class QueryBuilder {
             update: [],
             limit: null,
             insert: [],
-            delete: false
+            delete: false,
+            union: null,
         };
     }
 
@@ -236,6 +237,30 @@ class QueryBuilder {
 
     getQueryObject() {
         return this.queryObject;
+    }
+
+    union(callback) {
+        if(typeof callback !== 'function') {
+            throw 'Inccorect input';
+        }
+
+        this.queryObject.union = {
+            value: callback(new QueryBuilder()).getQueryObject(),
+            all: false
+        };
+        return this;
+    }
+
+    unionAll(callback) {
+        if(typeof callback !== 'function') {
+            throw 'Inccorect input';
+        }
+
+        this.queryObject.union = {
+            value: callback(new QueryBuilder()).getQueryObject(),
+            all: true
+        };
+        return this;
     }
 }
 
