@@ -84,6 +84,10 @@ class MysqlQueryBuilder extends QueryBuilder {
             });
         }
 
+        if(obj.group) {
+            sql += `GROUP BY \`${obj.group}\``; 
+        }
+
         if(obj.limit) {
             sql += `LIMIT ${obj.limit} `;
         } 

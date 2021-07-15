@@ -61,6 +61,10 @@ class testTable extends MysqlQueryBuilder {
         //     .where('id', '<', 11)
         //     .execute();
 
+        // return this
+        //     .select('id', 'testColumn_first')
+        //     .groupBy('id')
+        //     .execute();
     }
 
     getLast() {

@@ -16,6 +16,7 @@ class QueryBuilder {
             insert: [],
             delete: false,
             union: null,
+            group: null
         };
     }
 
@@ -260,6 +261,16 @@ class QueryBuilder {
             value: callback(new QueryBuilder()).getQueryObject(),
             all: true
         };
+        return this;
+    }
+
+    groupBy(a1) {
+        if(typeof a1 !== 'string') {
+            throw 'Inccorect input';
+        }
+
+        this.queryObject.group = a1;
+
         return this;
     }
 }
