@@ -112,6 +112,17 @@ class QueryBuilder {
                 throw 'First parametr must be string';
             }
 
+            if(typeof arguments[1] === 'function') {
+                this.queryObject.where.push({
+                    a1: arguments[0],
+                    operator: '=',
+                    subWhere: arguments[1](new QueryBuilder()).getQueryObject(),
+                    isOr: isOr
+                });
+           
+                return this;
+            }
+
             this.queryObject.where.push({
                 a1: arguments[0],
                 a2: arguments[1],
@@ -125,6 +136,17 @@ class QueryBuilder {
         if(arguments.length == 3) {
             if(typeof arguments[0] !== 'string' || typeof arguments[1] !== 'string') {
                 throw 'Inccorect input';
+            }
+
+            if(typeof arguments[2] === 'function') {
+                this.queryObject.where.push({
+                    a1: arguments[0],
+                    operator: arguments[1],
+                    subWhere: arguments[2](new QueryBuilder()).getQueryObject(),
+                    isOr: isOr
+                });
+           
+                return this;
             }
 
             if(typeof arguments[2] !== 'string' && typeof arguments[2] !== 'number') {

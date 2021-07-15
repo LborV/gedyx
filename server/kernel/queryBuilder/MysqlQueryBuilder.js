@@ -121,9 +121,18 @@ class MysqlQueryBuilder extends QueryBuilder {
                 }
 
                 if(where.subWhere) {
+                    let isJoinSave = this.isJoin;
+                    this.isJoin = false;
+
+                    if(where.a1) {
+                        sql += `${where.a1} ${where.operator} `;
+                    }
+
                     sql += '(';
                     sql += this.makeSelectQuery(where.subWhere);
                     sql += ') ';
+
+                    this.isJoin = isJoinSave;
                 } else {
                     sql += `${where.a1} ${where.operator} ${where.a2} `;
                 }

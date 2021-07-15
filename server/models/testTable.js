@@ -30,14 +30,14 @@ class testTable extends MysqlQueryBuilder {
         //         'testColumn_second',
         //         'id'
         //     )
+        //     .orWhere('id', '>', 150)
         //     .where((query) => {
         //         return query
         //             .where('id', 120)
         //             .orWhere('id', 130);
         //     })
-        //     .orWhere('id', '>', 150)
         //     .limit(10)
-        //     .execute();
+        //     .getSql();
     
         // return this
         //     .select('id')
@@ -66,11 +66,44 @@ class testTable extends MysqlQueryBuilder {
         //     .groupBy('id')
         //     .execute();
 
+        // return this
+        //     .select('id')
+        //     .leftJoin('a', (query) => {
+        //         return query
+        //             .where('a.a', this.tableName+'.id')
+        //             .where((query) => {
+        //                 return query
+        //                     .where('a', 1)
+        //                     .orWhere('b', 2)
+        //                     .where('a', (query) => {
+        //                         return query
+        //                             .where('a1', 'a2')
+        //                             .where('a2', 'test');
+        //                     });
+        //             });
+        //     })
+        //     .getSql();
+
         return this
-            .select('id')
-            .leftJoin('a', (query) => {
+            .select('a')
+            .where('a', (query) => {
                 return query
-                    .where('a.a', this.tableName+'.id');
+                    .table('table1')
+                    .select('a')
+                    .where('test1', 1)
+                    .orWhere('test1', 2);
+            })
+            .where((query) => {
+                return query
+                    .where('test2', 1)
+                    .orWhere('test2', 2);
+            })
+            .where('b', '>', (query) => {
+                return query
+                    .table('table2')
+                    .select('b')
+                    .where('test2', 1)
+                    .orWhere('test2', 2);
             })
             .getSql();
     }
