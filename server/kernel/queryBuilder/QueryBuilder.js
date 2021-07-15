@@ -96,7 +96,6 @@ class QueryBuilder {
 
         if(arguments.length == 1) {
             if(typeof arguments[0] === 'function') {
-                console.log(new QueryBuilder())
                 this.queryObject.where.push({
                     subWhere: arguments[0](new QueryBuilder()).getQueryObject(),
                     isOr: isOr
