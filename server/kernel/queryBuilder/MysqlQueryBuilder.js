@@ -53,7 +53,7 @@ class MysqlQueryBuilder extends QueryBuilder {
                     delimeter = '';
                 }
 
-                sql += `${order.value} ${order.type}${delimeter} `
+                sql += `\`${order.value}\` ${order.type}${delimeter} `
             });
         }
 
@@ -110,7 +110,7 @@ class MysqlQueryBuilder extends QueryBuilder {
             if(index === this.queryObject.update.length - 1) {
                 delimeter = '';
             }
-            sql += `${item[0]} = ${item[1]}${delimeter} `;
+            sql += `\`${item[0]}\` = ${item[1]}${delimeter} `;
         });
 
         sql += this.makeWhere(this.queryObject);
@@ -126,7 +126,7 @@ class MysqlQueryBuilder extends QueryBuilder {
             if(index === this.queryObject.insert.length - 1) {
                 delimeter = '';
             }
-            sql += `${item[0]}${delimeter} `;
+            sql += `\`${item[0]}\`${delimeter} `;
         });
 
         sql += ') VALUES (';

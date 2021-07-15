@@ -45,21 +45,19 @@ function makeFileContent(modelName, model_name) {
 //This file was automaticaly generated
 //Feel free to edit :)
 
-var Model = require('../kernel/model/Model');
+const MysqlQueryBuilder = require('../kernel/queryBuilder/MysqlQueryBuilder');    
+class ${model_name} extends MysqlQueryBuilder {
+    getAll() {
+        return this
+            .selectRaw('*')
+            .get();
+    }
+}
 
-//Include interfaces manualy
-const MysqlInterface = require('../kernel/interfaces/MysqlInterface');
-//Mysql interface configuration 
-const mysqlInterface = new MysqlInterface({
+let obj = new ${model_name}({
     connection: mysqlConnection,
     table: '${modelName}'
 });
-
-class ${model_name} extends Model {
-
-}
-
-let obj = new ${model_name} (mysqlInterface);
 module.exports = obj;
 `;
 }

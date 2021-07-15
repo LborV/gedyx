@@ -1,20 +1,17 @@
-
 //This file was automaticaly generated
 //Feel free to edit :)
 
-var Model = require('../kernel/model/Model');
+const MysqlQueryBuilder = require('../kernel/queryBuilder/MysqlQueryBuilder');    
+class testTable extends MysqlQueryBuilder {
+    getAll() {
+        return this
+            .selectRaw('*')
+            .get();
+    }
+}
 
-//Include interfaces manualy
-const MysqlQueryBuilder = require('../kernel/queryBuilder/MysqlQueryBuilder');
-//Mysql interface configuration 
-const mysqlQueryBuilder = new MysqlQueryBuilder({
+let obj = new testTable({
     connection: mysqlConnection,
     table: 'testTable'
 });
-
-class testTable extends Model {
-
-}
-
-let obj = new testTable(mysqlQueryBuilder);
 module.exports = obj;

@@ -31,7 +31,7 @@ class QueryBuilder {
                 value = `'${value}'`;
             }
 
-            this.queryObject.update.push([`\'${key}\``, value]);
+            this.queryObject.update.push([`${key}`, value]);
         });
 
         return this;
@@ -48,7 +48,7 @@ class QueryBuilder {
                 value = `'${value}'`;
             }
 
-            this.queryObject.insert.push([`\'${key}\``, value]);
+            this.queryObject.insert.push([key, value]);
         });
 
         return this;
@@ -71,7 +71,7 @@ class QueryBuilder {
                     this.select(item);
                 });
             } else if (typeof arg === 'string') {
-                this.queryObject.select.push(`\`${arg}\``);                
+                this.queryObject.select.push(arg);                
             } else {
                 throw 'Inccorect input';
             }
@@ -140,7 +140,7 @@ class QueryBuilder {
             throw 'Incorrect input';
         }
 
-        this.queryObject.order.push({value: `\`${a1}\``, type: 'ASC'});
+        this.queryObject.order.push({value: a1, type: 'ASC'});
         return this;
     }
 
@@ -150,7 +150,7 @@ class QueryBuilder {
             throw 'Incorrect input';
         }
 
-        this.queryObject.order.push({value: `\`${a1}\``, type: 'DESC'});
+        this.queryObject.order.push({value: a1, type: 'DESC'});
         return this;
     }
 
