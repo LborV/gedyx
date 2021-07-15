@@ -1,5 +1,10 @@
 class QueryBuilder {
     constructor() {
+        this.resetQuery();
+        return this;
+    }
+
+    resetQuery() {
         this.queryObject = {
             select: [],
             table: '',
@@ -11,8 +16,6 @@ class QueryBuilder {
             insert: [],
             delete: false
         };
-
-        return this;
     }
 
     delete() {
@@ -26,12 +29,7 @@ class QueryBuilder {
         }
 
         Object.keys(updObject).forEach(key => {
-            let value = updObject[key];
-            if(typeof value === 'string') {
-                value = `'${value}'`;
-            }
-
-            this.queryObject.update.push([`${key}`, value]);
+            this.queryObject.update.push([key, updObject[key]]);
         });
 
         return this;
@@ -44,10 +42,6 @@ class QueryBuilder {
 
         Object.keys(inObject).forEach(key => {
             let value = inObject[key];
-            if(typeof value === 'string') {
-                value = `'${value}'`;
-            }
-
             this.queryObject.insert.push([key, value]);
         });
 
@@ -80,6 +74,19 @@ class QueryBuilder {
         return this;
     }
 
+    selectRaw(str) {
+        if(typeof str !== 'string') {
+            throw 'Incorrect input';
+        }
+
+        this.queryObject.select.push({
+            value: str,
+            raw: true
+        });
+
+        return this;
+    }
+
     where() {
         let isOr = false;
         if(this.nextQueryOr) {
@@ -89,8 +96,9 @@ class QueryBuilder {
 
         if(arguments.length == 1) {
             if(typeof arguments[0] === 'function') {
+                console.log(new QueryBuilder())
                 this.queryObject.where.push({
-                    subWhere: arguments[0](new MysqlQueryBuilder(this.connection)).getQueryObject(),
+                    subWhere: arguments[0](new QueryBuilder()).getQueryObject(),
                     isOr: isOr
                 });
            
@@ -161,6 +169,74 @@ class QueryBuilder {
 
         this.queryObject.limit = num;
         return this;
+    }
+
+    whereLike(a1, a2) {
+        if(typeof a1 !== 'string' || typeof a2 !== 'string') {
+            throw 'Incorrect input';
+        }
+
+        return this.where(a1, 'LIKE', `'${a2}'`);
+    }
+
+    orWhere() {
+        this.nextQueryOr = true;
+        return this.where(...arguments)
+    }
+
+    whereIn(a1, a2) {
+        if(typeof a1 !== 'string' || !Array.isArray(a2)) {
+            throw 'Incorrect input';
+        }
+        
+        return this.where(a1, 'IN', '('+a2.map((item) => {return typeof item === 'string' ? `'${item}'` : item}).join(', ')+')');
+    }
+
+    whereNotIn(a1, a2) {
+        if(typeof a1 !== 'string' || !Array.isArray(a2)) {
+            throw 'Incorrect input';
+        }
+        
+        return this.where(a1, 'NOT IN', '('+a2.map((item) => {
+            if(typeof item === 'string') {
+                return `'${item}'`;
+            }
+
+            if(typeof item === 'number') {
+                return item;
+            }
+
+            throw 'Inncorrect input';
+        }).join(', ')+')');
+    }
+
+    whereNull(a1) {
+        if(typeof a1 !== 'string') {
+            throw 'Incorrect input';
+        }
+
+        return this.where(a1, 'IS', 'NULL')
+    }
+
+    whereRaw(sql) {
+        if(typeof sql !== 'string') {
+            throw 'Must be a string';
+        }
+
+        this.queryObject.where.push(sql);
+        return this;
+    }
+
+    whereNotNull(a1) {
+        if(typeof a1 !== 'string') {
+            throw 'Incorrect input';
+        }
+
+        return this.where(a1, 'IS NOT', 'NULL')
+    }
+
+    getQueryObject() {
+        return this.queryObject;
     }
 }
 

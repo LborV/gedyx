@@ -5,12 +5,20 @@ class MysqlQueryBuilder extends QueryBuilder {
         this.sql = '';
 
         if(config.table) {
+            this.tableName = config.table;
             this.table(config.table);
         }
     }
 
-    get() {
-        return this.connection.query(this.getSql());
+    execute() {
+        let res = this.connection.query(this.getSql());
+        this.resetQuery();
+
+        if(this.tableName) {
+            this.table(this.tableName); 
+        }
+
+        return res;
     }
 
     makeSelectQuery(subWhere) {
@@ -30,7 +38,9 @@ class MysqlQueryBuilder extends QueryBuilder {
                 }
     
                 if(typeof element === 'string') {
-                    sql += `${element}${delimeter} `;
+                    sql += `\`${element}\`${delimeter} `;
+                } else if(typeof element === 'object' && element.raw) {
+                    sql += `${element.value}${delimeter} `;
                 }
             });
         }
@@ -40,10 +50,6 @@ class MysqlQueryBuilder extends QueryBuilder {
         }
 
         sql += this.makeWhere(obj);
-
-        if(obj.limit) {
-            sql += `LIMIT ${obj.limit} `;
-        } 
 
         if(obj.order.length) {
             sql += 'ORDER BY ';
@@ -57,13 +63,15 @@ class MysqlQueryBuilder extends QueryBuilder {
             });
         }
 
-        sql += ';';
+        if(obj.limit) {
+            sql += `LIMIT ${obj.limit} `;
+        } 
 
         if(subWhere) {
             return sql;
         }
 
-        return this.sql = sql;
+        return this.sql = sql + ';';
     }
 
     makeWhere(obj) {
@@ -110,6 +118,11 @@ class MysqlQueryBuilder extends QueryBuilder {
             if(index === this.queryObject.update.length - 1) {
                 delimeter = '';
             }
+
+            if(typeof item[1] === 'string') {
+                item[1] = `'${item[1]}'`;
+            }
+
             sql += `\`${item[0]}\` = ${item[1]}${delimeter} `;
         });
 
@@ -130,10 +143,17 @@ class MysqlQueryBuilder extends QueryBuilder {
         });
 
         sql += ') VALUES (';
+
+        delimeter = ',';
         this.queryObject.insert.forEach((item, index) => {
             if(index === this.queryObject.insert.length - 1) {
                 delimeter = '';
             }
+
+            if(typeof item[1] === 'string') {
+                item[1] = `'${item[1]}'`;
+            }
+
             sql += `${item[1]}${delimeter} `;
         });
 
@@ -141,7 +161,7 @@ class MysqlQueryBuilder extends QueryBuilder {
     }
 
     makeDeleteQuery() {
-        let sql = `DELET FROM \`${this.queryObject.table}\` `;
+        let sql = `DELETE FROM \`${this.queryObject.table}\` `;
         sql += this.makeWhere(this.queryObject);
         return this.sql = sql + ';';
     }
@@ -173,84 +193,6 @@ class MysqlQueryBuilder extends QueryBuilder {
     getSql() {
         this.queryToSql();
         return this.sql;
-    }
-
-    selectRaw(str) {
-        if(typeof str !== 'string') {
-            throw 'Incorrect input';
-        }
-
-        this.queryObject.select.push(str);
-
-        return this;
-    }
-
-    getQueryObject() {
-        return this.queryObject;
-    }
-
-    whereLike(a1, a2) {
-        if(typeof a1 !== 'string' || typeof a2 !== 'string') {
-            throw 'Incorrect input';
-        }
-
-        return this.where(a1, 'LIKE', `'${a2}'`);
-    }
-
-    orWhere() {
-        this.nextQueryOr = true;
-        return this.where(...arguments)
-    }
-
-    whereIn(a1, a2) {
-        if(typeof a1 !== 'string' || !Array.isArray(a2)) {
-            throw 'Incorrect input';
-        }
-        
-        return this.where(a1, 'IN', '('+a2.map((item) => {return typeof item === 'string' ? `'${item}'` : item}).join(', ')+')');
-    }
-
-    whereNotIn(a1, a2) {
-        if(typeof a1 !== 'string' || !Array.isArray(a2)) {
-            throw 'Incorrect input';
-        }
-        
-        return this.where(a1, 'NOT IN', '('+a2.map((item) => {
-            if(typeof item === 'string') {
-                return `'${item}'`;
-            }
-
-            if(typeof item === 'number') {
-                return item;
-            }
-
-            throw 'Inncorrect input';
-        }).join(', ')+')');
-    }
-
-    whereNull(a1) {
-        if(typeof a1 !== 'string') {
-            throw 'Incorrect input';
-        }
-
-        return this.where(a1, 'IS', 'NULL')
-    }
-
-    whereRaw(sql) {
-        if(typeof sql !== 'string') {
-            throw 'Must be a string';
-        }
-
-        this.queryObject.where.push(sql);
-        return this;
-    }
-
-    whereNotNull(a1) {
-        if(typeof a1 !== 'string') {
-            throw 'Incorrect input';
-        }
-
-        return this.where(a1, 'IS NOT', 'NULL')
     }
 }
 
