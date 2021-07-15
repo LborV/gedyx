@@ -14,7 +14,8 @@
     "async": "^3.2.0",
     "mocha": "^8.2.1",
     "mysql": "^2.18.1",
-    "redis": "^3.1.1",
+    "node-fetch": "^2.6.1",
+    "redis": "^3.1.2",
     "socket.io": "^2.4.1",
     "socket.io-redis": "^6.0.1",
     "sync-mysql": "^3.0.1"

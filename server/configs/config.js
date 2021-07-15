@@ -2,9 +2,9 @@
 var configs = {
     "mysql": {
         host: "localhost",
-        user: "MyUser",
-        password: "MyPass",
-        db: "MyDb"
+        user: "root",
+        password: "Dbnzgblh321",
+        db: "testDatabase"
     },
     "socket": {
         "port": 3030

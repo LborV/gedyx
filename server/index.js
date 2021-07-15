@@ -1,22 +1,43 @@
 require('./include.js');
 
-// console.log(
-//     testTable
-//         .insert({
-//             testColumn_first: 'a', 
-//             testColumn_second: 'b' 
+queryBuilder = require('./kernel/queryBuilder/MysqlQueryBuilder');
+let builder = new queryBuilder(mysqlConnection);
+
+console.info(
+    builder
+        .table('testTable')
+        .select(
+            'a',
+            ['b','c','d']
+        )
+        .whereNull('a')
+        .whereNotNull('b')
+        .where('a', `'v'`)
+        .limit(5)
+        .orderBy('a')
+        .orderByDesc('b')
+        .getSql()
+);
+
+
+// console.info(
+//     builder
+//         .table('testTable')
+//         .update({
+//             'a': 'a',
+//             'b': 2
 //         })
+//         .where('a', 'true')
+//         .getSql()
+// );
+
+
+// console.info(
+//     builder
+//         .table('testTable')
 //         .insert({
-//             testColumn_first: 'a', 
-//             testColumn_second: 'b' 
+//             'a': 'test',
+//             'b': 2
 //         })
-//         // .getLastId()
-//         .delete(2)
-//         .set(1, 'testColumn_first', 'test')
-//         .update([1,2,3], {'testColumn_second': 'batman'})
-//         .update(5, {'testColumn_second': 'testMe'})
-//         // .get(1)
-//         .where([
-//             ['testColumn_second', 'batman']
-//         ])
+//         .getSql()
 // );
