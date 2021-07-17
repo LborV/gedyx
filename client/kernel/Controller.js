@@ -237,6 +237,19 @@ export class Controller {
         }
     }
 
+    async view(url) {
+        if(typeof url !== 'string') {
+            throw 'Wrong URL';
+        }
+
+        this.url = url;
+        this.fetchView(url)
+        .then((response) => {
+            return this.loadView(response, url, true).show();
+        })
+        .catch(error => console.error(error));
+    }
+
     // App count how many loaded
     onViewLoaded() {
         if(this.app && this.name) {

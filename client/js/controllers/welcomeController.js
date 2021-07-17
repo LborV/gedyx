@@ -37,4 +37,10 @@ export default class welcomeController extends Controller{
             this.show();
         }
     }
+
+    testLoadingView() {
+        console.log(
+            this.view('/views/welcome/test.json')
+        );
+    }
 };

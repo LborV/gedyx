@@ -84,28 +84,30 @@ class testTable extends MysqlQueryBuilder {
         //     })
         //     .getSql();
 
-        return this
-            .select('a')
-            .where('a', (query) => {
-                return query
-                    .table('table1')
-                    .select('a')
-                    .where('test1', 1)
-                    .orWhere('test1', 2);
-            })
-            .where((query) => {
-                return query
-                    .where('test2', 1)
-                    .orWhere('test2', 2);
-            })
-            .where('b', '>', (query) => {
-                return query
-                    .table('table2')
-                    .select('b')
-                    .where('test2', 1)
-                    .orWhere('test2', 2);
-            })
-            .getSql();
+        // return this
+        //     .select('a')
+        //     .where('a', (query) => {
+        //         return query
+        //             .table('table1')
+        //             .select('a')
+        //             .where('test1', 1)
+        //             .orWhere('test1', 2);
+        //     })
+        //     .where((query) => {
+        //         return query
+        //             .where('test2', 1)
+        //             .orWhere('test2', 2);
+        //     })
+        //     .where('b', '>', (query) => {
+        //         return query
+        //             .table('table2')
+        //             .select('b')
+        //             .where('test2', 1)
+        //             .orWhere('test2', 2);
+        //     })
+        //     .getSql();
+
+        
     }
 
     getLast() {
