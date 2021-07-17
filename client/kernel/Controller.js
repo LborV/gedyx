@@ -242,6 +242,11 @@ export class Controller {
             throw 'Wrong URL';
         }
 
+        let view = globalThis.views.find(el => el.url == url);
+        if(globalThis.views.length > 0 && view) {
+            return this.loadView('', url, true).show();
+        }
+
         this.url = url;
         this.fetchView(url)
         .then((response) => {
