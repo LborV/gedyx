@@ -73,6 +73,7 @@ export class Controller {
             throw error;
         }
 
+        this.onLoad();
         return this;
     }
 
@@ -269,7 +270,7 @@ export class Controller {
             this.app.viewLoaded(this.name);
         }
 
-        return this.onLoad();
+        return this.onUpdate();
     }
 
     //Compile loaded view
@@ -302,6 +303,10 @@ export class Controller {
         }
         
         return this.parser.clear().parse(tree, this);
+    }
+
+    onUpdate() {
+        console.log('Redifine me');
     }
 
     onLoad() {

@@ -46,6 +46,7 @@ window.addEventListener('load', () => {
                     id: 'welcome2',
                     url: '/views/welcome/index.json',
                     onError: '<div style="color: red">Error</div>',
+                    showOnLoad: true
                 }
             },
             {
