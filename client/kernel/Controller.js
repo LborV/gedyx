@@ -61,7 +61,11 @@ export class Controller {
                 this.url = config.url;
                 this.fetchView(config.url)
                 .then((response) => {
-                    return this.loadView(response, config.url, true);
+                    if(typeof response === 'string') {
+                        return this.loadView(response, url, true);
+                    }
+        
+                    return this.updateView(this.compileFromTree(response.tree));
                 })
                 .catch(error => console.error(error));
             }
@@ -229,6 +233,11 @@ export class Controller {
     }
 
     async fetchView(url) {
+        let view = globalThis.views.find(el => el.url == url);
+        if(globalThis.views.length > 0 && view) {
+            return view;
+        }
+
         const result = await fetch(url);
         if(result.status == 200) {
             return result.text();
@@ -242,15 +251,14 @@ export class Controller {
             throw 'Wrong URL';
         }
 
-        let view = globalThis.views.find(el => el.url == url);
-        if(globalThis.views.length > 0 && view) {
-            return this.loadView('', url, true).show();
-        }
-
         this.url = url;
         this.fetchView(url)
         .then((response) => {
-            return this.loadView(response, url, true).show();
+            if(typeof response === 'string') {
+                return this.loadView(response, url, true).show();
+            }
+
+            return this.updateView(this.compileFromTree(response.tree));
         })
         .catch(error => console.error(error));
     }

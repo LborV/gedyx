@@ -18,6 +18,12 @@ class Application {
             } 
         }
 
+        globalThis.views = JSON.parse(localStorage.getItem('views')) ?? [];
+        window.onbeforeunload = () => {
+            this.onClose();
+            localStorage.setItem('views', JSON.stringify(globalThis.views ?? []));
+        };
+
         if(configuration.useSockets !== undefined && configuration.socketsURL !== undefined) {
             this.useSockets = configuration.useSockets;
             this.socketsURL = configuration.socketsURL;
@@ -277,5 +283,9 @@ class Application {
             console.error('Error on change page');
             return false;
         }
+    }
+
+    onClose() {
+       
     }
 }   
