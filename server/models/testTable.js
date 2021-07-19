@@ -4,10 +4,10 @@
 const MysqlQueryBuilder = require('../kernel/queryBuilder/MysqlQueryBuilder');    
 class testTable extends MysqlQueryBuilder {
     test() {
-        // this.insert({
-        //     testColumn_first: 'testMe',
-        //     testColumn_second: 'Random String'
-        // }).execute();
+        this.insert({
+            testColumn_first: 'testMe',
+            testColumn_second: 'Random String'
+        }).execute();
 
         // let last = this.getLast();
         // console.info(last);

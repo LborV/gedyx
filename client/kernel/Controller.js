@@ -62,7 +62,7 @@ export class Controller {
                 this.fetchView(config.url)
                 .then((response) => {
                     if(typeof response === 'string') {
-                        return this.loadView(response, url, true);
+                        return this.loadView(response, config.url, true);
                     }
         
                     return this.updateView(this.compileFromTree(response.tree));

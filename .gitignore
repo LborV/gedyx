@@ -106,6 +106,7 @@ dist/
 # Temporary folders
 tmp/
 temp/
+data/
 
 # End of https://www.gitignore.io/api/node
 
