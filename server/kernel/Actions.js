@@ -1,4 +1,5 @@
 const Action = require('./Action');
+globalThis.Middlewares = require('./Middlewares');
 class Actions {
     constructor(configs) {        
         if(!configs.io) {
@@ -8,6 +9,8 @@ class Actions {
         this.actionList = [];
         
         try {
+            globalThis.MiddlewaresPool = new Middlewares();
+
             let normalizedPath = require("path").join('', "actions");
             require("fs").readdirSync(normalizedPath).forEach((file) => {
                 if(!file.includes('.js')) {

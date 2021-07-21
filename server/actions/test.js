@@ -14,5 +14,13 @@ class test extends Action {
     }
 }
 
-let obj = new test('test');
+let obj = new test(
+    'test', 
+    [
+        testMiddleware
+    ],
+    [
+        testMiddleware
+    ]
+);
 module.exports = obj;

@@ -1,6 +1,6 @@
 require('./include.js');
 
 
-console.info(
-    testTable.test()
-);
+// console.info(
+//     testTable.test()
+// );

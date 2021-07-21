@@ -1,6 +1,9 @@
+const Middleware = require('./Middleware');
 class Action {
-    constructor(actionName) {
+    constructor(actionName, middlewaresBefore = [], middlewaresAfter = []) {
         this.actionName = actionName;
+        this.middlewaresBefore = middlewaresBefore;
+        this.middlewaresAfter = middlewaresAfter;
         return this;
     }
 
@@ -15,6 +18,15 @@ class Action {
 
     requestIn(data, socket) {
         this.socket = socket;
+        
+        this.middlewaresBefore.forEach(middleware => {
+            if(!(middleware instanceof Middleware)) {
+                throw 'Middleware should extend Middleware class!';
+            }
+
+            data = middleware.beforeRequest(data);
+        });
+
         this.request(data);
     }
 
@@ -23,6 +35,13 @@ class Action {
     }
 
     response(data) {
+        this.middlewaresAfter.forEach(middleware => {
+            if(!(middleware instanceof Middleware)) {
+                throw 'Middleware should extend Middleware class!';
+            }
+
+            data = middleware.afterRequest(data);
+        });
         this.socket.emit(this.actionName, data);
     }
 
