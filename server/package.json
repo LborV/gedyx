@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha",
     "actions": "node makeAction.js",
-    "models": "node makeModels.js"
+    "models": "node makeModels.js",
+    "middlewares": "node makeMiddlewares.js"
   },
   "author": "",
   "license": "ISC",

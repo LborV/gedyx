@@ -17,10 +17,12 @@ class test extends Action {
 let obj = new test(
     'test', 
     [
-        testMiddleware
+        testMiddleware,
+        test3
     ],
     [
-        testMiddleware
+        test1,
+        test2
     ]
 );
 module.exports = obj;
