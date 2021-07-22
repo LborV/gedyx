@@ -1,0 +1,21 @@
+<h1>TODO</h1>
+
+<ul>
+    <li>
+        <input type="text" id="inputNew" placeholder="Any Text">
+    </li>
+    {f:_this.items:item:
+        {include example/item.html}
+    :!}
+</ul>
+
+
+<h1>DELETED</h1>
+
+<ul>
+    {f:_this.items:item:
+        {i:item.status == 'deleted':
+            <li class="delete">{{item.text}}</li>
+        :!}
+    :!}
+</ul>

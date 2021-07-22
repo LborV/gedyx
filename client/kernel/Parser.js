@@ -43,17 +43,21 @@ export class Parser {
                 if(typeof arr === 'object') {
                     let keys = Object.keys(arr);
                     keys.forEach(key => {
+                        globalThis['_loopIndex'] = key;
                         globalThis[iteratorName] = arr[key];
                         return this.parse(child, _this);
                     });
                     delete globalThis[iteratorName];
+                    delete globalThis['_loopIndex'];
                     return;
                 } else if(Array.isArray(arr)) {
-                    arr.forEach(item => {
+                    arr.forEach((item, index) => {
+                        globalThis['_loopIndex'] = index;
                         globalThis[iteratorName] = item;
                         return this.parse(child, _this);
                     });
                     delete globalThis[iteratorName];
+                    delete globalThis['_loopIndex'];
                     return;
                 }
 

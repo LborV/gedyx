@@ -4,16 +4,17 @@
 
 var Middleware = require('../kernel/Middleware');
 
-class test2 extends Middleware {
+class validate extends Middleware {
     beforeRequest(data) {
+        // SOME DATA VALIDATIONS
+
         return data;
     }
 
     afterRequest(data) {
-        console.log('Hi From test2');
         return data;
     }
 }
 
-let obj = new test2();
+let obj = new validate();
 module.exports = obj;

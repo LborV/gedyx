@@ -43,9 +43,12 @@ class Action {
             data = middleware.afterRequest(data);
         });
         this.socket.emit(this.actionName, data);
+
+        return data;
     }
 
     broadcast(data) {
+        data = this.response(data);
         this.socket.broadcast.emit(this.actionName, data);
     }
 

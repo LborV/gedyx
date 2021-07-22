@@ -1,0 +1,15 @@
+{i:item.status != 'deleted':
+    <!-- _loopIndex -->
+
+    <li>
+        <span class="{{item.status}}">{{item.text}}</span> 
+
+        {i:item.status != 'active':
+            <button class="deleteBtn" disabled="true">Delete</button>
+            <button class="completeBtn" disabled="true">Mark Complete</button>
+        :
+            <button class="deleteBtn" onclick="app.getController('exampleController').delete({{item.id}})">Delete</button>
+            <button class="completeBtn" onclick="app.getController('exampleController').complete({{item.id}})">Mark Complete</button>
+        :!}
+    </li>
+:!}

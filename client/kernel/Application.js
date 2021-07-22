@@ -18,11 +18,14 @@ class Application {
             } 
         }
 
-        globalThis.views = JSON.parse(localStorage.getItem('views')) ?? [];
-        window.onbeforeunload = () => {
-            this.onClose();
-            localStorage.setItem('views', JSON.stringify(globalThis.views ?? []));
-        };
+        this.useLocalStorage = configuration.useLocalStorage ?? true;
+        if(this.useLocalStorage) {
+            globalThis.views = JSON.parse(localStorage.getItem('views')) ?? [];
+            window.onbeforeunload = () => {
+                this.onClose();
+                localStorage.setItem('views', JSON.stringify(globalThis.views ?? []));
+            };
+        }
 
         if(configuration.useSockets !== undefined && configuration.socketsURL !== undefined) {
             this.useSockets = configuration.useSockets;

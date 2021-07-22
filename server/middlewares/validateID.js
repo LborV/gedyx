@@ -4,9 +4,12 @@
 
 var Middleware = require('../kernel/Middleware');
 
-class test3 extends Middleware {
+class validateID extends Middleware {
     beforeRequest(data) {
-        console.log('Hi From test3');
+        if(data.id === undefined) {
+            data.error = 'Not Specified Error';
+        }
+
         return data;
     }
 
@@ -15,5 +18,5 @@ class test3 extends Middleware {
     }
 }
 
-let obj = new test3();
+let obj = new validateID();
 module.exports = obj;

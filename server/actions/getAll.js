@@ -4,11 +4,11 @@
 
 var Action = require('../kernel/Action');
 
-class test2 extends Action {
+class getAll extends Action {
     request(data) {
-        this.response([5 ,6, 7, 8, 9, 11]);
+        this.response(todos.getAll());
     }
 }
 
-let obj = new test2('test2');
+let obj = new getAll('getAll');
 module.exports = obj;

@@ -1,65 +1,60 @@
 window.addEventListener('load', () => {
     class MyApp extends Application {
         onStartApp() {
-            // this.getController('welcomeController').show();
+            
         }
 
         onSocketConnected() {
-            this.socket.emit('test', {});
-
-            this.socket.on('test', data => {
-                console.info('TEST');
+            this.socket.on('complete', data => {
+                this.getController('exampleController').setItems(data);
             });
 
-            this.socket.on('test2', data => {
-                if(confirm('New data?')) {
-                    // this.getController('welcomeController').newData(data);
-                }
+
+            this.socket.on('delete', data => {
+                this.getController('exampleController').setItems(data);
+            });
+
+
+            this.socket.on('create', data => {
+                this.getController('exampleController').setItems(data);
+            });
+
+            this.socket.emit('getAll', {});
+            this.socket.on('getAll', data => {
+                this.getController('exampleController').setItems(data);
             });
         }
     }
 
     globalThis.app = new MyApp({
         useSockets: true,
+        useLocalStorage: true,
         socketsURL: 'ws://localhost:3030',
         routing: {
-            '/': 'welcomeController, welcomeController2',
-            '/test/{slug}': 'welcomeController2',
-            '/test/{slug}/some/{slug2}/link': 'welcomeController, welcomeController2',
-            '/test': 'welcomeController2'
+            '/': 'exampleController',
         },
         controllers: [
             {
-                name: 'welcomeController', 
-                url: '/js/controllers/welcomeController.js', 
+                name: 'exampleController', 
+                url: '/js/controllers/exampleController.js', 
                 settings: {
-                    id: 'welcome',
-                    url: '/views/welcome/index.json',
+                    id: 'example',
+                    url: '/views/example/index.json',
                     onError: '<div style="color: red">Error</div>',
                     showOnLoad: true
                 }
             },
-            {
-                name: 'welcomeController2', 
-                url: '/js/controllers/welcomeController.js', 
-                settings: {
-                    id: 'welcome2',
-                    url: '/views/welcome/index.json',
-                    onError: '<div style="color: red">Error</div>',
-                    showOnLoad: true
-                }
-            },
-            {
-                name: 'controller3', 
-                url: '/js/controllers/welcomeController.js', 
-                settings: {
-                    id: 'Loaded_any_way',
-                    url: '/views/welcome/index.json',
-                    onError: '<div style="color: red">Error</div>',
-                    showOnLoad: true
-                },
-                load: true
-            },
+            // {
+            //     name: 'Always Loaded Controller', 
+            //     url: '/js/controllers/anyController.js', 
+            //     settings: {
+            //         id: 'Loaded_any_way',
+            //         url: '/views/any/view.json',
+            //         onError: '<div style="color: red">Error</div>',
+            //         showOnLoad: true
+            //     },
+            //     load: true
+            // },
         ]
     });
 });
