@@ -7,8 +7,7 @@
     "test": "mocha",
     "actions": "node makeAction.js",
     "models": "node makeModels.js",
-    "middlewares": "node makeMiddlewares.js",
-    "docs:kernel": "documentation build kernel/Action.js --shallow -f md -o kernel/Action.md && documentation build kernel/Actions.js --shallow -f md -o kernel/Actions.md"
+    "middlewares": "node makeMiddlewares.js"
   },
   "author": "",
   "license": "ISC",
