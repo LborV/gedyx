@@ -2,7 +2,7 @@ const Action = require('./Action');
 globalThis.Middlewares = require('./Middlewares');
 /**
  * Этот класс вызывается автоматически один раз при запуске приложения. В конструкторе он создат глабальные объекты
- * дочерних классов {@link /Action.md|Action} которые находятся в папке
+ * дочерних классов {@link /server/kernel/Action.md|Action} которые находятся в папке
  * <pre><code>
  * /server/actions
  * </code></pre>

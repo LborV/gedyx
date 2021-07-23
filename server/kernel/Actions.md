@@ -28,6 +28,6 @@
 
 [2]: #parameters
 
-[3]: /Action.md
+[3]: /server/kernel/Action.md
 
 [4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
