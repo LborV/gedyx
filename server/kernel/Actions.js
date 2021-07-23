@@ -1,5 +1,19 @@
 const Action = require('./Action');
 globalThis.Middlewares = require('./Middlewares');
+/**
+ * Этот класс вызывается автоматически один раз при запуске приложения. В конструкторе он создат глабальные объекты
+ * дочерних классов {@link '/Action.md'|Action} которые находятся в папке
+ * <pre><code>
+ * /server/actions
+ * </code></pre>
+ * и глобальные объекты дочерних классов Middleware которые находиятся в папке 
+ * <pre><code>
+ * /server/middlewares
+ * </code></pre>
+ * 
+ * 
+ * @param {Object} configs конфишурация
+ */
 class Actions {
     constructor(configs) {        
         if(!configs.io) {
