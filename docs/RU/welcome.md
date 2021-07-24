@@ -5,8 +5,6 @@
     * [Конфигурация](install.md#конфигурация)
     * [Установка](install.md#установка)
 * [Принципы работы](workflow.md)
-    <!-- * [Бэкенд](workflow.md)
-    * [Фронтенд](workflow.md) -->
 * [Бэкенд](backend.md)
     * [Модели](backend.md)
     * [Action](backend.md)
