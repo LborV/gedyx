@@ -7,7 +7,7 @@
 * [NGINX](https://www.nginx.com/resources/wiki/start/topics/tutorials/install/)
 
 ## Конфигурация
-В файле [configs.js](../server/configs.js) находятся конфигруации бэкенда.
+В файле [configs.js](../../server/configs.js) находятся конфигруации бэкенда.
 Объект ```configs``` является JSON объектом, далее описаны поля ожидаемые по умолчанию:
 * __mysql__ 
     * __host__ хост адресс вашего MySQL сервера
