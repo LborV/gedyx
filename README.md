@@ -8,3 +8,4 @@ Link
 http://localhost:8000
 ```
 
+[Docs RU](/docs/RU/welcome.md)
