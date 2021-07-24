@@ -65,4 +65,4 @@ todos
     .execute();
 ```
 
-Далее Action может вернуть какую-то информацию обратно клиенту, тот в свою очередь может изменить View основываясь на новых данных. Для примера можно рассмотреть функциональность удаления карточек из списка в файлах [View](../client/views/example/item.html#L11), [Controller](../client/js/controllers/exampleController.js#L36), [Action](../server/actions/delete.js#L8) и [Model](../server/models/todos)
+Далее Action может вернуть какую-то информацию обратно клиенту, тот в свою очередь может изменить View основываясь на новых данных. Для примера можно рассмотреть функциональность удаления карточек из списка в файлах [View](./client/views/example/item.html#L11), [Controller](./client/js/controllers/exampleController.js#L36), [Action](./server/actions/delete.js#L8) и [Model](./server/models/todos)
