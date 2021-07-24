@@ -362,3 +362,96 @@ this.getSql();
         });
         // INNER JOIN `a` ON a.id = 1
     ```
+
+## Action
+
+Для создания Action достаточно в директории server/ выполнить следующую команду
+```
+npm run actions {названия}
+```
+
+> Можно передавать множество названий, перечисляя их через пробел
+
+В качестве аргументов следует передавать названия Action, на пример:
+```
+npm run actions create
+```
+
+Это создаст файл [create.js](../../server/actions/create.js) в папке server/actions/
+```javascript
+var Action = require('../kernel/Action');
+
+class create extends Action {
+    request(data) {
+       ...
+    }
+}
+
+let obj = new create('create');
+module.exports = obj;
+```
+
+Action create будет автоматически зарегестрирован при запуске приложения.
+
+### Описание Функционала
+Входной точкой для Action всегда является метод request. Аргумент, который принимает этот метод - полученый запрос. Для ответа существует несколько методов:
+* response
+    * Описание: возвращает клиенту ответ
+    * Аргументы:
+        * [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
+* broadcast
+    * Описание: возвращает всем подключеным клиентам ответ
+    * Аргументы:
+        * [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+> Не возвращать ответ - нормально.
+
+Так же возможно симулировать запрос на другой Action при помощи метода:
+* call
+    * Аргументы:
+        * [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) actionName
+        * [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+## Middlewares
+Middlewares нужны для того чтобы обрабатывать входяшие данные и выходящие. Самый простой пример использования - валидация данных. 
+
+
+Для создания Middleware достаточно в директории server/ выполнить следующую команду
+```
+npm run middlewares {названия}
+```
+
+> Можно передавать множество названий, перечисляя их через пробел
+
+В качестве аргументов следует передавать названия Middleware, на пример:
+```
+npm run middlewares validateID
+```
+
+Это создаст файл [validateID.js](../../server/middlewares/validateID.js) в папке server/middlewares/
+
+
+```javascript
+var Middleware = require('../kernel/Middleware');
+
+class validateID extends Middleware {
+    beforeRequest(data) {
+        return data;
+    }
+
+    afterRequest(data) {
+        return data;
+    }
+}
+
+let obj = new validateID();
+module.exports = obj;
+```
+
+Для того чтобы применить Middleware к Action нужно указать её название в конструкторе Action
+```javascript
+let obj = new deleteAction('delete', [validateID], [validateID]);
+```
+> Middlewares будут вызваны в том порядка, в каком они указаны в массиве, каждая Middleware возвращает результат следующей
+
+В данном примере до вызова метода request у Action будет вызван метод beforeRequest, то что он вернёт - будет передано в request. В случае если Action будет возвращать результат - будет вызван метод afterRequest
