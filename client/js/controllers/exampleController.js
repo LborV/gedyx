@@ -4,6 +4,7 @@ export default class exampleController extends Controller{
     constructor(settings) {
         super(settings);
 
+        this.usersOnline = 0;
         this.items = [];
     }
 
@@ -13,6 +14,11 @@ export default class exampleController extends Controller{
 
     onLoad() {
         console.log('Loaded: '+this.name);
+    }
+
+    updateUsersOnline(users) {
+        this.usersOnline = users;
+        return this.reload();
     }
 
     setItems(items) {

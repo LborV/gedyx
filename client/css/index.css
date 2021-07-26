@@ -70,3 +70,13 @@ body {
 #content #example ul input:focus {
     outline: 0;
 }
+
+.usersOnline {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    text-align: right;
+    padding-right: .5em;
+    padding-top: .5em;
+}

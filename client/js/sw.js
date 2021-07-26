@@ -7,19 +7,22 @@ function hndlEventInstall(evt) {
      */
     async function cacheStaticFiles() {
         const files = [
-            './',
-            './pwa.json',
-            './images/icons/icon.png',
-            './index.html',
-            './js/sw.js',
+            '/',
+            '/pwa.json',
+            '/images/icons/icon.png',
+            '/index.html',
+            '/js/sw.js',
 
             // Kernel files
-            './kernel/Application.js',
-            './kernel/Controller.js',
-            './kernel/Parser.js',
+            '/kernel/Application.js',
+            '/kernel/Controller.js',
+            '/kernel/Parser.js',
             
-            // Should be your json files
-            './views/welcome/index.json'
+            // main.js
+            '/js/main.js',
+
+            // Controllers
+            '/js/controllers/exampleController.js'
         ];
         const cacheStat = await caches.open(CACHE_STATIC);
         await Promise.all(

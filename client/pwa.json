@@ -10,5 +10,5 @@
     "background_color": "#FFFFFF",
     "theme_color": "#FFFFFF",
     "display": "standalone",
-    "start_url": "http://jsmvc.local"
+    "start_url": "http://localhost:8000/js"
   }

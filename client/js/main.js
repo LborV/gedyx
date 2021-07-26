@@ -19,10 +19,17 @@ window.addEventListener('load', () => {
                 this.getController('exampleController').setItems(data);
             });
 
-            this.socket.emit('getAll', {});
+
             this.socket.on('getAll', data => {
                 this.getController('exampleController').setItems(data);
             });
+
+            this.socket.on('usersOnline', data => {
+                this.getController('exampleController').updateUsersOnline(data.users);
+            });
+
+            this.socket.emit('getAll', {});
+            this.socket.emit('usersOnline', {});
         }
     }
 
