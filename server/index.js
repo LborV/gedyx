@@ -6,6 +6,7 @@ actionsPool.onConnect = () => {
     usersOnlineCount++;
 }
 
-actionsPool.onDisconnect = () => {
+actionsPool.onDisconnect = (socket) => {
     usersOnlineCount--;
+    actionsPool.call('usersOnline', {users: usersOnlineCount}, socket);
 }
