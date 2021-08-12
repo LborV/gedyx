@@ -38,17 +38,17 @@ class MysqlQueryBuilder extends QueryBuilder {
         if(typeof value !== 'string') {
             return value;
         }
-        
+
+        value = value.replace(/\\/g, '');
         value = value.replace('\'', '\\\'');
-        value = value.replace('\\', '');
-        value = value.replace('`', '\`');
-        value = value.replace(';', '');
-        value = value.replace('\\b', '');
-        value = value.replace('\\t', '');
-        value = value.replace('\\r', '');
-        value = value.replace('\\Z', '');
-        value = value.replace('\\n', '');
-        value = value.replace('\\0', '');
+        value = value.replace(/`/g, '\\\`');
+        value = value.replace(/;/g, '\\;');
+        value = value.replace(/\\b/g, '');
+        value = value.replace(/\\t/g, '');
+        value = value.replace(/\\r/g, '');
+        value = value.replace(/\\Z/g, '');
+        value = value.replace(/\\n/g, '');
+        value = value.replace(/\\0/g, '');
 
         return value;
     }
@@ -78,7 +78,7 @@ class MysqlQueryBuilder extends QueryBuilder {
                 }
             });
         } else {
-            sql += 'SELECT * ';
+            sql += `SELECT \`${obj.table}\`.* `;
         }
    
         if(obj.table.length) {
@@ -247,10 +247,6 @@ class MysqlQueryBuilder extends QueryBuilder {
             throw 'No table';
         }
 
-        if(this.queryObject.select.length) {
-            return this.makeSelectQuery();
-        }
-
         if(this.queryObject.update.length) {
             return this.makeUpdateQuery();
         }
@@ -263,7 +259,7 @@ class MysqlQueryBuilder extends QueryBuilder {
             return this.makeDeleteQuery();
         }
 
-        throw 'Wrong Operation';
+        return this.makeSelectQuery();
     }
 
     getSql() {

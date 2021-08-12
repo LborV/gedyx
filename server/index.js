@@ -11,6 +11,16 @@ actionsPool.onDisconnect = (socket) => {
     actionsPool.call('usersOnline', {users: usersOnlineCount}, socket);
 }
 
+console.log('*******************************');
+
+
+let sql = todos.where('id', ';DROP``\'\\n').getSql();
+
+console.log(sql);
+
+console.log('*******************************');
+
+
 let insertTest = 'test';
 
 testRedis.set('test1', insertTest);
@@ -31,3 +41,5 @@ testRedis.set('test1', insertTest);
 testRedis.get('test1').then(data => {
     console.log(data);
 });
+
+
