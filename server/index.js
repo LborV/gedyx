@@ -11,7 +11,9 @@ actionsPool.onDisconnect = (socket) => {
     actionsPool.call('usersOnline', {users: usersOnlineCount}, socket);
 }
 
-testRedis.set('test1', 'test me string');
+let insertTest = 'test';
+
+testRedis.set('test1', insertTest);
 testRedis.get('test1').then(data => {
     console.log(data);
 });
@@ -20,12 +22,12 @@ testRedis.get('test1').then(data => {
     console.log(data);
 });
 
-testRedis.set('test1', 'test me string2');
+testRedis.set('test1', insertTest);
 testRedis.get('test1').then(data => {
     console.log(data);
 });
 
-testRedis.set('test1', 'test me string3');
+testRedis.set('test1', insertTest);
 testRedis.get('test1').then(data => {
     console.log(data);
 });

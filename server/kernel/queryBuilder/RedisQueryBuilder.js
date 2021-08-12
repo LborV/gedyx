@@ -6,7 +6,7 @@ class RedisQueryBuilder extends QueryBuilder {
     }
 
     set(key, value) {
-        this.connection.set(key, value);
+        this.connection.set(key, JSON.stringify(value));
     }
 
     async get(key) {
@@ -15,7 +15,7 @@ class RedisQueryBuilder extends QueryBuilder {
             result = data;
         });
 
-        return result;
+        return JSON.parse(result);
     }
 
     truncate() {
