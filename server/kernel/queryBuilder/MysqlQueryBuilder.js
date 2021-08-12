@@ -241,6 +241,10 @@ class MysqlQueryBuilder extends QueryBuilder {
         this.queryToSql();
         return this.sql;
     }
+
+    truncate() {
+        return this.executeRaw(`TRUNCATE \`${this.tableName}\``);
+    }
 }
 
 module.exports = MysqlQueryBuilder;
