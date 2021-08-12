@@ -34,6 +34,25 @@ class MysqlQueryBuilder extends QueryBuilder {
         return this.connection.query(sql);
     }
 
+    escape(value) {
+        if(typeof value !== 'string') {
+            return value;
+        }
+        
+        value = value.replace('\'', '\\\'');
+        value = value.replace('\\', '');
+        value = value.replace('`', '\`');
+        value = value.replace(';', '');
+        value = value.replace('\\b', '');
+        value = value.replace('\\t', '');
+        value = value.replace('\\r', '');
+        value = value.replace('\\Z', '');
+        value = value.replace('\\n', '');
+        value = value.replace('\\0', '');
+
+        return value;
+    }
+
     makeSelectQuery(subWhere) {
         let obj = this.queryObject;
         if(subWhere) {
@@ -51,11 +70,15 @@ class MysqlQueryBuilder extends QueryBuilder {
                 }
     
                 if(typeof element === 'string') {
+                    element = this.escape(element);
                     sql += `\`${element}\`${delimeter} `;
                 } else if(typeof element === 'object' && element.raw) {
+                    element.value = this.escape(element.value);
                     sql += `${element.value}${delimeter} `;
                 }
             });
+        } else {
+            sql += 'SELECT * ';
         }
    
         if(obj.table.length) {
@@ -125,6 +148,7 @@ class MysqlQueryBuilder extends QueryBuilder {
                     this.isJoin = false;
 
                     if(where.a1) {
+                        where.a1 = this.escape(where.a1);
                         sql += `${where.a1} ${where.operator} `;
                     }
 
@@ -134,6 +158,8 @@ class MysqlQueryBuilder extends QueryBuilder {
 
                     this.isJoin = isJoinSave;
                 } else {
+                    where.a1 = this.escape(where.a1);
+                    where.a2 = this.escape(where.a2);
                     sql += `${where.a1} ${where.operator} ${where.a2} `;
                 }
 
@@ -166,6 +192,7 @@ class MysqlQueryBuilder extends QueryBuilder {
                 delimeter = '';
             }
 
+            item[1] = this.escape(item[1]);
             if(typeof item[1] === 'string') {
                 item[1] = `'${item[1]}'`;
             }
@@ -186,6 +213,7 @@ class MysqlQueryBuilder extends QueryBuilder {
             if(index === this.queryObject.insert.length - 1) {
                 delimeter = '';
             }
+            
             sql += `\`${item[0]}\`${delimeter} `;
         });
 
@@ -197,6 +225,7 @@ class MysqlQueryBuilder extends QueryBuilder {
                 delimeter = '';
             }
 
+            item[1] = this.escape(item[1]);
             if(typeof item[1] === 'string') {
                 item[1] = `'${item[1]}'`;
             }
