@@ -11,35 +11,52 @@ actionsPool.onDisconnect = (socket) => {
     actionsPool.call('usersOnline', {users: usersOnlineCount}, socket);
 }
 
-console.log('*******************************');
+let res = todos.where('id', '>', 2).execute();
+testMemmory.set('r', res);
+
+(async () => {
+
+    console.log('*******************************');
+    console.time('time')
+    for(let i = 0; i < 10; i++) {
+        res = testMemmory.get('r');
+        console.log(res);
+
+        // let res = todos.where('id', '>', 2).execute();
+        // console.log(res);
+        
+        // let res_redis = await testRedis.get('r');
+        // console.log(res_redis);
+    }
+    console.timeEnd('time');
+})();
+
+// let sql = todos.where('id', ';DROP``\'\\n').getSql();
+
+// console.log(sql);
+
+// console.log('*******************************');
 
 
-let sql = todos.where('id', ';DROP``\'\\n').getSql();
+// let insertTest = 'test';
 
-console.log(sql);
+// testRedis.set('test1', insertTest);
+// testRedis.get('test1').then(data => {
+//     console.log(data);
+// });
+// testRedis.truncate();
+// testRedis.get('test1').then(data => {
+//     console.log(data);
+// });
 
-console.log('*******************************');
+// testRedis.set('test1', insertTest);
+// testRedis.get('test1').then(data => {
+//     console.log(data);
+// });
 
-
-let insertTest = 'test';
-
-testRedis.set('test1', insertTest);
-testRedis.get('test1').then(data => {
-    console.log(data);
-});
-testRedis.truncate();
-testRedis.get('test1').then(data => {
-    console.log(data);
-});
-
-testRedis.set('test1', insertTest);
-testRedis.get('test1').then(data => {
-    console.log(data);
-});
-
-testRedis.set('test1', insertTest);
-testRedis.get('test1').then(data => {
-    console.log(data);
-});
+// testRedis.set('test1', insertTest);
+// testRedis.get('test1').then(data => {
+//     console.log(data);
+// });
 
 
