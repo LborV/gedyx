@@ -79,6 +79,7 @@ class MysqlQueryBuilder extends QueryBuilder {
             });
         } else {
             sql += `SELECT \`${obj.table}\`.* `;
+            obj.select = [''];
         }
    
         if(obj.table.length) {
