@@ -6,11 +6,19 @@ class MemmoryQueryBuilder extends QueryBuilder {
     }
 
     set(key, value) {
+        if(typeof key !== 'string') {
+            throw 'Inncorrect key';
+        }
+
         this.data[key] = value;
     }
 
     get(key) {
-        return this.data[key];
+        if(typeof key !== 'string') {
+            throw 'Inncorrect key';
+        }
+
+        return this.data[key] ? this.data[key] : [];
     }
 
     truncate() {
@@ -19,6 +27,14 @@ class MemmoryQueryBuilder extends QueryBuilder {
 
     all() {
         return this.data;
+    }
+
+    delete(key) {
+        if(typeof key !== 'string') {
+            throw 'Inncorrect key';
+        }
+
+        delete this.data[key];
     }
 }
 

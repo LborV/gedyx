@@ -6,16 +6,32 @@ class RedisQueryBuilder extends QueryBuilder {
     }
 
     set(key, value) {
+        if(typeof key !== 'string') {
+            throw 'Inncorrect key';
+        }
+
         this.connection.set(key, JSON.stringify(value));
     }
 
     async get(key) {
+        if(typeof key !== 'string') {
+            throw 'Inncorrect key';
+        }
+
         let result;
         await this.connection.get(key).then((data) => {
-            result = data;
+            result = data ? JSON.parse(data) : [];
         });
 
-        return JSON.parse(result);
+        return result;
+    }
+
+    delete(key) {
+        if(typeof key !== 'string') {
+            throw 'Inncorrect key';
+        }
+
+        return this.connection.del(key);
     }
 
     truncate() {

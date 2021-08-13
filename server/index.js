@@ -13,6 +13,7 @@ actionsPool.onDisconnect = (socket) => {
 
 let res = todos.where('id', '>', 2).execute();
 testMemmory.set('r', res);
+testRedis.set('r', res);
 
 (async () => {
 
@@ -25,8 +26,9 @@ testMemmory.set('r', res);
         // let res = todos.where('id', '>', 2).execute();
         // console.log(res);
         
-        // let res_redis = await testRedis.get('r');
-        // console.log(res_redis);
+        let res_redis = await testRedis.get('r');
+        console.log(res_redis);
+        testRedis.delete('r');
     }
     console.timeEnd('time');
     console.log('*******************************');
