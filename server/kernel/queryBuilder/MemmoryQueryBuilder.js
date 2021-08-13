@@ -16,6 +16,10 @@ class MemmoryQueryBuilder extends QueryBuilder {
     truncate() {
         this.data = [];
     }
+
+    all() {
+        return this.data;
+    }
 }
 
 module.exports = MemmoryQueryBuilder;

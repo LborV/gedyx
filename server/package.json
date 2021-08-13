@@ -7,7 +7,9 @@
     "test": "mocha",
     "actions": "node makeAction.js",
     "models": "node makeModels.js",
-    "middlewares": "node makeMiddlewares.js"
+    "middlewares": "node makeMiddlewares.js",
+    "memmoryStorage": "node makeMemmoryStorage.js",
+    "redisStorage": "node makeRedisStorage.js"
   },
   "author": "",
   "license": "ISC",

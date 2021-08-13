@@ -19,8 +19,8 @@ testMemmory.set('r', res);
     console.log('*******************************');
     console.time('time')
     for(let i = 0; i < 10; i++) {
-        res = testMemmory.get('r');
-        console.log(res);
+        // res = testMemmory.get('r');
+        // console.log(res);
 
         // let res = todos.where('id', '>', 2).execute();
         // console.log(res);
@@ -29,6 +29,7 @@ testMemmory.set('r', res);
         // console.log(res_redis);
     }
     console.timeEnd('time');
+    console.log('*******************************');
 })();
 
 // let sql = todos.where('id', ';DROP``\'\\n').getSql();
