@@ -7,8 +7,9 @@ var Action = require('../kernel/Action');
 class getAll extends Action {
     request(data) {
         redis.get('allTodos').then((res) => {
-            if(!res) {
+            if(res.length == 0) {
                 res = todos.getAll();
+
                 redis.set('allTodos', res);
             }
     
