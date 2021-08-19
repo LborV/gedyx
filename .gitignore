@@ -114,4 +114,4 @@ server/configs/config.js
 
 server/package-lock.json
 
-server/node_modules
+server/node_modules/
