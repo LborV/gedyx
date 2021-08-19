@@ -2,6 +2,11 @@ require('./include.js');
 
 globalThis.usersOnlineCount = 0;
 
+// Truncate Redis
+redis.truncate();
+// Truncate Database
+todos.truncate();
+
 actionsPool.onConnect = () => {
     console.log('Client Connected');
     usersOnlineCount++;

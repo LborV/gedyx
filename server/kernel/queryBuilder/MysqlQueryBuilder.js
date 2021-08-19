@@ -55,10 +55,8 @@ class MysqlQueryBuilder extends QueryBuilder {
                 }
     
                 if(typeof element === 'string') {
-                    element = this.escape(element);
                     sql += `\`${element}\`${delimeter} `;
                 } else if(typeof element === 'object' && element.raw) {
-                    element.value = this.escape(element.value);
                     sql += `${element.value}${delimeter} `;
                 }
             });
@@ -134,7 +132,7 @@ class MysqlQueryBuilder extends QueryBuilder {
                     this.isJoin = false;
 
                     if(where.a1) {
-                        where.a1 = this.escape(where.a1);
+                        where.a1 = SqlString.escapeId(where.a1);
                         sql += `${where.a1} ${where.operator} `;
                     }
 
@@ -144,7 +142,7 @@ class MysqlQueryBuilder extends QueryBuilder {
 
                     this.isJoin = isJoinSave;
                 } else {
-                    where.a1 = this.escape(where.a1);
+                    where.a1 = SqlString.escapeId(where.a1);
                     where.a2 = this.escape(where.a2);
                     sql += `${where.a1} ${where.operator} ${where.a2} `;
                 }
@@ -179,10 +177,6 @@ class MysqlQueryBuilder extends QueryBuilder {
             }
 
             item[1] = this.escape(item[1]);
-            if(typeof item[1] === 'string') {
-                item[1] = `'${item[1]}'`;
-            }
-
             sql += `\`${item[0]}\` = ${item[1]}${delimeter} `;
         });
 
@@ -212,10 +206,6 @@ class MysqlQueryBuilder extends QueryBuilder {
             }
 
             item[1] = this.escape(item[1]);
-            if(typeof item[1] === 'string') {
-                item[1] = `'${item[1]}'`;
-            }
-
             sql += `${item[1]}${delimeter} `;
         });
 

@@ -5,16 +5,17 @@
 var Action = require('../kernel/Action');
 
 class getAll extends Action {
-    request(data) {
-        redis.get('allTodos').then((res) => {
-            if(res.length == 0) {
-                res = todos.getAll();
+    async request(data) {
+        let res = await redis.get('allTodos');
 
-                redis.set('allTodos', res);
-            }
+        console.log('FROM REDIS:', res);
+        if(!res.length) {
+            res = todos.getAll();
+            console.log('FROM DATABSE:', res);
+            redis.set('allTodos', res);
+        }
     
-            this.response(res);
-        });
+        this.response(res);
     }
 }
 
