@@ -113,3 +113,5 @@ data/
 server/configs/config.js
 
 server/package-lock.json
+
+server/node_modules
