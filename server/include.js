@@ -7,6 +7,7 @@ globalThis.Models = require('./kernel/Models');
 // Mysql Connection
 if(config.mysql && config.mysql.host && config.mysql.user && config.mysql.user && config.mysql.password && config.mysql.db) {
     try {
+        globalThis.SqlString = require('sqlstring');
         const mysql = require('sync-mysql');
         globalThis.mysqlConnection = new mysql({
             host: config.mysql.host,

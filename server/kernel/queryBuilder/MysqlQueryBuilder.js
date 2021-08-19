@@ -35,22 +35,7 @@ class MysqlQueryBuilder extends QueryBuilder {
     }
 
     escape(value) {
-        if(typeof value !== 'string') {
-            return value;
-        }
-
-        value = value.replace(/\\/g, '');
-        value = value.replace('\'', '\\\'');
-        value = value.replace(/`/g, '\\\`');
-        value = value.replace(/;/g, '\\;');
-        value = value.replace(/\\b/g, '');
-        value = value.replace(/\\t/g, '');
-        value = value.replace(/\\r/g, '');
-        value = value.replace(/\\Z/g, '');
-        value = value.replace(/\\n/g, '');
-        value = value.replace(/\\0/g, '');
-
-        return value;
+        return SqlString.escape(value);
     }
 
     makeSelectQuery(subWhere) {
