@@ -3,11 +3,11 @@
 //Feel free to edit :)
 
 const RedisQueryBuilder = require('../kernel/queryBuilder/RedisQueryBuilder');    
-class testRedis extends RedisQueryBuilder {
+class redis extends RedisQueryBuilder {
 
 }
 
-let obj = new testRedis({
+let obj = new redis({
     connection: redisConnection,
 });
 module.exports = obj;

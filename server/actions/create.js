@@ -8,7 +8,10 @@ class create extends Action {
     request(data) {
         todos.insert(data).execute();
 
-        this.broadcast(todos.getAll());
+        let res = todos.getAll();
+        redis.set('allTodos', res);
+
+        this.broadcast(res);
     }
 }
 

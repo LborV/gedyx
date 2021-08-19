@@ -20,11 +20,11 @@ if(config.mysql && config.mysql.host && config.mysql.user && config.mysql.user &
 }
 
 // Redis connection
-if(config.redis && config.redis.port && config.redis.host && config.redis.password) {
+if(config.redis && config.redis.port && config.redis.host) {
     try {
         globalThis.redis = require('redis');
         const util = require('util');
-        globalThis.redisConnection = redis.createClient();
+        globalThis.redisConnection = redis.createClient(config.redis);
         globalThis.redisConnection.get = util.promisify(globalThis.redisConnection.get);
     } catch (error) {
         console.error(error);

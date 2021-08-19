@@ -17,7 +17,10 @@ class deleteAction extends Action {
             .where('id', data.id)
             .execute();
 
-        this.broadcast(todos.getAll());
+        let res = todos.getAll();
+        redis.set('allTodos', res);
+
+        this.broadcast(res);
     }
 }
 

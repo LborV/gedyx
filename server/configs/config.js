@@ -11,8 +11,8 @@ var configs = {
     },
     "redis": {
         port: 6379,
-        host: "120.0.0.1",
-        password: "123",   
+        host: "redis",
+        password: "",   
     }
 };
 

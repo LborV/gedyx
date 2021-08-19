@@ -36,7 +36,7 @@ window.addEventListener('load', () => {
     globalThis.app = new MyApp({
         useSockets: true,
         useLocalStorage: true,
-        socketsURL: 'ws://localhost:3030',
+        socketsURL: 'http://localhost:8000',
         routing: {
             '/': 'exampleController',
         },
