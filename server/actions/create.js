@@ -5,10 +5,10 @@
 var Action = require('../kernel/Action');
 
 class create extends Action {
-    request(data) {
-        todos.insert(data).execute();
+    async request(data) {
+        await todos.insert(data).execute();
 
-        let res = todos.getAll();
+        let res = await todos.getAll();
         redis.set('allTodos', res);
 
         this.broadcast(res);

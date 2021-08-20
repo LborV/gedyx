@@ -8,10 +8,8 @@ class getAll extends Action {
     async request(data) {
         let res = await redis.get('allTodos');
 
-        console.log('FROM REDIS:', res);
         if(!res.length) {
-            res = todos.getAll();
-            console.log('FROM DATABSE:', res);
+            res = await todos.getAll();
             redis.set('allTodos', res);
         }
     

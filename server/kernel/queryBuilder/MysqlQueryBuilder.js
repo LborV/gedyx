@@ -10,18 +10,18 @@ class MysqlQueryBuilder extends QueryBuilder {
         }
     }
 
-    execute() {
-        let res = this.connection.query(this.getSql());
+    async execute() {
+        let res = await this.connection.query(this.getSql());
         this.resetQuery();
 
         if(this.tableName) {
             this.table(this.tableName); 
         }
 
-        return res;
+        return res[0];
     }
 
-    executeRaw(sql) {
+    async executeRaw(sql) {
         if(typeof sql !== 'string') {
             throw 'Inccorect input';
         }
@@ -31,7 +31,8 @@ class MysqlQueryBuilder extends QueryBuilder {
             this.table(this.tableName); 
         }
 
-        return this.connection.query(sql);
+        let res = await this.connection.query(sql);
+        return res[0];
     }
 
     escape(value) {

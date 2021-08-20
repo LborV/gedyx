@@ -5,7 +5,7 @@
 var Action = require('../kernel/Action');
 
 class usersOnline extends Action {
-    request(data) {
+    async request(data) {
         this.broadcast({users: usersOnlineCount});
     }
 }

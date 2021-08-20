@@ -16,8 +16,7 @@
   "dependencies": {
     "redis": "^3.1.2",
     "socket.io": "^2.4.1",
-    "sqlstring": "^2.3.1",
-    "sync-mysql": "^3.0.1"
+    "sqlstring": "^2.3.1"
   },
   "devDependencies": {
     "mocha": "^8.2.1"
