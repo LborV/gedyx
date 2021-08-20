@@ -110,6 +110,6 @@ data/
 
 # End of https://www.gitignore.io/api/node
 
-server/configs/config.js
+app/configs/config.js
 
-server/node_modules/
+app/node_modules/
