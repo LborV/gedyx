@@ -6,12 +6,12 @@
   "scripts": {
     "start": "npm run compileViews && node index.js",
     "test": "mocha",
-    "actions": "node scripts/makeAction.js",
-    "models": "node scripts/makeModels.js",
-    "middlewares": "node scripts/makeMiddlewares.js",
-    "memmoryStorage": "node scripts/makeMemmoryStorage.js",
-    "redisStorage": "node scripts/makeRedisStorage.js",
-    "compileViews": "node scripts/compileViews.js"
+    "create:actions": "node scripts/makeAction.js",
+    "create:models": "node scripts/makeModels.js",
+    "create:middlewares": "node scripts/makeMiddlewares.js",
+    "create:memmoryStorage": "node scripts/makeMemmoryStorage.js",
+    "create:redisStorage": "node scripts/makeRedisStorage.js",
+    "compile:views": "node scripts/compileViews.js"
   },
   "author": "LborV(Boris Djumajev)",
   "license": "SEE LICENSE IN ../LICENSE",
