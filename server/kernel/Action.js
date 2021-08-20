@@ -30,7 +30,7 @@ class Action {
         this.request(data);
     }
 
-    request(data) {
+    async request(data) {
         console.log('Request method can be overwriten');
     }
 
