@@ -4,7 +4,7 @@
   "description": "Server part for js-mvc framework",
   "main": "index.js",
   "scripts": {
-    "start": "npm run compileViews && node index.js",
+    "start": "npm run compile:views && node index.js",
     "test": "mocha",
     "create:actions": "node scripts/makeAction.js",
     "create:models": "node scripts/makeModels.js",
