@@ -1,7 +1,7 @@
 const { resolve } = require('path');
 const { readdir } = require('fs').promises;
 const fs = require('fs');
-const Parser = require('./kernel/parserCLI');
+const Parser = require('../public/kernel/parserCLI');
 
 async function* getFiles(dir) {
   const dirents = await readdir(dir, { withFileTypes: true });
@@ -17,7 +17,7 @@ async function* getFiles(dir) {
 
 const p = new Parser();
 (async () => {
-    let normalizedPath = require("path").join('', "views");
+    let normalizedPath = require("path").join('', "public/views");
     for await (const f of getFiles(normalizedPath)) {
         try {
             fs.readFile(f, (error, data) => {

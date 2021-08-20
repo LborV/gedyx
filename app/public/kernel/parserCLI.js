@@ -35,7 +35,7 @@ module.exports = class Parser {
             let include = includes[0];
             let link = include[0].replace('{include ', '').replace('}', '');
             try {
-                let data = fs.readFileSync('./views/' + link);
+                let data = fs.readFileSync('./public/views/' + link);
                 return this.makeTreeFromString(string.replace(include[0], data.toString()))
             } catch(e) {
                 console.log(e);
