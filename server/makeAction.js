@@ -43,7 +43,7 @@ function makeFileContent(actionName, action_name) {
 var Action = require('../kernel/Action');
 
 class ${actionName} extends Action {
-    request(data) {
+    async request(data) {
         this.response(data);
     }
 }

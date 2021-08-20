@@ -47,8 +47,8 @@ function makeFileContent(modelName, model_name) {
 
 const MysqlQueryBuilder = require('../kernel/queryBuilder/MysqlQueryBuilder');    
 class ${model_name} extends MysqlQueryBuilder {
-    getAll() {
-        return this
+    async getAll() {
+        return await this
             .selectRaw('*')
             .get();
     }
