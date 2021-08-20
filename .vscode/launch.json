@@ -5,19 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "pwa-chrome",
+            "name": "Launch via npm",
+            "type": "node",
             "request": "launch",
-            "name": "Frontend Debugger",
-            "url": "http://jsmvc.local"
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "runtimeVersion": "14.17.0", 
-            "name": "Backend Debugger",
-            "program": "${workspaceFolder}/server/index.js",
-            "cwd": "${workspaceFolder}/server",
-            "runtimeExecutable": "nodemon",
+            "runtimeVersion": "14.17.0",
+            "cwd": "${workspaceFolder}/app",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run-script", "start"]
         }
     ]
 }
