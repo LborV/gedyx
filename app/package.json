@@ -11,6 +11,8 @@
     "create:middlewares": "node scripts/makeMiddlewares.js",
     "create:memmoryStorage": "node scripts/makeMemmoryStorage.js",
     "create:redisStorage": "node scripts/makeRedisStorage.js",
+    "create:migrationMySql": "node scripts/makeMigrationMySql.js",
+    "migrate:mysql": "node scripts/migrateMySql.js",
     "compile:views": "node scripts/compileViews.js"
   },
   "author": "LborV(Boris Djumajev)",
