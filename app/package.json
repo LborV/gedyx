@@ -17,6 +17,7 @@
   "license": "SEE LICENSE IN ../LICENSE",
   "dependencies": {
     "mysql2": "^2.3.0",
+    "recursive-readdir": "^2.2.2",
     "redis": "^3.1.2",
     "socket.io": "^2.4.1",
     "sqlstring": "^2.3.1"

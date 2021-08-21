@@ -2,11 +2,10 @@
 //This file was automaticaly generated
 //Feel free to edit :)
 
-const MysqlQueryBuilder = require('../kernel/queryBuilder/MysqlQueryBuilder');    
+const MysqlQueryBuilder = require('../../kernel/queryBuilder/MysqlQueryBuilder');    
 class todos extends MysqlQueryBuilder {
     async getAll() {
         return await this
-            .selectRaw('*')
             .orderByDesc('id')
             .execute();
     }

@@ -2,7 +2,7 @@
 //This file was automaticaly generated
 //Feel free to edit :)
 
-var Action = require('../kernel/Action');
+var Action = require('../../kernel/Action');
 
 class deleteAction extends Action {
     async request(data) {

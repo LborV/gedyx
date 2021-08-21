@@ -1,3 +1,4 @@
+const QueryBuilder = require('./QueryBuilder');
 class MemmoryQueryBuilder extends QueryBuilder {
     constructor(config) {
         super();

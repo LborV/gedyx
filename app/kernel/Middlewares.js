@@ -1,16 +1,22 @@
+const Loader = require('./Loader');
 const Middleware = require('./Middleware');
-class Middlewares {
+class Middlewares extends Loader {
     constructor() {
+        super();
+        this.load();
+    }
+
+    load(dirName = 'middlewares') {
         try{
-            let normalizedPath = require("path").join('', "middlewares");
-            require("fs").readdirSync(normalizedPath).forEach((file) => {
+            let normalizedPath = require("path").join('', dirName);
+            this.getFiles(normalizedPath).forEach((file) => {
                 if(!file.includes('.js')) {
                     return;
                 }
 
-                let model = require(`../middlewares/${file}`);
+                let model = require(`../${file}`);
                 if(model instanceof Middleware) {
-                    let modelName = file.replace('.js', '');
+                    let modelName = file.split('/').pop().replace('.js', '');
                     globalThis[modelName] = model;
                 } else {
                     throw 'Inccorect class!';

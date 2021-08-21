@@ -1,24 +1,33 @@
 const Action = require('./Action');
 globalThis.Middlewares = require('./Middlewares');
+const Loader = require('./Loader');
 
-class Actions {
-    constructor(configs) {        
+class Actions extends Loader {
+    constructor(configs) {       
+        super();
+
         if(!configs.io) {
-           return; 
-        }
-
+            return; 
+         }
+ 
         this.actionList = [];
-        
+        this.load();
+
+        this.io = configs.io;
+        return this.listener();
+    }
+    
+    load(dirName = 'actions') {
         try {
             globalThis.MiddlewaresPool = new Middlewares();
 
-            let normalizedPath = require("path").join('', "actions");
-            require("fs").readdirSync(normalizedPath).forEach((file) => {
+            let normalizedPath = require("path").join('', dirName);
+            this.getFiles(normalizedPath).forEach((file) => {
                 if(!file.includes('.js')) {
                     return;
                 }
 
-                let action = require(`../actions/${file}`).setParent(this);
+                let action = require(`../${file}`).setParent(this);
                 if(action instanceof Action) {
                     let actionName = action.getName();
                     this.actionList[actionName] = action;
@@ -29,9 +38,6 @@ class Actions {
         } catch(e) {
             console.error(e);
         }
-
-        this.io = configs.io;
-        return this.listener();
     }
 
     onConnect() {

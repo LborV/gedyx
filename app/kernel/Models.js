@@ -1,16 +1,22 @@
+const Loader = require('./Loader');
 const QueryBuilder = require('./queryBuilder/QueryBuilder');
-class Models {
+class Models extends Loader {
     constructor() {
+        super();
+        this.load();
+    }
+
+    load(dirName = 'models') {
         try{
-            let normalizedPath = require("path").join('', "models");
-            require("fs").readdirSync(normalizedPath).forEach((file) => {
+            let normalizedPath = require("path").join('', dirName);
+            this.getFiles(normalizedPath).forEach((file) => {
                 if(!file.includes('.js')) {
                     return;
                 }
 
-                let model = require(`../models/${file}`);
+                let model = require(`../${file}`);
                 if(model instanceof QueryBuilder) {
-                    let modelName = file.replace('.js', '');
+                    let modelName = file.split('/').pop().replace('.js', '');
                     globalThis[modelName] = model;
                 } else {
                     throw 'Inccorect class!';

@@ -7,6 +7,7 @@ var Middleware = require('../kernel/Middleware');
 class validate extends Middleware {
     beforeRequest(data) {
         // SOME DATA VALIDATIONS
+        console.log('TEST ME');
 
         return data;
     }

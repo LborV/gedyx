@@ -24,9 +24,9 @@ async function main() {
     // Redis connection
     if(config.redis && config.redis.port && config.redis.host) {
         try {
-            globalThis.redis = require('redis');
+            globalThis.Redis = require('redis');
             const util = require('util');
-            globalThis.redisConnection = redis.createClient(config.redis);
+            globalThis.redisConnection = Redis.createClient(config.redis);
             globalThis.redisConnection.get = util.promisify(globalThis.redisConnection.get);
         } catch (error) {
             console.error(error);

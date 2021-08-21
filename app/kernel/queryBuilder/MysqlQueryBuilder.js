@@ -1,3 +1,4 @@
+const QueryBuilder = require('./QueryBuilder');
 class MysqlQueryBuilder extends QueryBuilder {
     constructor(config) {
         super();

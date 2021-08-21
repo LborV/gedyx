@@ -1,3 +1,4 @@
+const QueryBuilder = require('./QueryBuilder');
 class RedisQueryBuilder extends QueryBuilder {
     constructor(config) {
         super();
@@ -33,7 +34,7 @@ class RedisQueryBuilder extends QueryBuilder {
 
         return this.connection.del(key);
     }
-
+    
     truncate() {
         this.connection.flushdb((err, successed) => {
             if(!successed) {

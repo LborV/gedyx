@@ -2,7 +2,7 @@
 //This file was automaticaly generated
 //Feel free to edit :)
 
-var Action = require('../kernel/Action');
+var Action = require('../../kernel/Action');
 
 class getAll extends Action {
     async request(data) {
@@ -17,5 +17,5 @@ class getAll extends Action {
     }
 }
 
-let obj = new getAll('getAll');
+let obj = new getAll('getAll', [validate]);
 module.exports = obj;
