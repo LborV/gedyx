@@ -35,7 +35,7 @@ window.addEventListener('load', () => {
 
     globalThis.app = new MyApp({
         useSockets: true,
-        useLocalStorage: true,
+        useLocalStorage: false,
         socketsURL: 'http://localhost:8000',
         routing: {
             '/': 'exampleController',
@@ -46,7 +46,7 @@ window.addEventListener('load', () => {
                 url: '/js/controllers/exampleController.js', 
                 settings: {
                     id: 'example',
-                    url: '/views/example/index.json',
+                    url: '/views_compiled/example/index.json',
                     onError: '<div style="color: red">Error</div>',
                     showOnLoad: true
                 }
