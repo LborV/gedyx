@@ -61,7 +61,7 @@ class Actions extends Loader {
             if(this.useSession) {
                 socket.on('getSession', session => {
                     socket.session = this.sessions.get(session?.sessionKey);
-                    socket.emit('getSession', {sessionKey: socket.session.sessionKey, liveTime: socket.session.sessionKey});
+                    socket.emit('getSession', {sessionKey: socket.session.sessionKey, liveTime: socket.session.liveTime});
                 });
             }
 
