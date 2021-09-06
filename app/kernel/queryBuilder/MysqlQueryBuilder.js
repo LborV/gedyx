@@ -48,6 +48,13 @@ class MysqlQueryBuilder extends QueryBuilder {
 
         let sql = '';
 
+        let clearSelect = [];
+        obj.select.forEach((value, index) => {
+            if(value) {
+                clearSelect.push(value);
+            }
+        });
+
         if(obj.select.length) {
             sql += 'SELECT ';
             let delimeter = ',';
