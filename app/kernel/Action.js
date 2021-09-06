@@ -35,10 +35,6 @@ class Action {
     }
 
     response(data) {
-        if(this.parent.useSession) {
-            this.socket.emit('getSession', this.socket.session);
-        }
-
         this.middlewaresAfter.forEach(middleware => {
             if(!(middleware instanceof Middleware)) {
                 throw 'Middleware should extend Middleware class!';

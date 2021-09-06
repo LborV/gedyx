@@ -8,7 +8,13 @@ class getAll extends Action {
     async request(data) {
         let res = await redis.get('allTodos');
 
-        this.socket.session.testMe = 'TestMe2';
+        if(this.socket.session.test == undefined) {
+            this.socket.session.test = 0;
+        } else {
+            this.socket.session.test += 1;
+        }
+
+        console.log(this.socket.session.test)
 
         if(!res.length) {
             res = await todos.getAll();
