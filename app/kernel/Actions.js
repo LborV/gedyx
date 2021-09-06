@@ -13,6 +13,12 @@ class Actions extends Loader {
         this.actionList = [];
         this.load();
 
+        if(configs.useSession == true) {
+            this.useSession = true;
+            const Sessions = require('./Sessions');
+            this.sessions = new Sessions(configs.session);
+        }
+
         this.io = configs.io;
         return this.listener();
     }
@@ -51,6 +57,13 @@ class Actions extends Loader {
     listener() {
         this.io.on('connection', (socket) => {
             this.onConnect(socket);
+
+            if(this.useSession) {
+                socket.on('getSession', session => {
+                    socket.session = this.sessions.get(session?.sessionKey);
+                    socket.emit('getSession', socket.session);
+                });
+            }
 
             for(let actionName in this.actionList) {
                 socket.on(actionName, (data) => {this.actionList[actionName].requestIn(data, socket);});

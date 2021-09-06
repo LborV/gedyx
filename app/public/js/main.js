@@ -37,6 +37,7 @@ window.addEventListener('load', () => {
         useSockets: true,
         useLocalStorage: false,
         socketsURL: 'http://localhost:8000',
+        useSession: true,
         routing: {
             '/': 'exampleController',
         },

@@ -8,6 +8,8 @@ class getAll extends Action {
     async request(data) {
         let res = await redis.get('allTodos');
 
+        this.socket.session.testMe = 'TestMe2';
+
         if(!res.length) {
             res = await todos.getAll();
             redis.set('allTodos', res);

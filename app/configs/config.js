@@ -7,7 +7,11 @@ var configs = {
         db: "testDatabase"
     },
     "socket": {
-        port: 3030
+        port: 3030,
+        useSession: true,
+        session: {
+            expiration: 1000*60
+        }
     },
     "redis": {
         port: 6379,

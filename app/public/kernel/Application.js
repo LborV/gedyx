@@ -3,6 +3,7 @@ class Application {
         this.controllers = {};    
         this.useSockets = false;
         this.socketsURL = false;
+        this.useSession = true;
         this.appStarted = false;
         this.viewsLoadedCount = 0;
         this.firstLoadElementId = configuration.firstLoadElementId;
@@ -16,6 +17,10 @@ class Application {
                     this.routing[`/${controller.name}`] = controller.name;
                 });
             } 
+        }
+
+        if(configuration.useSession !== undefined) {
+            this.useSession = configuration.useSession;
         }
 
         this.useLocalStorage = configuration.useLocalStorage ?? true;
@@ -48,6 +53,34 @@ class Application {
         } catch {
             return false;
         }
+    }
+
+    setCookie(cname, cvalue, seconds) {
+        const d = new Date();
+        d.setTime(d.getTime() + seconds);
+        let expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    deleteCookie(cname) {
+        return this.setCookie(cname, '', -1);
+    }
+
+    getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for(let i = 0; i <ca.length; i++) {
+            let c = ca[i];
+            while(c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if(c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+
+        return "";
     }
 
     getSearchParams(url = false) {
@@ -193,8 +226,28 @@ class Application {
             
             //socket connected
             this.socket.on('connect', () => {
-                this.socketConnected = true;
-                this.onSocketConnected();
+                if(this.useSession) {
+                    this.sessionKey = this.getCookie('sessionKey');
+                    this.socket.emit('getSession', {sessionKey: this.sessionKey});
+                    this.socket.on('getSession', session => {
+                        this.session = session;
+                        if(session.sessionKey && session.sessionKey !== this.sessionKey) {
+                            if(session.liveTime == undefined) {
+                                session.liveTime = 1000*60*60*60; // One Hour
+                            }
+
+                            this.setCookie('sessionKey', session.sessionKey, session.liveTime);
+                        }
+
+                        if(this.socketConnected != true) {
+                            this.socketConnected = true;
+                            this.onSocketConnected();
+                        }
+                    });
+                } else {
+                    this.socketConnected = true;
+                    this.onSocketConnected();
+                }
             });
 
             this.socket.on('disconnect', () => {

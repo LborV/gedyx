@@ -46,7 +46,9 @@ async function main() {
                 server = io.listen(config.socket.port);
 
             globalThis.actionsPool = new Actions({
-                io: server
+                io: server,
+                useSession: config.socket?.useSession,
+                session: config.socket?.session
             });
         } catch (error) {
             console.error(error);
