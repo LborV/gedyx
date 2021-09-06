@@ -16,11 +16,22 @@ class Sessions {
             return this.createSession();
         }
 
+        session.endDate = Date.now() + this.expiration;
+        this.sessions.set(sessionKey, session);
+
         return session;
     }
 
     checkExpiration(endDate) {
         return Date.now() <= endDate;
+    }
+
+    forget(key) {
+        this.sessions.delete(key);
+    }
+
+    truncate() {
+        this.sessions.truncate(key);
     }
 
     createSession() {

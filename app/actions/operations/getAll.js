@@ -14,7 +14,9 @@ class getAll extends Action {
             this.socket.session.test += 1;
         }
 
-        console.log(this.socket.session.test)
+        // this.parent.sessions.forget(this.socket.session.sessionKey);
+
+        console.log(this.socket.session.test);
 
         if(!res.length) {
             res = await todos.getAll();
