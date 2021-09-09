@@ -249,6 +249,12 @@ class MysqlQueryBuilder extends QueryBuilder {
 
     getSql() {
         this.queryToSql();
+        
+        this.resetQuery();
+        if(this.tableName) {
+            this.table(this.tableName); 
+        }
+
         return this.sql;
     }
 

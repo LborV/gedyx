@@ -1,11 +1,23 @@
 const main = require('./main.js');
 
-main().then(()=>{
+main().then(async ()=>{
     globalThis.usersOnlineCount = 0;
     // Truncate Redis
     redis.truncate();
     // Truncate Database
     todos.truncate();
+
+
+    for(let i = 0; i < 10; i++) {
+        await todos.insert({
+            text: 'test',
+            status: 'active'
+        }).execute();
+    }
+
+    console.log(
+        await todos.execute()
+    )
 
     actionsPool.onConnect = () => {
         console.log('Client Connected');
