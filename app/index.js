@@ -11,7 +11,7 @@ main().then(async ()=>{
     for(let i = 0; i < 10; i++) {
         await todos.insert({
             text: 'test',
-            status: 'active'
+            status: i % 3 ? 'complete' : (i % 2 ? 'active' : 'deleted')
         }).execute();
     }
 
