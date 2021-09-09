@@ -3,7 +3,7 @@ body {
     padding: 0;
 }
 
-#content {
+.main {
     width: 100vw;
     min-height: 100vh;
     background-color: #f5f5f5;
@@ -15,17 +15,23 @@ body {
     font-size: 150%;
 }
 
-#content #example {
+#notFound {
+    width: 100%;
+    padding-top: 1.5em;
     text-align: center;
 }
 
-#content #example h1 {
+.main #example {
+    text-align: center;
+}
+
+.main #example h1 {
     margin-top: 0;
     color: #fcc3c3;
     line-height: 1.4em;
 }
 
-#content #example ul {
+.main #example ul {
     text-align: left;
 
     background-color: #fff;
@@ -34,7 +40,7 @@ body {
     list-style: none 
 }
 
-#content #example ul li {
+.main #example ul li {
     margin-bottom: .5em;
     margin-top: 1.5em;
     border-bottom: 1px solid #ddd;
@@ -43,23 +49,23 @@ body {
     width: 500px;
 }
 
-#content #example ul li button {
+.main #example ul li button {
     margin-right: .5em;
 }
 
-#content #example ul li .deleteBtn {
+.main #example ul li .deleteBtn {
     margin-left: auto;
 }
 
-#content #example ul li .completeBtn {
+.main #example ul li .completeBtn {
 
 }
 
-#content #example ul .complete, .delete {
+.main #example ul .complete, .delete {
     text-decoration: line-through;
 }
 
-#content #example ul input {
+.main #example ul input {
     padding: 16px 16px 16px 60px;
     border: none;
     width: 100%;
@@ -67,7 +73,7 @@ body {
     font-size: 120%;
 }
 
-#content #example ul input:focus {
+.main #example ul input:focus {
     outline: 0;
 }
 

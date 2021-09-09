@@ -102,10 +102,32 @@ class Application {
         return [];
     }
 
+    async fetchTemplate(url) {
+        if(globalThis.views === undefined) {
+            globalThis.views = [];
+
+            const result = await fetch(url);
+            if(result.status == 200) {
+                return result.text();
+            } else {
+                throw `Can't fetch view, request status ${result.status}`;
+            }
+        }
+
+        let view = globalThis.views.find(el => el.url == url);
+        if(globalThis.views.length > 0 && view) {
+            return view;
+        } else {
+            return '';
+        }
+    }
+
     async loadControllers() {
         this.controllersToLoad = [];
+        this.urlConfiguration = [];
         if(Object.keys(this.routing).includes((new URL(location.href)).pathname)) {
-            this.controllersToLoad = this.routing[(new URL(location.href)).pathname].split(',').map(item => item.trim());
+            this.urlConfiguration = this.routing[(new URL(location.href)).pathname];
+            this.controllersToLoad = this.routing[(new URL(location.href)).pathname].controllers;
         }
 
         // Parse slug urls
@@ -137,7 +159,9 @@ class Application {
             }
 
             this.slugData = [];
-            this.controllersToLoad = this.routing[url].split(',').map(item => item.trim());
+            this.controllersToLoad = this.routing[url].controllers;
+            this.urlConfiguration = this.routing[url];
+
             for(let i = 0; i < urlDetails.length; i++) {
                 let slug = urlDetails[i].match(/{.*}+/g);
                 if(slug) {
@@ -147,6 +171,16 @@ class Application {
                 }
             }
         });
+
+        if(this.controllersToLoad.length == 0) {
+            this.show404();
+        }
+
+        try {
+            document.body.innerHTML = await this.fetchTemplate(this.urlConfiguration.template);
+        } catch(error) {
+            console.error(error);
+        }
 
         for(let i = 0; i < this.controllers_configuration.length; i++) {
             let controller = this.controllers_configuration[i];

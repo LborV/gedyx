@@ -31,6 +31,10 @@ window.addEventListener('load', () => {
             this.socket.emit('getAll', {});
             this.socket.emit('usersOnline', {});
         }
+
+        show404() {
+            document.body.innerHTML = '<h1 id="notFound">404</h1>';
+        }
     }
 
     globalThis.app = new MyApp({
@@ -39,7 +43,19 @@ window.addEventListener('load', () => {
         socketsURL: 'http://localhost:8000',
         useSession: true,
         routing: {
-            '/': 'exampleController',
+            '/': {
+                template: '/views/example/template.html',
+                controllers: [
+                    'exampleController'
+                ]
+            },
+            '/{test}': {
+                template: '/views/example/template.html',
+                controllers: [
+                    'exampleController',
+                    'exampleController2'
+                ]
+            },
         },
         controllers: [
             {
@@ -49,7 +65,19 @@ window.addEventListener('load', () => {
                     id: 'example',
                     url: '/views_compiled/example/index.json',
                     onError: '<div style="color: red">Error</div>',
-                    showOnLoad: true
+                    showOnLoad: true,
+                    parent: 'first'
+                }
+            },
+            {
+                name: 'exampleController2', 
+                url: '/js/controllers/exampleController.js', 
+                settings: {
+                    id: 'example2',
+                    url: '/views_compiled/example/index.json',
+                    onError: '<div style="color: red">Error</div>',
+                    showOnLoad: true,
+                    parent: 'second'
                 }
             },
             // {
