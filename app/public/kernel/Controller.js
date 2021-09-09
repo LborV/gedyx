@@ -110,11 +110,11 @@ export class Controller {
 
     //Create new DOM element
     createDOM() {
-        if(document.getElementById('content') == undefined) {
-            document.body.innerHTML = document.body.innerHTML + '<div id="content"></div>';
-        }
-
         if(this.parent == null) {
+            if(document.getElementById('content') == undefined) {
+                document.body.innerHTML = document.body.innerHTML + '<div id="content"></div>';
+            }
+            
             document.getElementById('content').innerHTML = document.getElementById('content').innerHTML + '<div id='+this.id+'></div>';
         } else {
             document.getElementById(this.parent).innerHTML = document.getElementById(this.parent).innerHTML + '<div id='+this.id+'></div>';
