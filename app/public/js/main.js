@@ -54,7 +54,27 @@ window.addEventListener('load', () => {
                 controllers: [
                     'exampleController',
                     'exampleController2'
+                ],
+                title: 'aloha',
+                metaData: [
+                    {
+                        name: 'keywords',
+                        content: 'aloha test'
+                    },
+                    {
+                        name: 'description',
+                        content: 'test meta tags'
+                    }
                 ]
+            },
+
+            '/{test}/test': {
+                template: '/views/example/template.html',
+                controllers: [
+                    'exampleController',
+                    'exampleController2'
+                ],
+                title: 'test'
             },
         },
         controllers: [

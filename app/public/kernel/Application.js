@@ -177,7 +177,28 @@ class Application {
         }
 
         try {
-            document.body.innerHTML = await this.fetchTemplate(this.urlConfiguration.template);
+            if(this.urlConfiguration.template) {
+                document.body.innerHTML = await this.fetchTemplate(this.urlConfiguration.template);
+            }
+
+            if(this.urlConfiguration.title) {
+                document.title = this.urlConfiguration.title;
+            }
+
+            if(this.urlConfiguration.metaData) {
+                this.urlConfiguration.metaData.forEach(meta => {
+                    let metaTag = document.createElement('meta');
+                    for(const [key, value] of Object.entries(meta)) {
+                        console.log(key)
+
+                        metaTag[key] = value;
+                    }
+
+                    document.getElementsByTagName('head')[0].appendChild(metaTag);
+                })
+                
+            }
+
         } catch(error) {
             console.error(error);
         }
