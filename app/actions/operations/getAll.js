@@ -14,6 +14,7 @@ class getAll extends Action {
             this.socket.session.test += 1;
         }
 
+        this.parent.sessions.save(this.socket.session);
         // this.parent.sessions.forget(this.socket.session.sessionKey);
 
         console.log(this.socket.session.test);

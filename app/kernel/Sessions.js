@@ -1,4 +1,6 @@
-const Storage = require('./queryBuilder/MemmoryQueryBuilder');
+const MemoryStorage = require('./queryBuilder/MemoryQueryBuilder');
+const MysqlQueryBuilder = require('./queryBuilder/MysqlQueryBuilder');
+const RedisQueryBuilder = require('./queryBuilder/RedisQueryBuilder');
 
 class Sessions {
     constructor(config) {
@@ -7,11 +9,21 @@ class Sessions {
             this.expiration = parseInt(config.expiration);
         }
 
-        this.sessions = new Storage({connection: null});
+        switch(config.type) {
+            case 'redis': 
+                this.sessions = new RedisQueryBuilder({connection: globalThis.redisConnection});            
+                break;
+            case 'mysql':
+                // this.sessions = new RedisQueryBuilder({connection: globalThis.mysqlConnection, table: 'session'});            
+                break;
+
+            default:
+                this.sessions = new MemoryStorage({connection: null});            
+        }
     }
 
-    get(sessionKey) {
-        let session = this.sessions.get(sessionKey);
+    async get(sessionKey) {
+        let session = await this.sessions.get(sessionKey);
         if(session.length == 0 || !this.checkExpiration(session.endDate)) {
             return this.createSession();
         }
@@ -44,6 +56,14 @@ class Sessions {
 
         this.sessions.set(sessionKey, session);
         return session;
+    }
+
+    async save(session = {}) {
+        if(session.sessionKey === undefined) {
+            return false;
+        }
+
+        return await this.sessions.set(session.sessionKey, session);
     }
 }
 

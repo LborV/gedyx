@@ -1,5 +1,5 @@
 const QueryBuilder = require('./QueryBuilder');
-class MemmoryQueryBuilder extends QueryBuilder {
+class MemoryQueryBuilder extends QueryBuilder {
     constructor(config) {
         super();
         this.connection = config.connection;
@@ -39,4 +39,4 @@ class MemmoryQueryBuilder extends QueryBuilder {
     }
 }
 
-module.exports = MemmoryQueryBuilder;
+module.exports = MemoryQueryBuilder;

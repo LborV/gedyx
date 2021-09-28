@@ -24,7 +24,7 @@ class MysqlQueryBuilder extends QueryBuilder {
 
     async executeRaw(sql) {
         if(typeof sql !== 'string') {
-            throw 'Inccorect input';
+            throw 'Incorrect input';
         }
 
         this.resetQuery();
@@ -57,16 +57,16 @@ class MysqlQueryBuilder extends QueryBuilder {
 
         if(obj.select.length) {
             sql += 'SELECT ';
-            let delimeter = ',';
+            let delimiter = ',';
             obj.select.forEach((element, index) => {
                 if(index === obj.select.length - 1) {
-                    delimeter = '';
+                    delimiter = '';
                 }
     
                 if(typeof element === 'string') {
-                    sql += `\`${element}\`${delimeter} `;
+                    sql += `\`${element}\`${delimiter} `;
                 } else if(typeof element === 'object' && element.raw) {
-                    sql += `${element.value}${delimeter} `;
+                    sql += `${element.value}${delimiter} `;
                 }
             });
         } else {
@@ -99,13 +99,13 @@ class MysqlQueryBuilder extends QueryBuilder {
 
         if(obj.order.length) {
             sql += 'ORDER BY ';
-            let delimeter = ',';
+            let delimiter = ',';
             obj.order.forEach((order, index) => {
                 if(index === obj.order.length - 1) {
-                    delimeter = '';
+                    delimiter = '';
                 }
 
-                sql += `\`${order.value}\` ${order.type}${delimeter} `
+                sql += `\`${order.value}\` ${order.type}${delimiter} `
             });
         }
 
@@ -156,20 +156,20 @@ class MysqlQueryBuilder extends QueryBuilder {
                     sql += `${where.a1} ${where.operator} ${where.a2} `;
                 }
 
-                let delimetr = 'AND ';
+                let delimiter = 'AND ';
                 if(index == obj.where.length - 1) {
-                    delimetr = '';
-                } else if(where.delimeter) {
-                    delimetr = where.delimeter;
+                    delimiter = '';
+                } else if(where.delimiter) {
+                    delimiter = where.delimiter;
                 }
 
                 if(obj.where[index+1]) {
                     if(obj.where[index+1].isOr) {
-                        delimetr = 'OR ';
+                        delimiter = 'OR ';
                     }
                 }
 
-                sql += delimetr;
+                sql += delimiter;
             });
         }
 
@@ -178,15 +178,15 @@ class MysqlQueryBuilder extends QueryBuilder {
 
     makeUpdateQuery() {
         let sql = `UPDATE \`${this.queryObject.table}\` SET `;
-        let delimeter = ',';
+        let delimiter = ',';
 
         this.queryObject.update.forEach((item, index) => {
             if(index === this.queryObject.update.length - 1) {
-                delimeter = '';
+                delimiter = '';
             }
 
             item[1] = this.escape(item[1]);
-            sql += `\`${item[0]}\` = ${item[1]}${delimeter} `;
+            sql += `\`${item[0]}\` = ${item[1]}${delimiter} `;
         });
 
         sql += this.makeWhere(this.queryObject);
@@ -196,26 +196,26 @@ class MysqlQueryBuilder extends QueryBuilder {
 
     makeInsertQuery() {
         let sql = `INSERT INTO \`${this.queryObject.table}\`( `;
-        let delimeter = ',';
+        let delimiter = ',';
 
         this.queryObject.insert.forEach((item, index) => {
             if(index === this.queryObject.insert.length - 1) {
-                delimeter = '';
+                delimiter = '';
             }
             
-            sql += `\`${item[0]}\`${delimeter} `;
+            sql += `\`${item[0]}\`${delimiter} `;
         });
 
         sql += ') VALUES (';
 
-        delimeter = ',';
+        delimiter = ',';
         this.queryObject.insert.forEach((item, index) => {
             if(index === this.queryObject.insert.length - 1) {
-                delimeter = '';
+                delimiter = '';
             }
 
             item[1] = this.escape(item[1]);
-            sql += `${item[1]}${delimeter} `;
+            sql += `${item[1]}${delimiter} `;
         });
 
         return this.sql = sql + ');';
@@ -245,6 +245,14 @@ class MysqlQueryBuilder extends QueryBuilder {
         }
 
         return this.makeSelectQuery();
+    }
+
+    async set() {
+
+    }
+
+    async get() {
+
     }
 
     getSql() {

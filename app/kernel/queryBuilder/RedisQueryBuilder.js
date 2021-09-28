@@ -8,7 +8,7 @@ class RedisQueryBuilder extends QueryBuilder {
 
     set(key, value) {
         if(typeof key !== 'string') {
-            throw 'Inncorrect key';
+            throw 'Incorrect key';
         }
 
         this.connection.set(key, JSON.stringify(value));
@@ -16,7 +16,7 @@ class RedisQueryBuilder extends QueryBuilder {
 
     async get(key) {
         if(typeof key !== 'string') {
-            throw 'Inncorrect key';
+            throw 'Incorrect key';
         }
 
         let result;
@@ -29,15 +29,15 @@ class RedisQueryBuilder extends QueryBuilder {
 
     delete(key) {
         if(typeof key !== 'string') {
-            throw 'Inncorrect key';
+            throw 'Incorrect key';
         }
 
         return this.connection.del(key);
     }
     
     truncate() {
-        this.connection.flushdb((err, successed) => {
-            if(!successed) {
+        this.connection.flushdb((err, succeeded) => {
+            if(!succeeded) {
                 console.error(err);
             }
         });

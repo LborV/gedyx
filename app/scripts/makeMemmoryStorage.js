@@ -45,8 +45,8 @@ function makeFileContent(modelName, model_name) {
 //This file was automaticaly generated
 //Feel free to edit :)
 
-const MemmoryQueryBuilder = require('../kernel/queryBuilder/MemmoryQueryBuilder');    
-class ${modelName} extends MemmoryQueryBuilder {
+const MemoryQueryBuilder = require('../kernel/queryBuilder/MemoryQueryBuilder');    
+class ${modelName} extends MemoryQueryBuilder {
 
 }
 

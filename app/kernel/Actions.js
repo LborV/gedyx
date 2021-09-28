@@ -38,7 +38,7 @@ class Actions extends Loader {
                     let actionName = action.getName();
                     this.actionList[actionName] = action;
                 } else {
-                    throw 'Inccorect class!';
+                    throw 'Incorrect class!';
                 }
             });
         } catch(e) {
@@ -47,11 +47,11 @@ class Actions extends Loader {
     }
 
     onConnect() {
-        console.log("onConnect method can be overwriten");
+        console.log("onConnect method can be overwritten");
     }
 
     onDisconnect() {
-        console.log("onDisconnect method can be overwriten");
+        console.log("onDisconnect method can be overwritten");
     }
 
     listener() {
@@ -59,8 +59,8 @@ class Actions extends Loader {
             this.onConnect(socket);
 
             if(this.useSession) {
-                socket.on('getSession', session => {
-                    socket.session = this.sessions.get(session?.sessionKey);
+                socket.on('getSession', async session => {
+                    socket.session = await this.sessions.get(session?.sessionKey);
                     socket.emit('getSession', {sessionKey: socket.session.sessionKey, liveTime: socket.session.liveTime});
                 });
             }
