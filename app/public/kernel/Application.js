@@ -255,7 +255,7 @@ class Application {
     }
 
     onStartApp() {
-        console.log('Redifine startup function');
+        console.log('Redefine startup function');
     }
 
     onSocketConnected() {

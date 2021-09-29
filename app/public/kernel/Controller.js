@@ -80,7 +80,7 @@ export class Controller {
     //Update view
     updateView(view) {
         if(typeof view != 'string') {
-            console.log('View sholud be a string');
+            console.log('View should be a string');
             return false;
         }
 
@@ -306,10 +306,10 @@ export class Controller {
     }
 
     onUpdate() {
-        console.log('Redifine me');
+        console.log('Redefine me');
     }
 
     onLoad() {
-        console.log('Redifine me');
+        console.log('Redefine me');
     }
 }
