@@ -62,14 +62,14 @@ class Sessions {
                                             data: JSON.stringify(data)
                                         })
                                         .execute();
-                                    }
+                                }
 
-                                    return await this.sessions
-                                        .update({
-                                            data: JSON.stringify(data)
-                                        })
-                                        .where('sessionKey', sessionKey)
-                                        .execute();
+                                return await this.sessions
+                                    .update({
+                                        data: JSON.stringify(data)
+                                    })
+                                    .where('sessionKey', sessionKey)
+                                    .execute();
                             }
                         })
                         .catch(console.error);
