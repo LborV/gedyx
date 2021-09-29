@@ -3,7 +3,8 @@ const main = require('./main.js');
 main().then(async ()=>{
     globalThis.usersOnlineCount = 0;
     // Truncate Redis
-    redis.truncate();
+    // redis.truncate();
+    
     // Truncate Database
     todos.truncate();
 

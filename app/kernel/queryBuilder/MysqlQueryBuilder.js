@@ -19,7 +19,7 @@ class MysqlQueryBuilder extends QueryBuilder {
             this.table(this.tableName); 
         }
 
-        return res[0];
+        return Object.values(JSON.parse(JSON.stringify(res[0])));
     }
 
     async executeRaw(sql) {
@@ -33,7 +33,7 @@ class MysqlQueryBuilder extends QueryBuilder {
         }
 
         let res = await this.connection.query(sql);
-        return res[0];
+        return Object.values(JSON.parse(JSON.stringify(res[0])));
     }
 
     escape(value) {
@@ -245,14 +245,6 @@ class MysqlQueryBuilder extends QueryBuilder {
         }
 
         return this.makeSelectQuery();
-    }
-
-    async set() {
-
-    }
-
-    async get() {
-
     }
 
     getSql() {

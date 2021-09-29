@@ -10,8 +10,8 @@ var configs = {
         port: 3030,
         useSession: true,
         session: {
-            expiration: 1000*60,
-            type: 'redis'
+            expiration: 1000*60*60,
+            type: 'mysql'
         }
     },
     "redis": {
