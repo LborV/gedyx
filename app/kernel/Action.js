@@ -31,7 +31,7 @@ class Action {
     }
 
     async request(data) {
-        console.log('Request method can be overwriten');
+        console.log('Request method can be overwritten');
     }
 
     response(data) {
