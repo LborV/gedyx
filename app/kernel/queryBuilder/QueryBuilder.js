@@ -109,7 +109,7 @@ class QueryBuilder {
 
         if(arguments.length == 2) {
             if(typeof arguments[0] !== 'string') {
-                throw 'First parametr must be string';
+                throw 'First parameter must be string';
             }
 
             if(typeof arguments[1] === 'function') {
@@ -150,7 +150,7 @@ class QueryBuilder {
             }
 
             if(typeof arguments[2] !== 'string' && typeof arguments[2] !== 'number') {
-                throw 'Inccorect input';
+                throw 'Incorrect input';
             }
 
             this.queryObject.where.push({
@@ -163,7 +163,7 @@ class QueryBuilder {
             return this;
         }
 
-        throw 'Inccorect number of arguments';
+        throw 'Incorrect number of arguments';
     }
 
     orderBy(a1) {
@@ -229,7 +229,7 @@ class QueryBuilder {
                 return item;
             }
 
-            throw 'Inncorrect input';
+            throw 'Incorrect input';
         }).join(', ')+')');
     }
 
@@ -264,7 +264,7 @@ class QueryBuilder {
 
     union(callback) {
         if(typeof callback !== 'function') {
-            throw 'Inccorect input';
+            throw 'Incorrect input';
         }
 
         this.queryObject.union = {
