@@ -8,7 +8,7 @@ class MemoryQueryBuilder extends QueryBuilder {
 
     set(key, value) {
         if(typeof key !== 'string') {
-            throw 'Inncorrect key';
+            throw 'Incorrect key';
         }
 
         this.data[key] = value;
@@ -16,7 +16,7 @@ class MemoryQueryBuilder extends QueryBuilder {
 
     get(key) {
         if(typeof key !== 'string') {
-            throw 'Inncorrect key';
+            throw 'Incorrect key';
         }
 
         return this.data[key] ? this.data[key] : [];
@@ -30,12 +30,19 @@ class MemoryQueryBuilder extends QueryBuilder {
         return this.data;
     }
 
-    delete(key) {
+    delete(_key) {
         if(typeof key !== 'string') {
-            throw 'Inncorrect key';
+            throw 'Incorrect key';
         }
 
-        delete this.data[key];
+        var data = [];
+        for(const [key, value] of Object.entries(this.data)) {
+            if(value.id != _key) {
+                data[key] = value;
+            }
+        }
+
+        return this.data = data;
     }
 }
 
