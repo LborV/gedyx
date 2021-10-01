@@ -19,60 +19,60 @@ class Sessions {
                 if(globalThis.mysqlConnection) {
                     this.sessions = new MysqlQueryBuilder({connection: globalThis.mysqlConnection, table: 'sessions'});            
                     this.sessions.executeRaw(`
-                            SELECT 
-                                TABLE_NAME 
-                            FROM 
-                                information_schema.TABLES
-                            WHERE 
-                                TABLE_SCHEMA = SCHEMA() AND 
-                                TABLE_NAME = 'sessions'
-                        `).then(async tables => {  
-                            if(tables && tables.length == 0) {
-                                await this.sessions.executeRaw(`
-                                    CREATE TABLE \`sessions\` (
-                                        \`sessionKey\` VARCHAR(50) PRIMARY KEY UNIQUE NOT NULL,
-                                        \`data\` JSON
-                                    );
-                                `)
-                                .then(result => {
-                                    console.log('Created "sessions" table in database!');   
-                                })
-                                .catch(console.error);
+                        SELECT 
+                            TABLE_NAME 
+                        FROM 
+                            information_schema.TABLES
+                        WHERE 
+                            TABLE_SCHEMA = SCHEMA() AND 
+                            TABLE_NAME = 'sessions'
+                    `).then(async tables => {  
+                        if(tables && tables.length == 0) {
+                            await this.sessions.executeRaw(`
+                                CREATE TABLE \`sessions\` (
+                                    \`sessionKey\` VARCHAR(50) PRIMARY KEY UNIQUE NOT NULL,
+                                    \`data\` JSON
+                                );
+                            `)
+                            .then(result => {
+                                console.log('Created "sessions" table in database!');   
+                            })
+                            .catch(console.error);
+                        }
+
+                        this.sessions.get = async (sessionKey) => {
+                            let result = await this.sessions
+                                .select('data')
+                                .where('sessionKey', sessionKey)
+                                .execute();
+
+                            if(result[0] && result[0].data) {
+                                return result[0].data;
                             }
 
-                            this.sessions.get = async (sessionKey) => {
-                                let result = await this.sessions
-                                    .select('data')
-                                    .where('sessionKey', sessionKey)
-                                    .execute();
+                            return [];
+                        }
 
-                                if(result[0] && result[0].data) {
-                                    return result[0].data;
-                                }
-
-                                return [];
-                            }
-
-                            this.sessions.set = async (sessionKey, data) => {
-                                let session = await this.sessions.get(sessionKey);
-                                if(!session || session.length == 0) {
-                                    return await this.sessions
-                                        .insert({
-                                            sessionKey: sessionKey,
-                                            data: JSON.stringify(data)
-                                        })
-                                        .execute();
-                                }
-
+                        this.sessions.set = async (sessionKey, data) => {
+                            let session = await this.sessions.get(sessionKey);
+                            if(!session || session.length == 0) {
                                 return await this.sessions
-                                    .update({
+                                    .insert({
+                                        sessionKey: sessionKey,
                                         data: JSON.stringify(data)
                                     })
-                                    .where('sessionKey', sessionKey)
                                     .execute();
                             }
-                        })
-                        .catch(console.error);
+
+                            return await this.sessions
+                                .update({
+                                    data: JSON.stringify(data)
+                                })
+                                .where('sessionKey', sessionKey)
+                                .execute();
+                        }
+                    })
+                    .catch(console.error);
                 }
                 break;
 

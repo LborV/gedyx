@@ -19,7 +19,7 @@ class Middlewares extends Loader {
                     let modelName = file.split('/').pop().replace('.js', '');
                     globalThis[modelName] = model;
                 } else {
-                    throw 'Inccorect class!';
+                    throw 'Incorrect class!';
                 }
             });
         } catch(e) {
