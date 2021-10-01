@@ -182,21 +182,13 @@ class Application {
             }
 
             if(this.urlConfiguration.title) {
-                document.title = this.urlConfiguration.title;
+                this.setTitle(this.urlConfiguration.title);
             }
 
             if(this.urlConfiguration.metaData) {
                 this.urlConfiguration.metaData.forEach(meta => {
-                    let metaTag = document.createElement('meta');
-                    for(const [key, value] of Object.entries(meta)) {
-                        console.log(key)
-
-                        metaTag[key] = value;
-                    }
-
-                    document.getElementsByTagName('head')[0].appendChild(metaTag);
-                })
-                
+                   this.setMetaTag(meta);
+                });
             }
 
         } catch(error) {
@@ -225,6 +217,19 @@ class Application {
                 })
                 .catch(error => console.error(error));
         }
+    }
+
+    setTitle(title) {
+        return document.title = title;
+    }
+
+    setMetaTag(meta) {
+        let metaTag = document.createElement('meta');
+        for(const [key, value] of Object.entries(meta)) {
+            metaTag[key] = value;
+        }
+
+        document.getElementsByTagName('head')[0].appendChild(metaTag);
     }
 
     viewLoaded(controllerName) {
