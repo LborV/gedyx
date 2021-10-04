@@ -47,15 +47,8 @@ window.addEventListener('load', () => {
                 template: '/views/example/template.html',
                 controllers: [
                     'exampleController'
-                ]
-            },
-            '/{test}': {
-                template: '/views/example/template.html',
-                controllers: [
-                    'exampleController',
-                    'exampleController2'
                 ],
-                title: 'aloha',
+                title: 'TEST ME',
                 metaData: [
                     {
                         name: 'keywords',
@@ -65,8 +58,26 @@ window.addEventListener('load', () => {
                         name: 'description',
                         content: 'test meta tags'
                     }
-                ]
+                ],
             },
+            // '/{test}': {
+            //     template: '/views/example/template.html',
+            //     controllers: [
+            //         'exampleController',
+            //         'exampleController2'
+            //     ],
+            //     title: 'aloha',
+            //     metaData: [
+            //         {
+            //             name: 'keywords',
+            //             content: 'aloha test'
+            //         },
+            //         {
+            //             name: 'description',
+            //             content: 'test meta tags'
+            //         }
+            //     ]
+            // },
 
             '/{test}/test': {
                 template: '/views/example/template.html',
@@ -76,6 +87,9 @@ window.addEventListener('load', () => {
                 ],
                 title: 'test'
             },
+            '/redirect': {
+                redirect: 'test/test'
+            }
         },
         controllers: [
             {

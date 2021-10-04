@@ -159,7 +159,7 @@ class Application {
             }
 
             this.slugData = [];
-            this.controllersToLoad = this.routing[url].controllers;
+            this.controllersToLoad = this.routing[url].controllers ?? [];
             this.urlConfiguration = this.routing[url];
 
             for(let i = 0; i < urlDetails.length; i++) {
@@ -171,6 +171,10 @@ class Application {
                 }
             }
         });
+
+        if(this.urlConfiguration.redirect) {
+            return this.redirect(this.urlConfiguration.redirect, this.getSearchParams());
+        }
 
         if(this.controllersToLoad.length == 0) {
             this.show404();
@@ -190,7 +194,6 @@ class Application {
                    this.setMetaTag(meta);
                 });
             }
-
         } catch(error) {
             console.error(error);
         }
@@ -277,9 +280,6 @@ class Application {
         
         console.info('Application started');
         this.onStartApp();
-
-        //Redirect on page by url
-        // this.changePage(window.location.href);
 
         if(this.useSockets && this.socketsURL) {
             this.socket = io(this.socketsURL);
@@ -372,25 +372,13 @@ class Application {
         console.error('This method is for 404 error');
     }
 
-    changePage(url = '', args = [], title = '') {
-        // try{
-        //     let newUrl = new URL(url, location.href);
-        //     args.forEach(arg => {
-        //         newUrl.searchParams.append(arg.name, arg.value);
-        //     });
-
-        //     this.changePath(newUrl);
-        //     history.pushState(null, title, newUrl);
-        //     return true;
-        // } catch {
-        //     console.error('Error on change page');
-        //     return false;
-        // }
+    redirect(url = '', args = []) {
+        console.log(args)
 
         try{
             let newUrl = new URL(url, location.href);
-            args.forEach(arg => {
-                newUrl.searchParams.append(arg.name, arg.value);
+            Object.keys(args).forEach(key => {
+                newUrl.searchParams.append(key, args[key]);
             });
 
             location.href = newUrl.href;
