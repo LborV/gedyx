@@ -22,7 +22,7 @@ function hndlEventInstall(evt) {
             '/js/main.js',
 
             // Controllers
-            '/js/controllers/exampleController.js'
+            
         ];
         const cacheStat = await caches.open(CACHE_STATIC);
         await Promise.all(
