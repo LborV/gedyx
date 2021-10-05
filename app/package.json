@@ -1,7 +1,7 @@
 {
-  "name": "server",
-  "version": "1.0.0",
-  "description": "Server part for js-mvc framework",
+  "name": "GEDYX",
+  "version": "0.0.1",
+  "description": "Grotesque Elegant Delightful Yummy seXy",
   "main": "index.js",
   "scripts": {
     "start": "npm run compile:views && node index.js",
