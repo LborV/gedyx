@@ -1,7 +1,7 @@
 {
   "name": "GEDYX",
   "version": "0.0.1",
-  "description": "Grotesque Elegant Delightful Yummy seXy",
+  "description": "JS framework",
   "main": "index.js",
   "scripts": {
     "start": "npm run compile:views && node index.js",
