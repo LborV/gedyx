@@ -273,6 +273,10 @@ export class Controller {
         return this.onUpdate();
     }
 
+    request(name, data, callback) {
+        this.app.request(name, data, callback);
+    }
+
     //Compile loaded view
     /**
      * 

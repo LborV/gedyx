@@ -317,6 +317,11 @@ class Application {
         }
     }
 
+    request(name, data, callback) {
+        this.socket.on(name, callback);
+        this.socket.emit(name, data);
+    }
+
     getController(name) {
         return this.controllers[name];
     }
