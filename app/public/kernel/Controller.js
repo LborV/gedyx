@@ -11,13 +11,13 @@ export class Controller {
         }
 
         if(config.id === undefined) {
-            console.log('You most give a id');
+            console.error('You most give a id');
             return null;
         }
 
         this.element = document.getElementById(config.id);
         if(this.element != null) {
-            console.log('This id exist');
+            console.error('This id exist');
             return null;
         }
 
@@ -80,7 +80,7 @@ export class Controller {
     //Update view
     updateView(view) {
         if(typeof view != 'string') {
-            console.log('View should be a string');
+            console.error('View should be a string');
             return false;
         }
 
@@ -185,12 +185,12 @@ export class Controller {
         this.classes = classes;
 
         if(this.element == null) {
-            console.log('Id not found');
+            console.error('Id not found');
             return false;
         }
 
         if(typeof classes != 'string') {
-            console.log('Classes should be a string');
+            console.error('Classes should be a string');
             return false;
         }
 
@@ -310,10 +310,10 @@ export class Controller {
     }
 
     onUpdate() {
-        console.log('Redefine me');
+        console.info('Redefine me');
     }
 
     onLoad() {
-        console.log('Redefine me');
+        console.info('Redefine me');
     }
 }

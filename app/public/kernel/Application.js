@@ -45,7 +45,7 @@ class Application {
         this.loadControllers()
             // .then(() => this.startApplication())
             .then(() => {
-                console.log('Waiting while views be loaded');
+                console.info('Waiting while views be loaded');
                 window.onpopstate = (event) => this.changePath(event.target.location.href);
             })
             .catch(error => console.error(error));
@@ -177,7 +177,8 @@ class Application {
         }
 
         if(this.controllersToLoad.length == 0) {
-            this.show404();
+            console.error('Empty controllers for this route');
+            // this.show404();
         }
 
         try {
@@ -252,7 +253,7 @@ class Application {
             if(this.firstLoadElementId) {
                 document.getElementById(this.firstLoadElementId).style.display = 'none';
             }
-            console.log('All views loaded');
+            console.info('All views loaded');
             this.appStarted = true;
             this.startApplication();
         }
@@ -263,15 +264,15 @@ class Application {
     }
 
     onStartApp() {
-        console.log('Redefine startup function');
+        console.info('Redefine startup function');
     }
 
     onSocketConnected() {
-        console.log('Custom callback on socket connected');
+        console.info('Custom callback on socket connected');
     }
 
     onSocketDisconnected() {
-        console.log('Custom callback on socket disconnected');
+        console.info('Custom callback on socket disconnected');
     }
 
     startApplication() {
@@ -318,7 +319,15 @@ class Application {
     }
 
     request(name, data, callback) {
-        this.socket.on(name, callback);
+        if(!this.socketConnected) {
+            console.info('Sockets not ready yet');
+            return;
+        }
+
+        if(typeof callback == 'function') {
+            this.socket.on(name, callback);
+        }
+        
         this.socket.emit(name, data);
     }
 
@@ -378,8 +387,6 @@ class Application {
     }
 
     redirect(url = '', args = []) {
-        console.log(args)
-
         try{
             let newUrl = new URL(url, location.href);
             Object.keys(args).forEach(key => {
