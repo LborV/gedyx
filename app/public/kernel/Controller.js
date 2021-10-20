@@ -56,25 +56,32 @@ export class Controller {
             this.app = config.app;
         }
 
+        if(config.url) {
+            this.url = config.url;
+        }
+
+        this.onLoad();
+        return this;
+    }
+
+    init() {
         try {
-            if(config.url) {
-                this.url = config.url;
-                this.fetchView(config.url)
+            if(this.url) {
+                this.fetchView(this.url)
                 .then((response) => {
                     if(typeof response === 'string') {
-                        return this.loadView(response, config.url, true);
+                        return this.loadView(response, this.url, true);
                     }
         
                     return this.updateView(this.compileFromTree(response.tree));
                 })
                 .catch(error => console.error(error));
+            } else {
+                this.onViewLoaded();
             }
         } catch (error) {
             throw error;
         }
-
-        this.onLoad();
-        return this;
     }
 
     //Update view

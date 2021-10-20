@@ -45,7 +45,6 @@ class Application {
         this.loadControllers()
             // .then(() => this.startApplication())
             .then(() => {
-                console.info('Waiting while views be loaded');
                 window.onpopstate = (event) => this.changePath(event.target.location.href);
             })
             .catch(error => console.error(error));
@@ -216,6 +215,7 @@ class Application {
                     controller.settings.app = this;
                     controller.settings.name = controller.name;
                     this.controllers[controller.name] = new module.default(controller.settings);
+                    this.controllers[controller.name].init();
 
                     this.searchParams = this.getSearchParams();
                 })
