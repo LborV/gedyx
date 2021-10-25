@@ -33,20 +33,15 @@ async function main() {
         }
     }
 
-    // Cluster mode
-    // const io = require('socket.io')(3030);
-    // const redisAdapter = require('socket.io-redis');
-    // let server = io.adapter(redisAdapter({host: 'localhost', port: 6379, password: '123'}));
-
     // Single thread
     if(config.socket && config.socket.port) {
         try {
-            const
-                io = require("socket.io"),
-                server = io.listen(config.socket.port);
+            const { Server } = require("socket.io");
+            const io = new Server(config.socket.server ?? {});
+            io.listen(config.socket.port);
 
             globalThis.actionsPool = new Actions({
-                io: server,
+                io: io,
                 useSession: config.socket?.useSession,
                 session: config.socket?.session
             });

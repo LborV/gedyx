@@ -11,7 +11,10 @@ var configs = {
         useSession: true,
         session: {
             expiration: 1000*60*60,
-            type: 'mysql'
+            type: 'redis'
+        },
+        server: {
+            // Socket io configurations 
         }
     },
     "redis": {
