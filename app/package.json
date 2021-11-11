@@ -8,6 +8,7 @@
     "test": "mocha",
     "create:actions": "node scripts/makeAction.js",
     "create:models": "node scripts/makeModels.js",
+    "create:cronJobs": "node scripts/makeCronJobs.js",
     "create:middlewares": "node scripts/makeMiddlewares.js",
     "create:memmoryStorage": "node scripts/makeMemmoryStorage.js",
     "create:redisStorage": "node scripts/makeRedisStorage.js",
