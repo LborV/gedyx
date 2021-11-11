@@ -5,6 +5,7 @@ class Application {
         this.socketsURL = false;
         this.useSession = true;
         this.appStarted = false;
+        this.socketConfigs = {};
         this.viewsLoadedCount = 0;
         this.firstLoadElementId = configuration.firstLoadElementId;
 
@@ -35,6 +36,10 @@ class Application {
         if(configuration.useSockets !== undefined && configuration.socketsURL !== undefined) {
             this.useSockets = configuration.useSockets;
             this.socketsURL = configuration.socketsURL;
+            
+            if(configuration.socketConfigs !== undefined) {
+                this.socketConfigs = configuration.socketConfigs;
+            }
         }
 
         if(configuration.controllers !== undefined) {
@@ -275,6 +280,10 @@ class Application {
         console.info('Custom callback on socket disconnected');
     }
 
+    onSocketConnectionError() {
+        console.info('Custom callback on socket connection Error');
+    }
+
     startApplication() {
         this.socket = undefined;
         this.socketConnected = false;
@@ -283,7 +292,7 @@ class Application {
         this.onStartApp();
 
         if(this.useSockets && this.socketsURL) {
-            this.socket = io(this.socketsURL);
+            this.socket = io(this.socketsURL, this.socketConfigs);
             
             //socket connected
             this.socket.on('connect', () => {
@@ -314,6 +323,12 @@ class Application {
             this.socket.on('disconnect', () => {
                 this.socketConnected = false;
                 this.onSocketDisconnected();
+            });
+
+            // On connecton Error
+            this.socket.on('connect_error', () => {
+                this.socketConnected = false;
+                this.onSocketConnectionError();
             });
         }
     }

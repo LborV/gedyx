@@ -1,0 +1,27 @@
+# npx artillery run artilleryTest.yml 
+config:
+  target: "http://localhost:8000"
+  phases:
+    - duration: 60
+      arrivalRate: 100
+  engines:
+   socketio-v3: {}
+
+scenarios:
+  - name: My sample scenario
+    engine: socketio-v3
+    flow:
+      # wait for the WebSocket upgrade (optional)
+      - think: 1
+
+      # emit an object
+      - emit:
+          channel: "test"
+          data:
+            id: 42
+            status: "in progress"
+            tags:
+              - "tag1"
+              - "tag2"
+
+      - think: 30

@@ -15,6 +15,7 @@ var configs = {
         },
         server: {
             // Socket io configurations 
+            path: process.argv.slice(2)[0]
         }
     },
     "redis": {
