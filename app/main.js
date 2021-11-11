@@ -3,6 +3,7 @@ globalThis.config = require('./configs/config.js');
 globalThis.QueryBuilder = require('./kernel/queryBuilder/QueryBuilder');
 globalThis.Actions = require('./kernel/Actions');
 globalThis.Models = require('./kernel/Models');
+globalThis.CronJobs = require('./kernel/CronJobs');
 
 async function main() {
     // Mysql Connection
@@ -50,7 +51,11 @@ async function main() {
         }
     }
 
+    // Register Models
     globalThis.modelsPool = new Models();
+
+    // Register Cron tasks
+    globalThis.cronJobsPool = new CronJobs();
 }
 
 module.exports = main;

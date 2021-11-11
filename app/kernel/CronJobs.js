@@ -1,24 +1,24 @@
 const Loader = require('./Loader');
-const Middleware = require('./Middleware');
-class Middlewares extends Loader {
-    constructor(dirName = 'middlewares') {
+const CronJob = require('./CronJob');
+class CronJobs extends Loader {
+    constructor(dirName = 'cronJobs') {
         super();
         this.load(dirName);
     }
 
     load(dirName) {
         try{
-            globalThis['_middlewares'] = {};
+            globalThis['_cronJobs'] = {};
             let normalizedPath = require("path").join('', dirName);
             this.getFiles(normalizedPath).forEach((file) => {
                 if(!file.includes('.js')) {
                     return;
                 }
 
-                let middleware = require(`../${file}`);
-                if(middleware instanceof Middleware) {
-                    let middlewareName = file.split('/').pop().replace('.js', '');
-                    globalThis['_middlewares'][middlewareName] = middleware;
+                let job = require(`../${file}`);
+                if(job instanceof CronJob) {
+                    let jobName = file.split('/').pop().replace('.js', '');
+                    globalThis['_cronJobs'][jobName] = job;
                 } else {
                     throw 'Incorrect class!';
                 }
@@ -29,4 +29,4 @@ class Middlewares extends Loader {
     }
 }
 
-module.exports = Middlewares;
+module.exports = CronJobs;

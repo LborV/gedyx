@@ -3,7 +3,7 @@ globalThis.Middlewares = require('./Middlewares');
 const Loader = require('./Loader');
 
 class Actions extends Loader {
-    constructor(configs) {       
+    constructor(configs, dirName = 'actions') {       
         super();
 
         if(!configs.io) {
@@ -11,7 +11,7 @@ class Actions extends Loader {
          }
  
         this.actionList = [];
-        this.load();
+        this.load(dirName);
 
         if(configs.useSession == true) {
             this.useSession = true;
@@ -23,11 +23,11 @@ class Actions extends Loader {
         return this.listener();
     }
     
-    load(dirName = 'actions') {
+    load(dirName) {
         try {
             globalThis.MiddlewaresPool = new Middlewares();
 
-            let normalizedPath = require("path").join('', dirName);
+            let normalizedPath = require("path").join('', dirName);         
             this.getFiles(normalizedPath).forEach((file) => {
                 if(!file.includes('.js')) {
                     return;

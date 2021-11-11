@@ -1,14 +1,14 @@
 const Loader = require('./Loader');
 const QueryBuilder = require('./queryBuilder/QueryBuilder');
 class Models extends Loader {
-    constructor() {
+    constructor(dirName = 'models') {
         super();
-        this.load();
+        this.load(dirName);
     }
 
-    load(dirName = 'models') {
+    load(dirName) {
         try{
-            let normalizedPath = require("path").join('', dirName);
+            let normalizedPath = require("path").join('', dirName);                        
             this.getFiles(normalizedPath).forEach((file) => {
                 if(!file.includes('.js')) {
                     return;
