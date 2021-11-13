@@ -6,41 +6,63 @@ class RedisQueryBuilder extends QueryBuilder {
         this.sql = '';
     }
 
-    set(key, value) {
+    set(key, value, connection = null) {
         if(typeof key !== 'string') {
             throw 'Incorrect key';
         }
 
-        this.connection.set(key, JSON.stringify(value));
+        if(connection == null) {
+            this.connection.set(key, JSON.stringify(value));
+        } else {
+            connection.set(key, JSON.stringify(value));
+        }
     }
 
-    async get(key) {
+    async get(key, connection = null) {
         if(typeof key !== 'string') {
             throw 'Incorrect key';
         }
 
         let result;
-        await this.connection.get(key).then((data) => {
-            result = data ? JSON.parse(data) : [];
-        });
+        if(connection == null) {
+            await this.connection.get(key).then((data) => {
+                result = data ? JSON.parse(data) : [];
+            });        
+        } else {
+            await connection.get(key).then((data) => {
+                result = data ? JSON.parse(data) : [];
+            });
+        }
 
         return result;
     }
 
-    delete(key) {
+    delete(key, connection = null) {
         if(typeof key !== 'string') {
             throw 'Incorrect key';
         }
 
-        return this.connection.del(key);
+        if(connection == null) {
+            return this.connection.del(key);
+        }
+
+        return connection.del(key);
     }
     
-    truncate() {
-        this.connection.flushdb((err, succeeded) => {
-            if(!succeeded) {
-                console.error(err);
-            }
-        });
+    truncate(connection = null) {
+        if(connection == null) {
+            this.connection.flushdb((err, succeeded) => {
+                if(!succeeded) {
+                    console.error(err);
+                }
+            });
+        } else {
+            connection.flushdb((err, succeeded) => {
+                if(!succeeded) {
+                    console.error(err);
+                }
+            });
+        }
     }
 }
 

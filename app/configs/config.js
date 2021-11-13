@@ -1,10 +1,18 @@
 //Settings for DB connection
 var configs = {
     "mysql": {
-        host: "mysql_database",
-        user: "root",
-        password: "testRootPassword",
-        db: "testDatabase"
+        'main': {
+            host: "mysql_database",
+            user: "root",
+            password: "testRootPassword",
+            db: "testDatabase"
+        },
+        'second': {
+            host: "mysql_database",
+            user: "root",
+            password: "testRootPassword",
+            db: "testDatabase"
+        }
     },
     "socket": {
         port: 3030,
@@ -19,9 +27,11 @@ var configs = {
         }
     },
     "redis": {
-        port: 6379,
-        host: "redis",
-        password: "",   
+        'main': {
+            port: 6379,
+            host: "redis",
+            password: "",
+        }   
     }
 };
 

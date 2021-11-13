@@ -11,8 +11,19 @@ class MysqlQueryBuilder extends QueryBuilder {
         }
     }
 
-    async execute() {
-        let res = await this.connection.query(this.getSql());
+    setConnection(connection) {
+        return this.connection = connection;
+    } 
+
+    async execute(connection = null) {
+        let res = [];
+
+        if(connection != null) {
+            res = await connection.query(this.getSql());
+        } else {
+            res = await this.connection.query(this.getSql());
+        }
+
         this.resetQuery();
 
         if(this.tableName) {
@@ -22,7 +33,7 @@ class MysqlQueryBuilder extends QueryBuilder {
         return Object.values(JSON.parse(JSON.stringify(res[0])));
     }
 
-    async executeRaw(sql) {
+    async executeRaw(sql, connection = null) {
         if(typeof sql !== 'string') {
             throw 'Incorrect input';
         }
@@ -32,7 +43,14 @@ class MysqlQueryBuilder extends QueryBuilder {
             this.table(this.tableName); 
         }
 
-        let res = await this.connection.query(sql);
+        let res = [];
+        
+        if(connection != null) {
+            res = await connection.query(sql);
+        } else {
+            res = await this.connection.query(sql);
+        }
+
         return Object.values(JSON.parse(JSON.stringify(res[0])));
     }
 
