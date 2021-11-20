@@ -1,4 +1,4 @@
-import {Parser} from '/kernel/Parser.js';
+import {Parser} from '/kernel/Parser.min.js';
 
 /**
  * Every page base class

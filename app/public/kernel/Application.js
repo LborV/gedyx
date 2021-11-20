@@ -5,6 +5,7 @@ class Application {
         this.socketsURL = false;
         this.useSession = true;
         this.appStarted = false;
+        this.useLocalStorage = true;
         this.socketConfigs = {};
         this.viewsLoadedCount = 0;
         this.firstLoadElementId = configuration.firstLoadElementId;
@@ -24,12 +25,21 @@ class Application {
             this.useSession = configuration.useSession;
         }
 
-        this.useLocalStorage = configuration.useLocalStorage ?? true;
+        if(configuration.useLocalStorage !== undefined) {
+            this.useLocalStorage = configuration.useLocalStorage;
+        }
+
         if(this.useLocalStorage) {
-            globalThis.views = JSON.parse(localStorage.getItem('views')) ?? [];
+            let views = JSON.parse(localStorage.getItem('views'));
+            globalThis.views = [];
+
+            if(views) {
+                globalThis.views = views;
+            }
+
             window.onbeforeunload = () => {
                 this.onClose();
-                localStorage.setItem('views', JSON.stringify(globalThis.views ?? []));
+                localStorage.setItem('views', JSON.stringify(globalThis.views));
             };
         }
 
@@ -163,8 +173,12 @@ class Application {
             }
 
             this.slugData = [];
-            this.controllersToLoad = this.routing[url].controllers ?? [];
+            this.controllersToLoad = [];
             this.urlConfiguration = this.routing[url];
+
+            if(this.routing[url] && this.routing[url].controllers) {
+                this.controllersToLoad = this.routing[url].controllers;
+            }
 
             for(let i = 0; i < urlDetails.length; i++) {
                 let slug = urlDetails[i].match(/{.*}+/g);

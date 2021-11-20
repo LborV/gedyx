@@ -4,8 +4,9 @@
   "description": "JS framework",
   "main": "index.js",
   "scripts": {
-    "start": "npm run compile:views && node index.js",
     "test": "mocha",
+    "start": "npm run compile && node index.js",
+    
     "create:actions": "node scripts/makeAction.js",
     "create:models": "node scripts/makeModels.js",
     "create:cronJobs": "node scripts/makeCronJobs.js",
@@ -13,8 +14,12 @@
     "create:memmoryStorage": "node scripts/makeMemmoryStorage.js",
     "create:redisStorage": "node scripts/makeRedisStorage.js",
     "create:migrationMySql": "node scripts/makeMigrationMySql.js",
+    
     "migrate:mysql": "node scripts/migrateMySql.js",
-    "compile:views": "node scripts/compileViews.js"
+
+    "compile:views": "node scripts/compileViews.js",
+    "compile:gulp": "node gulpfile.js",
+    "compile": "npm run compile:views && npm run compile:gulp"
   },
   "author": "LborV(Boris Djumajev)",
   "license": "SEE LICENSE IN ../LICENSE",
@@ -27,6 +32,8 @@
     "sqlstring": "^2.3.1"
   },
   "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-minify": "^3.1.0",
     "mocha": "^8.2.1"
   },
   "engines": {
