@@ -213,6 +213,13 @@ class Application {
                    this.setMetaTag(meta);
                 });
             }
+
+            if(this.urlConfiguration.styles) {
+                this.urlConfiguration.styles.forEach(style => {
+                    this.addStyle(style);
+                 });
+            }
+
         } catch(error) {
             console.error(error);
         }
@@ -244,6 +251,18 @@ class Application {
 
     setTitle(title) {
         return document.title = title;
+    }
+
+    addStyle(style) {
+        if(typeof style !== 'string') {
+            console.error('Incorrect style url');
+            return;
+        }
+
+        let styleTag = document.createElement('link');
+        styleTag['rel'] = 'stylesheet';
+        styleTag['href'] = style;
+        document.getElementsByTagName('head')[0].appendChild(styleTag);
     }
 
     setMetaTag(meta) {
