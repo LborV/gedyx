@@ -30,14 +30,14 @@ async function main() {
 
     // Redis connection
     if(config.redis) {
-        globalThis.Redis = require('redis');
+        const redis = require('redis');
         const util = require('util');
     
-        for(connectionName in config.mysql) {
-            let connection = config.mysql[connectionName];
+        for(connectionName in config.redis) {
+            let connection = config.redis[connectionName];
             if(connection.port && connection.host) {
                 try {
-                    globalThis[connectionName] = Redis.createClient(config.redis);
+                    globalThis[connectionName] = redis.createClient(connection);
                     globalThis[connectionName].get = util.promisify(globalThis[connectionName].get);
                 } catch (error) {
                     console.error(error);

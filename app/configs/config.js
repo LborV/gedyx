@@ -27,7 +27,7 @@ var configs = {
         }
     },
     "redis": {
-        'main': {
+        'redis': {
             port: 6379,
             host: "redis",
             password: "",
