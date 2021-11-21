@@ -209,7 +209,7 @@ export class Controller {
         return true;
     }
 
-    reload() {
+    refresh() {
         let view = globalThis.views.find(el => el.url == this.url);
         if(globalThis.views.length > 0) {
             if(view) {
