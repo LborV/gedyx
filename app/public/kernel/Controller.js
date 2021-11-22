@@ -52,8 +52,11 @@ export class Controller {
 
             this.createDOM();
         }
+        
         if(config.app) {
             this.app = config.app;
+        } else {
+            throw 'Controller must be defined by Application class!';
         }
 
         if(config.url) {
