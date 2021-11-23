@@ -1,9 +1,9 @@
 class Middleware {
-    beforeRequest(request) {
+    async beforeRequest(request) {
         console.log("beforeRequest method can be overwritten");
     }
 
-    afterRequest(response) {
+    async afterRequest(response) {
         console.log("afterRequest method can be overwritten");
     }
 }

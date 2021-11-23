@@ -8,16 +8,50 @@ class Sessions {
         if(config.expiration != undefined && config.expiration) {
             this.expiration = parseInt(config.expiration);
         }
+        let connection = undefined;
+        let connectionName = undefined;
 
         switch(config.type) {
             case 'redis': 
-                if(globalThis.redisConnection) {
-                    this.sessions = new RedisQueryBuilder({connection: globalThis.redisConnection});            
+                if(globalThis.config && globalThis.config.redis) {
+                    connectionName = Object.keys(globalThis.config.redis)[0];
+                }
+            
+                if(config.connection) {
+                    if(typeof config.connection === 'string') {
+                        connectionName = config.connection;
+                    } else {
+                        connection = config.connection;
+                    }
+                }
+
+                if(!connection) {
+                    connection = globalThis[connectionName];
+                }
+
+                if(connection) {
+                    this.sessions = new RedisQueryBuilder({connection: connection});            
                 }
                 break;
             case 'mysql':
-                if(globalThis.mysqlConnection) {
-                    this.sessions = new MysqlQueryBuilder({connection: globalThis.mysqlConnection, table: 'sessions'});            
+                if(globalThis.config && globalThis.config.mysql) {
+                    connectionName = Object.keys(globalThis.config.mysql)[0];
+                }
+            
+                if(config.connection) {
+                    if(typeof config.connection === 'string') {
+                        connectionName = config.connection;
+                    } else {
+                        connection = config.connection;
+                    }
+                }
+
+                if(!connection) {
+                    connection = globalThis[connectionName];
+                }
+
+                if(connection) {
+                    this.sessions = new MysqlQueryBuilder({connection: connection, table: 'sessions'});            
                     this.sessions.executeRaw(`
                         SELECT 
                             TABLE_NAME 

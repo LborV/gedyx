@@ -25,7 +25,9 @@ class Actions extends Loader {
     
     load(dirName) {
         try {
-            globalThis.MiddlewaresPool = new Middlewares();
+            if(globalThis.MiddlewaresPool === undefined) {
+                globalThis.MiddlewaresPool = new Middlewares();
+            }
 
             let normalizedPath = require("path").join('', dirName);         
             this.getFiles(normalizedPath).forEach((file) => {
@@ -77,9 +79,9 @@ class Actions extends Loader {
         return this;
     }
 
-    call(actionName, data, socket = undefined) {
+    async call(actionName, data, socket = undefined) {
         if(actionName in this.actionList) {
-            return this.actionList[actionName].requestIn(data, socket);
+            return await this.actionList[actionName].requestIn(data, socket);
         }
 
         return this;

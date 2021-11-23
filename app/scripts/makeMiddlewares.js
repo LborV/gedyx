@@ -42,17 +42,17 @@ function main(arg) {
 
 function makeFileContent(modelName, model_name) {
     return `
-//This file was automaticaly generated
+//This file was automatically generated
 //Feel free to edit :)
 
 var Middleware = require('../kernel/Middleware');
 
 class ${model_name} extends Middleware {
-    beforeRequest(data) {
+    async beforeRequest(data) {
         return data;
     }
 
-    afterRequest(data) {
+    async afterRequest(data) {
         return data;
     }
 }

@@ -37,7 +37,7 @@ function main(arg) {
 
 function makeFileContent(actionName, action_name) {
     return `
-//This file was automaticaly generated
+//This file was automatically generated
 //Feel free to edit :)
 
 var Action = require('../kernel/Action');

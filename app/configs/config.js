@@ -32,6 +32,16 @@ var configs = {
             host: "redis",
             password: "",
         }   
+    },
+    "http": {
+        'api': {
+            'static': true,
+            'port': 80
+        },
+        'health': {
+            'static': false,
+            'port': 8001
+        }
     }
 };
 

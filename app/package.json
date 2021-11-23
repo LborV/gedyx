@@ -5,18 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "start": "npm run compile && node index.js",
-    
+    "start": "node index.js",
     "create:actions": "node scripts/makeAction.js",
+    "create:httpActions": "node scripts/makeHttpAction.js",
     "create:models": "node scripts/makeModels.js",
     "create:cronJobs": "node scripts/makeCronJobs.js",
     "create:middlewares": "node scripts/makeMiddlewares.js",
     "create:memmoryStorage": "node scripts/makeMemmoryStorage.js",
     "create:redisStorage": "node scripts/makeRedisStorage.js",
     "create:migrationMySql": "node scripts/makeMigrationMySql.js",
-    
     "migrate:mysql": "node scripts/migrateMySql.js",
-
     "compile:views": "node scripts/compileViews.js",
     "compile:gulp": "node gulpfile.js",
     "compile": "npm run compile:views && npm run compile:gulp"
@@ -25,6 +23,7 @@
   "license": "SEE LICENSE IN ../LICENSE",
   "dependencies": {
     "cron": "^1.8.2",
+    "express": "^4.17.1",
     "mysql2": "^2.3.0",
     "recursive-readdir": "^2.2.2",
     "redis": "^3.1.2",

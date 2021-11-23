@@ -48,7 +48,7 @@ function main(arg) {
 
 function makeFileContent(modelName, model_name, connection) {
     return `
-//This file was automaticaly generated
+//This file was automatically generated
 //Feel free to edit :)
 
 const MysqlQueryBuilder = require('../kernel/queryBuilder/MysqlQueryBuilder');    

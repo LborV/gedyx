@@ -16,16 +16,17 @@ class Action {
         return this.actionName;
     }
 
-    requestIn(data, socket) {
+    async requestIn(data, socket) {
         this.socket = socket;
         
-        this.middlewaresBefore.forEach(middleware => {
+        for(let i = 0; i < this.middlewaresBefore.length; i++) {
+            let middleware = this.middlewaresBefore[i];
             if(!(middleware instanceof Middleware)) {
                 throw 'Middleware should extend Middleware class!';
             }
 
-            data = middleware.beforeRequest(data);
-        });
+            data = await middleware.beforeRequest(data);
+        }
 
         this.request(data);
     }
@@ -34,14 +35,17 @@ class Action {
         console.log('Request method can be overwritten');
     }
 
-    response(data) {
-        this.middlewaresAfter.forEach(middleware => {
+    async response(data) {
+        for(let i = 0; i < this.middlewaresAfter.length; i++) {
+            let middleware = this.middlewaresAfter[i];
+
             if(!(middleware instanceof Middleware)) {
                 throw 'Middleware should extend Middleware class!';
             }
 
-            data = middleware.afterRequest(data);
-        });
+            data = await middleware.afterRequest(data);
+        }
+
         this.socket.emit(this.actionName, data);
 
         return data;
@@ -54,11 +58,11 @@ class Action {
         return data;
     }
 
-    call(actionName, data) {
+    async call(actionName, data) {
         if(actionName === this.actionName) {
             return {};
         }
-        return this.parent.call(actionName, data, this.socket);
+        return await this.parent.call(actionName, data, this.socket);
     }
 }
 

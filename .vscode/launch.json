@@ -10,7 +10,8 @@
             "request": "launch",
             "runtimeVersion": "14.17.0",
             "cwd": "${workspaceFolder}/app",
-            "runtimeExecutable": "npm",
+            "restart": true,
+            "runtimeExecutable": "nodemon",
             "runtimeArgs": ["run-script", "start"]
         }
     ]
