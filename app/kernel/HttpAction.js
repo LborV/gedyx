@@ -48,8 +48,17 @@ class HttpAction {
         'unsubscribe',
        ];
 
+       if(method === '*') {
+            allowedMethods.forEach(method => {
+                this.registerMethod(method, route)
+            });
+
+            return;
+       }
+
        if(allowedMethods.includes(method, route)) {
             this.server[method](route, async (req, res) => {
+                this.method = method;
                 this.requestIn(req, res)
             });
        }
