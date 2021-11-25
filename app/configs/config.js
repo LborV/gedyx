@@ -33,6 +33,8 @@ var configs = {
             password: "",
         }   
     },
+    // You want only one node to run cron
+    "cron": process.argv.slice(2)[1] === 'cronEnabled',
     "http": {
         'api': {
             'static': true,

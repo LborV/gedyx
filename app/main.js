@@ -68,7 +68,9 @@ async function main() {
     globalThis.modelsPool = new Models();
 
     // Register Cron tasks
-    globalThis.cronJobsPool = new CronJobs();
+    if(config.cron) {
+        globalThis.cronJobsPool = new CronJobs();
+    }
 
     // HTTP server
     if(config.http) {

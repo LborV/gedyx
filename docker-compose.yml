@@ -26,7 +26,7 @@ services:
         image: node
         volumes:
             - ./app:/app
-        command: bash -c "npm i && npm start '/polling/'"
+        command: bash -c "npm i && npm start '/polling/' 'cronEnabled'"
 
     server_polling_2:
         working_dir: /app
