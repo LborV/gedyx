@@ -25,7 +25,7 @@ class Action {
                 throw 'Middleware should extend Middleware class!';
             }
 
-            data = await middleware.beforeRequest(data);
+            data = await middleware.beforeRequest(data, this.socket);
         }
 
         this.request(data);
@@ -43,7 +43,7 @@ class Action {
                 throw 'Middleware should extend Middleware class!';
             }
 
-            data = await middleware.afterRequest(data);
+            data = await middleware.afterRequest(data, this.socket);
         }
 
         this.socket.emit(this.actionName, data);

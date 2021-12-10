@@ -48,11 +48,11 @@ function makeFileContent(modelName, model_name) {
 var Middleware = require('../kernel/Middleware');
 
 class ${model_name} extends Middleware {
-    async beforeRequest(data) {
+    async beforeRequest(data, socket) {
         return data;
     }
 
-    async afterRequest(data) {
+    async afterRequest(data, socket) {
         return data;
     }
 }

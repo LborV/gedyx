@@ -115,6 +115,17 @@ class Sessions {
         }
     }
 
+    async setValue(sessionKey, key, value) {
+        let session = await this.get(sessionKey);
+        session[key] = value;
+
+        return await this.set(sessionKey, session);
+    }
+
+    async set(sessionKey, data) {
+        return await this.sessions.set(sessionKey, data);
+    }
+
     async get(sessionKey) {
         let session = await this.sessions.get(sessionKey);
         if(session.length == 0 || !this.checkExpiration(session.endDate)) {

@@ -64,6 +64,31 @@ class Actions extends Loader {
                 socket.on('getSession', async session => {
                     socket.session = await this.sessions.get(session?.sessionKey);
                     socket.emit('getSession', {sessionKey: socket.session.sessionKey, liveTime: socket.session.liveTime});
+                
+                    socket.session.set = async (key, value) => {
+                        return await this.sessions.setValue(socket.session.sessionKey, key, value)
+                    }
+
+                    socket.session.get = async (key) => {
+                        let session = await this.sessions.get(socket.session.sessionKey);
+                        return session[key];
+                    }
+
+                    socket.session.delete = async (_key) => {
+                        var data = [];
+                        for(const [key, value] of Object.entries(socket.session)) {
+                            if(value.id != _key) {
+                                data[key] = value;
+                            }
+                        }
+
+                        return await this.sessions.set(socket.session.sessionKey, data);
+                    }
+
+                    socket.session.forget = async () => {
+                        return await this.sessions.set(socket.session.sessionKey, {});
+                    }
+
                 });
             }
 
