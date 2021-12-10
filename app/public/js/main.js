@@ -27,10 +27,7 @@ window.addEventListener('load', () => {
         },
         socketsURL: 'http://localhost:8000',
         useSession: true,
-        routing: {
-        },
-        controllers: [
-            
-        ]
+        routing: routes,
+        controllers: controllers
     });
 });
