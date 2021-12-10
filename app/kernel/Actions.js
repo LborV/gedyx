@@ -103,6 +103,13 @@ class Actions extends Loader {
 
             socket.on('disconnect', () => {
                 this.onDisconnect(socket);
+                try {
+                    socket.disconnect();
+                    socket.removeAllListeners();
+                    socket = null;
+                } catch(err) {
+                    console.error(err);
+                }
             });
         });
 
