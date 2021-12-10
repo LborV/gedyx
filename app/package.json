@@ -10,6 +10,7 @@
     "create:httpActions": "node scripts/makeHttpAction.js",
     "create:models": "node scripts/makeModels.js",
     "create:cronJobs": "node scripts/makeCronJobs.js",
+    "create:controller": "node scripts/makeController.js",
     "create:middlewares": "node scripts/makeMiddlewares.js",
     "create:memmoryStorage": "node scripts/makeMemmoryStorage.js",
     "create:redisStorage": "node scripts/makeRedisStorage.js",
