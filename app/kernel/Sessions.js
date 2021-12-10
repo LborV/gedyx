@@ -151,7 +151,7 @@ class Sessions {
     }
 
     createSession() {
-        let sessionKey = Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        let sessionKey = Date.now() + '_' + Math.random().toString(36);
         let session = {
             liveTime: this.expiration,
             endDate: Date.now() + this.expiration,
