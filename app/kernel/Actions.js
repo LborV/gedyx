@@ -71,6 +71,11 @@ class Actions extends Loader {
 
                     socket.session.get = async (key) => {
                         let session = await this.sessions.get(socket.session.sessionKey);
+
+                        if(key === undefined) {
+                            return session;
+                        }
+                        
                         return session[key];
                     }
 
