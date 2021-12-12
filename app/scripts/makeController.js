@@ -40,26 +40,25 @@ function main(arg) {
 
 function makeFileContent(controllerName) {
     return `
-    import {Controller} from '/kernel/Controller.min.js';
+import {Controller} from '/kernel/Controller.min.js';
 
-    export default class ${controllerName} extends Controller{
-        constructor(settings) {
-            super(settings);
-        }
-    
-        onShow() {
-            console.log('Showed: '+this.name);
-        }
-    
-        onLoad() {
-            console.log('Loaded: '+this.name);
-        }
-    
-        onUpdate() {
-            console.log('Updated: '+this.name)
-        }
-    }; 
-    
+export default class ${controllerName} extends Controller{
+    constructor(settings) {
+        super(settings);
+    }
+
+    onShow() {
+        console.log('Showed: '+this.name);
+    }
+
+    onLoad() {
+        console.log('Loaded: '+this.name);
+    }
+
+    onUpdate() {
+        console.log('Updated: '+this.name)
+    }
+};
     
 `;
 }
