@@ -373,7 +373,9 @@ class Application {
         }
 
         if(typeof callback == 'function') {
-            this.socket.on(name, callback);
+            if(!this.socket.hasListeners(name)) {
+                this.socket.on(name, callback);
+            }
         }
         
         this.socket.emit(name, data);
