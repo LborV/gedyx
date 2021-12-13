@@ -1,6 +1,7 @@
 const MemoryStorage = require('./queryBuilder/MemoryQueryBuilder');
 const MysqlQueryBuilder = require('./queryBuilder/MysqlQueryBuilder');
 const RedisQueryBuilder = require('./queryBuilder/RedisQueryBuilder');
+var sha1 = require('sha1');
 
 class Sessions {
     constructor(config) {
@@ -128,7 +129,7 @@ class Sessions {
 
     async get(sessionKey) {
         let session = await this.sessions.get(sessionKey);
-        if(session.length == 0 || !this.checkExpiration(session.endDate)) {
+        if(session === undefined || session.endDate === undefined || !this.checkExpiration(session.endDate)) {
             return this.createSession();
         }
 
@@ -151,7 +152,7 @@ class Sessions {
     }
 
     createSession() {
-        let sessionKey = Date.now() + '_' + Math.random().toString(36);
+        let sessionKey = sha1(Date.now() + '_' + Math.random().toString(36));
         let session = {
             liveTime: this.expiration,
             endDate: Date.now() + this.expiration,
