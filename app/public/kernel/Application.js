@@ -344,6 +344,7 @@ class Application {
 
                         if(this.socketConnected != true) {
                             this.socketConnected = true;
+                            this.registerSocketRequests();
                             this.onSocketConnected();
                         }
                     });
@@ -366,17 +367,65 @@ class Application {
         }
     }
 
-    request(name, data, callback) {
-        if(!this.socketConnected) {
-            console.info('Sockets not ready yet');
-            return;
+    registerSocketRequests() {
+        if(Array.isArray(this.socketListeners)) {
+            this.socketListeners.forEach(req => {
+                if(typeof req.callback == 'function') {
+                    this.socket.once(req.name, req.callback);
+                }
+            });
         }
 
-        if(typeof callback == 'function') {
-            this.socket.once(name, callback);
+        if(Array.isArray(this.socketRequests)) {
+            this.socketRequests.forEach(req => {
+                this.socket.emit(req.name, req.data);
+            });
         }
-        
+
+        return this;
+    }
+
+    addSocketListener(name, callback) {
+        if(this.socketListeners === undefined) {
+            this.socketListeners = [];
+        }
+
+        this.socketListeners.push(
+            {
+                name: name,
+                callback: callback
+            }
+        );
+
+        return this;
+    }
+
+    addSocketRequest(name, data) {
+        if(this.socketRequests === undefined) {
+            this.socketRequests = [];
+        }
+
+        this.socketRequests.push(
+            {
+                name: name,
+                data: data
+            }
+        );
+
+        return this;
+    }
+
+    request(name, data, callback) {
+        if(!this.socketConnected) {
+            this.addSocketListener(name, callback);
+            this.addSocketRequest(name, data);
+            console.info('Sockets not registered yet! Added to onConnect');
+            return this;
+        }
+
+        this.socket.once(name, callback);
         this.socket.emit(name, data);
+        return this;
     }
 
     getController(name) {

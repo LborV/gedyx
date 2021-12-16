@@ -14,6 +14,18 @@ class MysqlQueryBuilder extends QueryBuilder {
     setConnection(connection) {
         return this.connection = connection;
     } 
+    
+    async startTransaction(connection = null) {
+        await this.executeRaw('START TRANSACTION;', connection);
+    }
+
+    async commit(connection = null) {
+        return await this.executeRaw('COMMIT;', connection);
+    }
+
+    async rollback(connection = null) {
+        return await this.executeRaw('ROLLBACK;', connection);
+    }
 
     async execute(connection = null) {
         let res = [];
