@@ -344,8 +344,8 @@ class Application {
 
                         if(this.socketConnected != true) {
                             this.socketConnected = true;
-                            this.registerSocketRequests();
                             this.onSocketConnected();
+                            this.registerSocketRequests();
                         }
                     });
                 } else {
