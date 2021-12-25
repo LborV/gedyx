@@ -182,7 +182,13 @@ class MysqlQueryBuilder extends QueryBuilder {
                     this.isJoin = isJoinSave;
                 } else {
                     where.a1 = SqlString.escapeId(where.a1);
-                    where.a2 = this.escape(where.a2);
+
+                    if(typeof where.a2 === 'string' && (where.a2.match(/\./g) || []).length === 1) {
+                        where.a2 = SqlString.escapeId(where.a2);
+                    } else {
+                        where.a2 = this.escape(where.a2);
+                    }
+
                     sql += `${where.a1} ${where.operator} ${where.a2} `;
                 }
 
