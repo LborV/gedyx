@@ -94,7 +94,11 @@ class MysqlQueryBuilder extends QueryBuilder {
                 }
     
                 if(typeof element === 'string') {
-                    sql += `\`${element}\`${delimiter} `;
+                    if((element.match(/\./g) || []).length === 1) {
+                        element = SqlString.escapeId(element);
+                    }
+
+                    sql += `${element}${delimiter} `;
                 } else if(typeof element === 'object' && element.raw) {
                     sql += `${element.value}${delimiter} `;
                 }
