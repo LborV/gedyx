@@ -6,10 +6,6 @@ import {Parser} from '/kernel/Parser.min.js';
 export class Controller {
     //Constructor
     constructor(config = {}) {
-        if(typeof config == 'string') {
-            config = JSON.parse(config);
-        }
-
         if(config.id === undefined) {
             console.error('You most give a id');
             return null;
