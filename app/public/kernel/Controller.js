@@ -16,10 +16,6 @@ export class Controller {
         }
 
         this.element = document.getElementById(config.id);
-        if(this.element != null) {
-            console.error('This id exist');
-            return null;
-        }
 
         if(config.parent !== undefined && document.getElementById(config.parent) != undefined) {
             this.parent = config.parent;
