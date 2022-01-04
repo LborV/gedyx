@@ -148,7 +148,11 @@ class MysqlQueryBuilder extends QueryBuilder {
         }
 
         if(obj.limit) {
-            sql += `LIMIT ${obj.limit} `;
+            if(typeof obj.limit.offset === 'number') {
+                sql += `LIMIT ${obj.limit.limit} OFFSET ${obj.limit.offset} `;
+            } else {
+                sql += `LIMIT ${obj.limit.limit} `;
+            }
         } 
 
         if(subWhere) {

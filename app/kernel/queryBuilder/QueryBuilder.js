@@ -185,12 +185,35 @@ class QueryBuilder {
         return this;
     }
 
-    limit(num) {
+    limit() {
+        if(arguments.length !== 2 && arguments.length !== 1) {
+            throw 'Inncorrect arguments count';
+        }
+
+        let offset = undefined;
+        let num = undefined;
+
+        if(arguments.length == 2) {
+            offset = arguments[0];
+            num = arguments[1];
+        }
+
+        if(arguments.length == 1) {
+            num = arguments[0];
+        }
+
+        if(offset && typeof offset !== 'number') {
+            throw 'Offset should be a number';
+        }
+
         if(typeof num !== 'number') {
             throw 'Limit should be a number';
         }
 
-        this.queryObject.limit = num;
+        this.queryObject.limit = {
+            offset: offset,
+            limit: num
+        };
         return this;
     }
 
