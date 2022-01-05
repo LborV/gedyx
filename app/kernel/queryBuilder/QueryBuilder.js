@@ -187,7 +187,7 @@ class QueryBuilder {
 
     limit() {
         if(arguments.length !== 2 && arguments.length !== 1) {
-            throw 'Inncorrect arguments count';
+            throw 'Incorrect arguments count';
         }
 
         let offset = undefined;
