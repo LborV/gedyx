@@ -1,5 +1,12 @@
 const QueryBuilder = require('./QueryBuilder');
+/**
+ * 
+ */
 class MysqlQueryBuilder extends QueryBuilder {
+   /**
+    * 
+    * @param {Object} config 
+    */
     constructor(config) {
         super();
         this.connection = config.connection;
@@ -11,22 +18,46 @@ class MysqlQueryBuilder extends QueryBuilder {
         }
     }
 
+    /**
+     * 
+     * @param {Connection} connection 
+     * @returns {Object}
+     */
     setConnection(connection) {
         return this.connection = connection;
     } 
     
+    /**
+     * 
+     * @param {Connection} connection 
+     */
     async startTransaction(connection = null) {
         await this.executeRaw('START TRANSACTION;', connection);
     }
 
+    /**
+     * 
+     * @param {Connection} connection 
+     * @returns {Object}
+     */
     async commit(connection = null) {
         return await this.executeRaw('COMMIT;', connection);
     }
 
+    /**
+     * 
+     * @param {Connection} connection 
+     * @returns {Object}
+     */
     async rollback(connection = null) {
         return await this.executeRaw('ROLLBACK;', connection);
     }
 
+    /**
+     * 
+     * @param {Connection} connection 
+     * @returns {Object}
+     */
     async execute(connection = null) {
         let res = [];
 
@@ -45,6 +76,12 @@ class MysqlQueryBuilder extends QueryBuilder {
         return Object.values(JSON.parse(JSON.stringify(res[0])));
     }
 
+    /**
+     * 
+     * @param {String} sql 
+     * @param {Connection} connection 
+     * @returns {Object}
+     */
     async executeRaw(sql, connection = null) {
         if(typeof sql !== 'string') {
             throw 'Incorrect input';
@@ -66,10 +103,20 @@ class MysqlQueryBuilder extends QueryBuilder {
         return Object.values(JSON.parse(JSON.stringify(res[0])));
     }
 
+    /**
+     * 
+     * @param {Any} value 
+     * @returns {String}
+     */
     escape(value) {
         return SqlString.escape(value);
     }
 
+    /**
+     * 
+     * @param {Object/Empty} subWhere 
+     * @returns {String}
+     */
     makeSelectQuery(subWhere) {
         let obj = this.queryObject;
         if(subWhere) {
@@ -162,6 +209,11 @@ class MysqlQueryBuilder extends QueryBuilder {
         return this.sql = sql + ';';
     }
 
+    /**
+     * 
+     * @param {Object} obj 
+     * @returns {String} 
+     */
     makeWhere(obj) {
         let sql = '';
         if(obj.where.length) {
@@ -220,6 +272,10 @@ class MysqlQueryBuilder extends QueryBuilder {
         return sql;
     }
 
+    /**
+     * 
+     * @returns {String}
+     */
     makeUpdateQuery() {
         let sql = `UPDATE \`${this.queryObject.table}\` SET `;
         let delimiter = ',';
@@ -238,6 +294,10 @@ class MysqlQueryBuilder extends QueryBuilder {
         return this.sql = sql + ';';
     }
 
+    /**
+     * 
+     * @returns {String}
+     */
     makeInsertQuery() {
         let sql = `INSERT INTO \`${this.queryObject.table}\`( `;
         let delimiter = ',';
@@ -265,12 +325,20 @@ class MysqlQueryBuilder extends QueryBuilder {
         return this.sql = sql + ');';
     }
 
+    /**
+     * 
+     * @returns {String}
+     */
     makeDeleteQuery() {
         let sql = `DELETE FROM \`${this.queryObject.table}\` `;
         sql += this.makeWhere(this.queryObject);
         return this.sql = sql + ';';
     }
 
+    /**
+     * 
+     * @returns {String}
+     */
     queryToSql() {
         if(!this.queryObject.table) {
             throw 'No table';
@@ -291,6 +359,10 @@ class MysqlQueryBuilder extends QueryBuilder {
         return this.makeSelectQuery();
     }
 
+    /**
+     * 
+     * @returns {String}
+     */
     getSql() {
         this.queryToSql();
         
@@ -302,6 +374,10 @@ class MysqlQueryBuilder extends QueryBuilder {
         return this.sql;
     }
 
+    /**
+     * 
+     * @returns {Object}
+     */
     truncate() {
         return this.executeRaw(`TRUNCATE \`${this.tableName}\``);
     }

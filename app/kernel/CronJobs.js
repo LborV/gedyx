@@ -1,11 +1,22 @@
 const Loader = require('./Loader');
 const CronJob = require('./CronJob');
+/**
+ * 
+ */
 class CronJobs extends Loader {
+    /**
+     * 
+     * @param {String} dirName 
+     */
     constructor(dirName = 'cronJobs') {
         super();
         this.load(dirName);
     }
 
+    /**
+     * 
+     * @param {String} dirName 
+     */
     load(dirName) {
         try{
             globalThis['_cronJobs'] = {};

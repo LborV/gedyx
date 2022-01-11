@@ -1,0 +1,22 @@
+{
+    "source": {
+      "include": [
+        "./app", 
+        "./app/kernel", 
+        "./app/kernel/migrations",
+        "./app/kernel/queryBuilder"
+      ],
+      "includePattern": ".+\\.js(doc|x)?$",
+      "excludePattern": "node_modules"
+    },
+    "templates": {
+      "cleverLinks": true,
+      "monospaceLinks": true
+    },
+    "opts": {
+      "recurse": true,
+      "destination": "./docs/backend/",
+      "readme": "./BACKEND.md",
+      "tutorials": "./Tutorials/Backend"
+    }
+} 

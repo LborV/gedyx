@@ -2,7 +2,16 @@ const Action = require('./Action');
 globalThis.Middlewares = require('./Middlewares');
 const Loader = require('./Loader');
 
+/**
+ * Automaticaly load and construct "Actions" 
+ */
 class Actions extends Loader {
+    /**
+     * 
+     * @param {Object} configs 
+     * @param {String} dirName 
+     * @returns {Object}
+     */
     constructor(configs, dirName = 'actions') {       
         super();
 
@@ -23,6 +32,10 @@ class Actions extends Loader {
         return this.listener();
     }
     
+    /**
+     * 
+     * @param {String} dirName 
+     */
     load(dirName) {
         try {
             if(globalThis.MiddlewaresPool === undefined) {
@@ -48,14 +61,24 @@ class Actions extends Loader {
         }
     }
 
+    /**
+     * Should be redefined
+     */
     onConnect() {
         console.log("onConnect method can be overwritten");
     }
 
+    /**
+     * Should be redefined
+     */
     onDisconnect() {
         console.log("onDisconnect method can be overwritten");
     }
 
+    /**
+     * 
+     * @returns {Object}
+     */
     listener() {
         this.io.on('connection', (socket) => {
             this.onConnect(socket);
@@ -116,6 +139,13 @@ class Actions extends Loader {
         return this;
     }
 
+    /**
+     * 
+     * @param {String} actionName 
+     * @param {Any} data 
+     * @param {Object} socket 
+     * @returns {Object}
+     */
     async call(actionName, data, socket = undefined) {
         if(actionName in this.actionList) {
             return await this.actionList[actionName].requestIn(data, socket);
