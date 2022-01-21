@@ -1,21 +1,10 @@
 const fs = require('fs');
 
-/**
- * 
- */
 class Loader {
-    /**
-     * 
-     */
     constructor() {
 
     }
 
-    /**
-     * 
-     * @param {String} dir 
-     * @returns {Array}
-     */
     getFiles(dir) {
         var result = [];
         var list = fs.readdirSync(dir);

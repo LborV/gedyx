@@ -1,22 +1,11 @@
 const Loader = require('./Loader');
 const QueryBuilder = require('./queryBuilder/QueryBuilder');
-/**
- * 
- */
 class Models extends Loader {
-    /**
-     * 
-     * @param {String} dirName 
-     */
     constructor(dirName = 'models') {
         super();
         this.load(dirName);
     }
 
-    /**
-     * 
-     * @param {String} dirName 
-     */
     load(dirName) {
         try{
             let normalizedPath = require("path").join('', dirName);                        

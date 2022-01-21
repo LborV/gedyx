@@ -1,19 +1,9 @@
-/**
- * 
- */
 class QueryBuilder {
-    /**
-     * 
-     * @returns {Object}
-     */
     constructor() {
         this.resetQuery();
         return this;
     }
 
-    /**
-     * 
-     */
     resetQuery() {
         this.queryObject = {
             select: [],
@@ -30,19 +20,11 @@ class QueryBuilder {
         };
     }
 
-    /**
-     * 
-     * @returns {Object}
-     */
     delete() {
         this.queryObject.delete = true;
         return this;
     }
 
-    /**
-     * 
-     * @returns {Object}
-     */
     update(updObject) {
         if(typeof updObject !== 'object' || updObject === null) {
             throw 'Not an object';
@@ -55,11 +37,6 @@ class QueryBuilder {
         return this;
     }
 
-    /**
-     * 
-     * @param {Object} inObject 
-     * @returns {Object}
-     */
     insert(inObject) {
         if(typeof inObject !== 'object' || inObject === null) {
             throw 'Not an object';
@@ -73,11 +50,6 @@ class QueryBuilder {
         return this;
     }
 
-    /**
-     * 
-     * @param {String} tableName 
-     * @returns {Object}
-     */
     table(tableName) {
         if(typeof tableName != 'string') {
             throw 'Table Name most be a String';
@@ -87,10 +59,6 @@ class QueryBuilder {
         return this;
     }
 
-    /**
-     * 
-     * @returns {Object}
-     */
     select() {
         for(var i = 0; i < arguments.length; i++) {
             let arg = arguments[i];
@@ -108,11 +76,6 @@ class QueryBuilder {
         return this;
     }
 
-    /**
-     * 
-     * @param {String} str 
-     * @returns {Object}
-     */
     selectRaw(str) {
         if(typeof str !== 'string') {
             throw 'Incorrect input';
@@ -126,14 +89,6 @@ class QueryBuilder {
         return this;
     }
 
-    /**
-     * @param {Function} arguments
-     * @param {String|Function} arguments 
-     * @param {String|Any} arguments 
-     * @param {String|String|Any} arguments 
-     * @param {String|String|Function} arguments 
-     * @returns {Object}
-     */
     where() {
         let isOr = false;
         if(this.nextQueryOr) {
@@ -211,11 +166,6 @@ class QueryBuilder {
         throw 'Incorrect number of arguments';
     }
 
-    /**
-     * 
-     * @param {String} a1 
-     * @returns {Object} 
-     */
     orderBy(a1) {
         if(typeof a1 !== 'string') {
             throw 'Incorrect input';
@@ -225,11 +175,6 @@ class QueryBuilder {
         return this;
     }
 
-    /**
-     * 
-     * @param {String} a1 
-     * @returns {Object}
-     */
     orderByDesc(a1) {
 
         if(typeof a1 !== 'string') {
@@ -240,11 +185,6 @@ class QueryBuilder {
         return this;
     }
 
-    /**
-     * @param {Number} arguments
-     * @param {Number|Number} arguments
-     * @returns {Object}
-     */
     limit() {
         if(arguments.length !== 2 && arguments.length !== 1) {
             throw 'Incorrect arguments count';
@@ -277,12 +217,6 @@ class QueryBuilder {
         return this;
     }
 
-    /**
-     * 
-     * @param {String} a1 
-     * @param {String} a2 
-     * @returns {Object}
-     */
     whereLike(a1, a2) {
         if(typeof a1 !== 'string' || typeof a2 !== 'string') {
             throw 'Incorrect input';
@@ -291,25 +225,11 @@ class QueryBuilder {
         return this.where(a1, 'LIKE', `'${a2}'`);
     }
 
-    /**
-     * @param {Function} arguments
-     * @param {String|Function} arguments 
-     * @param {String|Any} arguments 
-     * @param {String|String|Any} arguments 
-     * @param {String|String|Function} arguments 
-     * @returns {Object}
-     */
     orWhere() {
         this.nextQueryOr = true;
         return this.where(...arguments)
     }
 
-    /**
-     * 
-     * @param {String} a1 
-     * @param {Array} a2 
-     * @returns {Object}
-     */
     whereIn(a1, a2) {
         if(typeof a1 !== 'string' || !Array.isArray(a2)) {
             throw 'Incorrect input';
@@ -318,12 +238,6 @@ class QueryBuilder {
         return this.where(a1, 'IN', '('+a2.map((item) => {return typeof item === 'string' ? `'${item}'` : item}).join(', ')+')');
     }
 
-    /**
-     * 
-     * @param {String} a1 
-     * @param {Array} a2 
-     * @returns {Object}
-     */
     whereNotIn(a1, a2) {
         if(typeof a1 !== 'string' || !Array.isArray(a2)) {
             throw 'Incorrect input';
@@ -342,11 +256,6 @@ class QueryBuilder {
         }).join(', ')+')');
     }
 
-    /**
-     * 
-     * @param {String} a1 
-     * @returns {Object}
-     */
     whereNull(a1) {
         if(typeof a1 !== 'string') {
             throw 'Incorrect input';
@@ -355,11 +264,6 @@ class QueryBuilder {
         return this.where(a1, 'IS', 'NULL')
     }
 
-    /**
-     * 
-     * @param {String} sql 
-     * @returns {Object}
-     */
     whereRaw(sql) {
         if(typeof sql !== 'string') {
             throw 'Must be a string';
@@ -369,11 +273,6 @@ class QueryBuilder {
         return this;
     }
 
-    /**
-     * 
-     * @param {String} a1 
-     * @returns {Object}
-     */
     whereNotNull(a1) {
         if(typeof a1 !== 'string') {
             throw 'Incorrect input';
@@ -382,19 +281,10 @@ class QueryBuilder {
         return this.where(a1, 'IS NOT', 'NULL')
     }
 
-    /**
-     * 
-     * @returns {Object}
-     */
     getQueryObject() {
         return this.queryObject;
     }
 
-    /**
-     * 
-     * @param {Function} callback - Must return QueryBuilder
-     * @returns {Object}
-     */
     union(callback) {
         if(typeof callback !== 'function') {
             throw 'Incorrect input';
@@ -407,11 +297,6 @@ class QueryBuilder {
         return this;
     }
 
-    /**
-     * 
-     * @param {Function} callback - Must return QueryBuilder
-     * @returns {Object}
-     */
     unionAll(callback) {
         if(typeof callback !== 'function') {
             throw 'Inccorect input';
@@ -424,11 +309,6 @@ class QueryBuilder {
         return this;
     }
 
-    /**
-     * 
-     * @param {String} a1 
-     * @returns {Object}
-     */
     groupBy(a1) {
         if(typeof a1 !== 'string') {
             throw 'Inccorect input';
@@ -439,12 +319,6 @@ class QueryBuilder {
         return this;
     }
 
-    /**
-     * 
-     * @param {String} table 
-     * @param {Function} callback - Must return QueryBuilder
-     * @returns {Object}
-     */
     join(table, callback) {
         if(typeof table !== 'string' || typeof callback !== 'function') {
             throw 'Inccorect input';
@@ -459,12 +333,6 @@ class QueryBuilder {
         return this;
     }
 
-    /**
-     * 
-     * @param {String} table 
-     * @param {Function} callback - Must return QueryBuilder
-     * @returns {Object}
-     */
     leftJoin(table, callback) {
         if(typeof table !== 'string' || typeof callback !== 'function') {
             throw 'Inccorect input';
@@ -479,12 +347,6 @@ class QueryBuilder {
         return this;
     }
 
-    /**
-     * 
-     * @param {String} table 
-     * @param {Function} callback - Must return QueryBuilder
-     * @returns {Object}
-     */
     rightJoin(table, callback) {
         if(typeof table !== 'string' || typeof callback !== 'function') {
             throw 'Inccorect input';
@@ -499,12 +361,6 @@ class QueryBuilder {
         return this;
     }
 
-    /**
-     * 
-     * @param {String} table 
-     * @param {Function} callback - Must return QueryBuilder
-     * @returns {Object}
-     */
     innerJoin(table, callback) {
         if(typeof table !== 'string' || typeof callback !== 'function') {
             throw 'Inccorect input';

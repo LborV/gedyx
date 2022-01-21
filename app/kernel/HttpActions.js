@@ -2,15 +2,7 @@ const HttpAction = require('./HttpAction');
 globalThis.Middlewares = require('./Middlewares');
 const Loader = require('./Loader');
 
-/**
- * 
- */
 class HttpActions extends Loader {
-    /**
-     * 
-     * @param {String} dirName 
-     * @returns {Object}
-     */
     constructor(dirName = 'httpActions') {       
         super();
         this.actionList = [];
@@ -18,10 +10,6 @@ class HttpActions extends Loader {
         return this.load(dirName);
     }
     
-    /**
-     * 
-     * @param {String} dirName 
-     */
     load(dirName) {
         try {
             if(globalThis.MiddlewaresPool === undefined) {

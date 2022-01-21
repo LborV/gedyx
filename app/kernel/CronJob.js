@@ -1,16 +1,6 @@
 var _cronJob = require('cron').CronJob;
-/**
- * 
- */
+
 class CronJob {
-    /**
-     * 
-     * @param {String} cronTime 
-     * @param {Boolean} start 
-     * @param {String} timeZone 
-     * @param {Boolean} runOnInit 
-     * @param {Boolean} unrefTimeout 
-     */
     constructor(
         cronTime = '* * * * * *',
         start = true,
@@ -36,58 +26,30 @@ class CronJob {
         }
     }
 
-    /**
-     * 
-     * 
-     */
     start() {
         return this.job.start();
     }
 
-    /**
-     * 
-     * 
-     */
     stop() {
         return this.job.stop();
     }
 
-    /**
-     * 
-     * 
-     */
     lastDate() {
         return this.job.lastDate();
     }
 
-    /**
-     * 
-     * 
-     */
     nextDates() {
         return this.job.nextDates();
     }
 
-    /**
-     * 
-     * 
-     */
     getJob() {
         return this.job;
     }
 
-    /**
-     * 
-     * 
-     */
     onTick() {
 
     }
 
-    /**
-     * 
-     * 
-     */
     onComplete() {
 
     }

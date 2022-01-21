@@ -1,22 +1,11 @@
 const Loader = require('./Loader');
 const Middleware = require('./Middleware');
-/**
- * 
- */
 class Middlewares extends Loader {
-    /**
-     * 
-     * @param {String} dirName 
-     */
     constructor(dirName = 'middlewares') {
         super();
         this.load(dirName);
     }
 
-    /**
-     * 
-     * @param {String} dirName 
-     */
     load(dirName) {
         try{
             globalThis['_middlewares'] = {};

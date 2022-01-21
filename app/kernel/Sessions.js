@@ -1,15 +1,9 @@
 const MemoryStorage = require('./queryBuilder/MemoryQueryBuilder');
 const MysqlQueryBuilder = require('./queryBuilder/MysqlQueryBuilder');
 const RedisQueryBuilder = require('./queryBuilder/RedisQueryBuilder');
-const sha1 = require('sha1');
-/**
- * 
- */
+var sha1 = require('sha1');
+
 class Sessions {
-    /**
-     * 
-     * @param {Object} config 
-     */
     constructor(config) {
         this.expiration = 1000*60*60;
         if(config.expiration != undefined && config.expiration) {
@@ -122,13 +116,6 @@ class Sessions {
         }
     }
 
-    /**
-     * 
-     * @param {String} sessionKey 
-     * @param {String} key 
-     * @param {Any} value 
-     * @returns {Object}
-     */
     async setValue(sessionKey, key, value) {
         let session = await this.get(sessionKey);
         session[key] = value;
@@ -136,21 +123,10 @@ class Sessions {
         return await this.set(sessionKey, session);
     }
 
-    /**
-     * 
-     * @param {String} sessionKey 
-     * @param {Any} data 
-     * @returns {Object}
-     */
     async set(sessionKey, data) {
         return await this.sessions.set(sessionKey, data);
     }
 
-    /**
-     * 
-     * @param {String} sessionKey 
-     * @returns {Object}
-     */
     async get(sessionKey) {
         let session = await this.sessions.get(sessionKey);
         if(session === undefined || session.endDate === undefined || !this.checkExpiration(session.endDate)) {
@@ -163,34 +139,18 @@ class Sessions {
         return session;
     }
 
-    /**
-     * 
-     * @param {Date} endDate 
-     * @returns {Boolean}
-     */
     checkExpiration(endDate) {
         return Date.now() <= endDate;
     }
 
-    /**
-     * 
-     * @param {String} key 
-     */
     forget(key) {
         this.sessions.delete(key);
     }
 
-    /**
-     * 
-     */
     truncate() {
         this.sessions.truncate(key);
     }
 
-    /**
-     * 
-     * @returns {Object}
-     */
     createSession() {
         let sessionKey = sha1(Date.now() + '_' + Math.random().toString(36));
         let session = {

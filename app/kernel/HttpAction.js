@@ -1,17 +1,5 @@
 const Middleware = require('./Middleware');
-/**
- * 
- */
 class HttpAction {
-    /**
-     * 
-     * @param {String} route 
-     * @param {Object} server 
-     * @param {String/Array} method 
-     * @param {Array} middlewaresBefore 
-     * @param {Array} middlewaresAfter 
-     * @returns {Object}
-     */
     constructor(route, server, method = 'get', middlewaresBefore = [], middlewaresAfter = []) {
         this.middlewaresBefore = middlewaresBefore;
         this.middlewaresAfter = middlewaresAfter;
@@ -33,12 +21,6 @@ class HttpAction {
         return this;
     }
 
-    /**
-     * 
-     * @param {String} method 
-     * @param {String} route 
-     * @returns {Void}
-     */
     registerMethod(method, route) {
        const allowedMethods = [
         'checkout',
@@ -82,12 +64,6 @@ class HttpAction {
        }
     }
 
-    /**
-     * 
-     * @param {Any} data 
-     * @param {Object} response 
-     * @returns {Any}
-     */
     async requestIn(data, response) {
         this.res = response;        
         
@@ -103,21 +79,11 @@ class HttpAction {
         return this.response(await this.request(data));
     }
 
-    /**
-     * 
-     * @param {Any} data 
-     * @returns {Any}
-     */
     async request(data) {
         console.log('Request method can be overwritten');
         return data;
     }
 
-    /**
-     * 
-     * @param {Any} data 
-     * @returns {Any}
-     */
     async response(data) {
         for(let i = 0; i < this.middlewaresAfter.length; i++) {
             let middleware = this.middlewaresAfter[i];
