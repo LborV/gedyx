@@ -44,13 +44,16 @@ class MysqlMigration extends MysqlQueryBuilder {
             }
 
             await this.insertMigration(name);
-            console.info('Migration return: ', migrationResult);``
+            if(migrationResult) {
+                console.info('Migration return: ', migrationResult);``
+            }
+            
             console.info('\x1b[32m%s\x1b[0m', `${name} migration successfuly migrated!`);
         }
     }
 
     // Should be reloaded by customer
-    migrate() {}
+    async migrate() {}
 }
 
 module.exports = MysqlMigration;

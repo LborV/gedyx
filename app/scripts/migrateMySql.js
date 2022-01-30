@@ -28,8 +28,7 @@ class MysqlMigrateOperation extends Loader {
     }
 
     async migrate(connection) {
-
-        for(let key of Object.keys(this.migrations)) {
+        for(let key of Object.keys(this.migrations).sort()) {
             let migration = new this.migrations[key]({connection: connection, table: 'migrations'});
 
             if(migration instanceof MysqlMigration) {
