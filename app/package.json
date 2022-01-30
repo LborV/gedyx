@@ -24,13 +24,13 @@
   "license": "SEE LICENSE IN ../LICENSE",
   "dependencies": {
     "cron": "^1.8.2",
-    "express": "^4.17.1",
-    "mysql2": "^2.3.0",
+    "express": "^4.17.2",
+    "mysql2": "^2.3.3",
     "recursive-readdir": "^2.2.2",
     "redis": "^3.1.2",
     "sha1": "^1.1.1",
-    "socket.io": "^4.3.1",
-    "sqlstring": "^2.3.1"
+    "socket.io": "^4.4.1",
+    "sqlstring": "^2.3.2"
   },
   "devDependencies": {
     "gulp": "^4.0.2",
