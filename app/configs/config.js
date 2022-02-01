@@ -5,13 +5,15 @@ var configs = {
             host: "mysql_database",
             user: "root",
             password: "testRootPassword",
-            db: "testDatabase"
+            db: "testDatabase",
+            connectionLimit: 1
         },
         'second': {
             host: "mysql_database",
             user: "root",
             password: "testRootPassword",
-            db: "testDatabase"
+            db: "testDatabase",
+            connectionLimit: 10
         }
     },
     "socket": {

@@ -16,13 +16,36 @@ async function main() {
             let connection = config.mysql[connectionName];
             if(connection.host && connection.user && connection.user && connection.password && connection.db) {
                 try {
-                    globalThis[connectionName] = await mysql.createPool({
-                        host: connection.host,
-                        user: connection.user,
-                        password: connection.password,
-                        database: connection.db,
-                        connectionLimit: connection.connectionLimit ?? 1
-                    });
+                    if(connection.connectionLimit && parseInt(connection.connectionLimit) && connection.connectionLimit > 1) {
+                        /**
+                         * keep in mind. in this case model transaction api will not work
+                            let connection = model.connection;
+                            if(typeof connection.getConnection === 'function') {
+                                    connection = await connection.getConnection();
+                            }
+                            await model.startTransaction(connection);
+                            await model.insert({
+                                text: 2,
+                                status: 'active'
+                            }).execute(connection);    
+                            
+                            await model.commit(connection);
+                         **/
+                        globalThis[connectionName] = await mysql.createPool({
+                            host: connection.host,
+                            user: connection.user,
+                            password: connection.password,
+                            database: connection.db,
+                            connectionLimit: connection.connectionLimit
+                        });
+                    } else {
+                        globalThis[connectionName] = await mysql.createConnection({
+                            host: connection.host,
+                            user: connection.user,
+                            password: connection.password,
+                            database: connection.db,
+                        });
+                    }
                 } catch(error) {
                     console.error(error);
                 }
