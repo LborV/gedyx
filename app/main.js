@@ -16,7 +16,7 @@ async function main() {
             let connection = config.mysql[connectionName];
             if(connection.host && connection.user && connection.user && connection.password && connection.db) {
                 try {
-                    if(connection.connectionLimit && parseInt(connection.connectionLimit) && connection.connectionLimit > 1) {
+                    if(connection.connectionLimit && parseInt(connection.connectionLimit)) {
                         /**
                          * keep in mind. in this case model transaction api will not work
                             let connection = model.connection;
@@ -83,6 +83,8 @@ async function main() {
                 useSession: config.socket?.useSession,
                 session: config.socket?.session
             });
+
+            await globalThis.actionsPool.init();
         } catch (error) {
             console.error(error);
         }

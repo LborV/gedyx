@@ -15,14 +15,21 @@ class Actions extends Loader {
 
         if(configs.useSession == true) {
             this.useSession = true;
-            const Sessions = require('./Sessions');
-            this.sessions = new Sessions(configs.session);
+            this.sessionConfigs = configs.session;
         }
 
         this.io = configs.io;
-        return this.listener();
     }
     
+    async init() {
+        if(this.sessionConfigs && this.useSession) {
+            const Sessions = require('./Sessions');
+            this.sessions = await (new Sessions()).init(this.sessionConfigs);
+        }
+
+        return this.listener();
+    }
+
     load(dirName) {
         try {
             if(globalThis.MiddlewaresPool === undefined) {

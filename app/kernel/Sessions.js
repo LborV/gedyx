@@ -4,7 +4,11 @@ const RedisQueryBuilder = require('./queryBuilder/RedisQueryBuilder');
 var sha1 = require('sha1');
 
 class Sessions {
-    constructor(config) {
+    constructor() {
+        return this;
+    }
+
+    async init(config) {
         this.expiration = 1000*60*60;
         if(config.expiration != undefined && config.expiration) {
             this.expiration = parseInt(config.expiration);
@@ -114,6 +118,8 @@ class Sessions {
             default:
                 this.sessions = new MemoryStorage({connection: null});            
         }
+
+        return this;
     }
 
     async setValue(sessionKey, key, value) {
