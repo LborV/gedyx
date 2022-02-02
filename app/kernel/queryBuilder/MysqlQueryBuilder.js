@@ -149,6 +149,14 @@ class MysqlQueryBuilder extends QueryBuilder {
 
         sql += this.makeWhere(obj);
 
+        if(this.queryObject.forUpdate) {
+            sql += 'FOR UPDATE ';
+        }
+
+        if(this.queryObject.forShare) {
+            sql += 'FOR SHARE ';
+        }
+
         if(obj.union) {
             sql += 'UNION ';
             if(obj.union.all) {

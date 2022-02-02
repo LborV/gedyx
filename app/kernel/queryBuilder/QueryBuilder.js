@@ -16,8 +16,22 @@ class QueryBuilder {
             insert: [],
             delete: false,
             union: null,
-            group: null
+            group: null,
+            forUpdate: false,
+            forShare: false
         };
+    }
+
+    lockForUpdate() {
+        this.queryObject.forUpdate = true;
+        this.queryObject.forShare = false;
+        return this;
+    }
+
+    sharedLock() {
+        this.queryObject.forUpdate = false;
+        this.queryObject.forShare = true;
+        return this;
     }
 
     delete() {
