@@ -15,16 +15,42 @@ class MysqlQueryBuilder extends QueryBuilder {
         return this.connection = connection;
     } 
     
-    async startTransaction(connection = null) {
+    async getConnection() {
+        return await this.connection.getConnection();
+    }
+
+    async startTransaction() {
+        let connection = await this.getConnection();
         await this.executeRaw('START TRANSACTION;', connection);
+        return connection;
     }
 
     async commit(connection = null) {
-        return await this.executeRaw('COMMIT;', connection);
+        let res = await this.executeRaw('COMMIT;', connection);
+        
+        if(connection !== null && typeof connection.release === 'function') {
+            await connection.release();
+        } else {
+            if(typeof this.connection.release === 'function') {
+                await this.connection.release();
+            }
+        }
+
+        return res;
     }
 
     async rollback(connection = null) {
-        return await this.executeRaw('ROLLBACK;', connection);
+        let res = await this.executeRaw('ROLLBACK;', connection);
+        
+        if(connection !== null && typeof connection.release === 'function') {
+            await connection.release();
+        } else {
+            if(typeof this.connection.release === 'function') {
+                await this.connection.release();
+            }
+        }
+
+        return res;
     }
 
     async execute(connection = null) {

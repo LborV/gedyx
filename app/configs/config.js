@@ -6,7 +6,9 @@ var configs = {
             user: "root",
             password: "testRootPassword",
             db: "testDatabase",
-            connectionLimit: 1
+            connectionLimit: 1,
+            waitForConnections: true,
+            queueLimit: 10
         },
         'second': {
             host: "mysql_database",
