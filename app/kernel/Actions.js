@@ -87,7 +87,7 @@ class Actions extends Loader {
                     }
 
                     socket.session.delete = async (_key) => {
-                        var data = [];
+                        var data = {};
                         for(const [key, value] of Object.entries(socket.session)) {
                             if(value.id != _key) {
                                 data[key] = value;

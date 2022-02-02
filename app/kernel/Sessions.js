@@ -57,7 +57,7 @@ class Sessions {
 
                 if(connection) {
                     this.sessions = new MysqlQueryBuilder({connection: connection, table: 'sessions'});            
-                    this.sessions.executeRaw(`
+                    let tables = await this.sessions.executeRaw(`
                         SELECT 
                             TABLE_NAME 
                         FROM 
@@ -65,53 +65,69 @@ class Sessions {
                         WHERE 
                             TABLE_SCHEMA = SCHEMA() AND 
                             TABLE_NAME = 'sessions'
-                    `).then(async tables => {  
-                        if(tables && tables.length == 0) {
+                    `);
+
+                    if(tables && tables.length == 0) {
+                        try {
                             await this.sessions.executeRaw(`
                                 CREATE TABLE \`sessions\` (
                                     \`sessionKey\` VARCHAR(50) PRIMARY KEY UNIQUE NOT NULL,
                                     \`data\` JSON
                                 );
-                            `)
-                            .then(result => {
-                                console.log('Created "sessions" table in database!');   
-                            })
-                            .catch(console.error);
-                        }
+                            `);
 
-                        this.sessions.get = async (sessionKey) => {
+                            console.log('Created "sessions" table in database!');   
+                        } catch(error) {
+                            console.error(error);
+                        }
+                    }
+
+                    this.sessions.get = async (sessionKey, connection = null) => {
+                        try {
                             let result = await this.sessions
                                 .select('data', 'sessionKey')
                                 .where('sessionKey', sessionKey)
-                                .execute();
+                                .execute(connection);
 
                             if(result[0] && result[0].sessionKey) {
                                 return result[0].data;
                             }
 
                             return undefined;
+                        } catch(error) {
+                            console.error(error);
                         }
+                    }
 
-                        this.sessions.set = async (sessionKey, data) => {
-                            let session = await this.sessions.get(sessionKey);
+                    this.sessions.set = async (sessionKey, data) => {
+                        let connection = await this.sessions.startTransaction();
+                        try {
+                            let session = await this.sessions.get(sessionKey, connection);
+                            let result = undefined;
+                            
                             if(session === undefined) {
-                                return await this.sessions
+                                result = await this.sessions
                                     .insert({
                                         sessionKey: sessionKey,
                                         data: JSON.stringify(data)
                                     })
-                                    .execute();
+                                    .execute(connection);
+                            } else {
+                                result = await this.sessions
+                                    .update({
+                                        data: JSON.stringify(data)
+                                    })
+                                    .where('sessionKey', sessionKey)
+                                    .execute(connection);
                             }
 
-                            return await this.sessions
-                                .update({
-                                    data: JSON.stringify(data)
-                                })
-                                .where('sessionKey', sessionKey)
-                                .execute();
+                            await this.sessions.commit(connection);
+                            return result;
+                        } catch (err) {
+                            this.sessions.rollback(connection);
+                            console.error(err);
                         }
-                    })
-                    .catch(console.error);
+                    }
                 }
                 break;
 
