@@ -27,7 +27,7 @@ export class Parser {
             }
 
             if(child.type == 'variable') {
-                this.result += eval(child.value);
+                this.result += Function('"use strict";return ((_this) => {return ' + child.value + '})')()(_this);
                 return;
             }
 
@@ -38,7 +38,7 @@ export class Parser {
                     return;
                 }
 
-                let arr = eval(params.value[0]);
+                let arr = Function('"use strict";return ((_this) => {return ' + params.value[0] + '})')()(_this);
                 let iteratorName = params.value[1];
                 if(typeof arr === 'object') {
                     let keys = Object.keys(arr);
@@ -72,7 +72,7 @@ export class Parser {
                     return;
                 }
 
-                if(eval(params.value[0])) {
+                if(Function('"use strict";return ((_this) => {return ' + params.value[0] + '})')()(_this)) {
                     return this.parse(child, _this);
                 } else {
                     let elsePart = child.childs.find(el => el.type == 'else');
