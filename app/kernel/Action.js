@@ -18,6 +18,10 @@ class Action {
 
     async requestIn(data, socket) {
         this.socket = socket;
+
+        if(this.parent.useSession && this.socket.session === undefined && data.sessionKey) {
+            await this.parent.initSession(socket, data?.sessionKey);
+        }
         
         for(let i = 0; i < this.middlewaresBefore.length; i++) {
             let middleware = this.middlewaresBefore[i];

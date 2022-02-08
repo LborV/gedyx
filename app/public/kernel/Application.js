@@ -340,6 +340,7 @@ class Application {
                             }
 
                             this.setCookie('sessionKey', session.sessionKey, session.liveTime);
+                            this.sessionKey = session.sessionKey;
                         }
 
                         if(this.socketConnected != true) {
@@ -416,6 +417,10 @@ class Application {
     }
 
     request(name, data, callback) {
+        if(typeof data === 'object' && data.sessionKey === undefined && this.useSession && this.sessionKey) {
+            data.sessionKey = this.sessionKey;
+        }
+
         if(!this.socketConnected) {
             this.addSocketListener(name, callback);
             this.addSocketRequest(name, data);
