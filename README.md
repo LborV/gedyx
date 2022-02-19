@@ -1,3 +1,3 @@
 # Live Example
 
-[Live](https://emojis.jsmvca.xyz) - [Source Code](https://github.com/LborV/gedyx-exampleapp-emojis)
+[Live](https://emojis.gedyx.xyz) - [Source Code](https://github.com/LborV/gedyx-exampleapp-emojis)
