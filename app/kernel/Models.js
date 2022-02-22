@@ -1,11 +1,19 @@
 const Loader = require('./Loader');
 const QueryBuilder = require('./queryBuilder/QueryBuilder');
 class Models extends Loader {
+    /**
+     * It creates a new instance of the class and loads the models from the models directory.
+     * @param [dirName=models] - The directory name where the models are stored.
+     */
     constructor(dirName = 'models') {
         super();
         this.load(dirName);
     }
-
+    
+    /**
+     * Loads all the files in the specified directory and instantiates the QueryBuilder class
+     * @param dirName - The directory name where the models are located.
+     */
     load(dirName) {
         try{
             let normalizedPath = require("path").join('', dirName);                        

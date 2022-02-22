@@ -1,8 +1,16 @@
+/* The Actions class is a class that is used to load and manage all the actions that are in the actions
+folder */
 const Action = require('./Action');
 globalThis.Middlewares = require('./Middlewares');
 const Loader = require('./Loader');
 
 class Actions extends Loader {
+    /**
+     * It creates an instance of the Action class.
+     * @param configs - The configs object passed to the constructor.
+     * @param [dirName=actions] - The name of the directory where the actions are located.
+     * @returns Nothing.
+     */
     constructor(configs, dirName = 'actions') {       
         super();
 
@@ -21,6 +29,10 @@ class Actions extends Loader {
         this.io = configs.io;
     }
     
+    /**
+     * It creates a new instance of the Sessions class and calls the init method on it.
+     * @returns The listener is being returned.
+     */
     async init() {
         if(this.sessionConfigs && this.useSession) {
             const Sessions = require('./Sessions');
@@ -30,6 +42,11 @@ class Actions extends Loader {
         return this.listener();
     }
 
+    /**
+     * It loads all the files from the given directory and then it creates an instance of the Action class
+     * for each of them.
+     * @param dirName - The directory name where the actions are located.
+     */
     load(dirName) {
         try {
             if(globalThis.MiddlewaresPool === undefined) {
@@ -55,14 +72,26 @@ class Actions extends Loader {
         }
     }
 
+    /**
+     * A callback function that is called when the connection is established.
+     */
     onConnect() {
         console.log("onConnect method can be overwritten");
     }
 
+    /**
+     * The onDisconnect() method is called when the client disconnects from the server
+     */
     onDisconnect() {
         console.log("onDisconnect method can be overwritten");
     }
 
+    /**
+     * The function takes in a socket and a sessionKey. It then creates a session object and sets it to the
+     * socket.session property
+     * @param socket - The socket object that is being connected to.
+     * @param sessionKey - The session key to be used.
+     */
     async initSession(socket, sessionKey) {
         socket.session = await this.sessions.get(sessionKey);        
         socket.emit('getSession', {sessionKey: socket.session.sessionKey, liveTime: socket.session.liveTime});
@@ -96,6 +125,10 @@ class Actions extends Loader {
         }
     }
 
+    /**
+     * When a client connects, the server will call the onConnect function
+     * @returns Nothing.
+     */
     listener() {
         this.io.on('connection', (socket) => {
             this.onConnect(socket);
@@ -127,6 +160,13 @@ class Actions extends Loader {
         return this;
     }
 
+    /**
+     * If the action name is in the action list, then call the action's requestIn function
+     * @param actionName - The name of the action to be called.
+     * @param data - The data that will be sent to the server.
+     * @param [socket] - The socket that is calling the action.
+     * @returns The action object.
+     */
     async call(actionName, data, socket = undefined) {
         if(actionName in this.actionList) {
             return await this.actionList[actionName].requestIn(data, socket);

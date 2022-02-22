@@ -1,13 +1,23 @@
+/* Sessions is a class that handles the creation of sessions */
 const MemoryStorage = require('./queryBuilder/MemoryQueryBuilder');
 const MysqlQueryBuilder = require('./queryBuilder/MysqlQueryBuilder');
 const RedisQueryBuilder = require('./queryBuilder/RedisQueryBuilder');
 var sha1 = require('sha1');
 
 class Sessions {
+    /**
+     * 
+     * @returns Nothing is being returned.
+     */
     constructor() {
         return this;
     }
 
+    /**
+     * It initializes the session manager.
+     * @param config - The configuration object.
+     * @returns The return value is the object that is being created.
+     */
     async init(config) {
         this.expiration = 1000*60*60;
         if(config.expiration != undefined && config.expiration) {
@@ -138,6 +148,13 @@ class Sessions {
         return this;
     }
 
+    /**
+        * It sets the value of a key in a session.
+        * @param sessionKey - The key of the session to set the value for.
+        * @param key - The key to set the value for.
+        * @param value - The value to set.
+        * @returns The session object.
+        */
     async setValue(sessionKey, key, value) {
         let session = await this.get(sessionKey);
         session[key] = value;
@@ -145,10 +162,21 @@ class Sessions {
         return await this.set(sessionKey, session);
     }
 
+    /**
+     * Set the data for a session
+     * @param sessionKey - The key to store the session under.
+     * @param data - The data to be stored in the session.
+     * @returns Nothing.
+     */
     async set(sessionKey, data) {
         return await this.sessions.set(sessionKey, data);
     }
 
+    /**
+     * If the session is expired, create a new session. Otherwise, return the session
+     * @param sessionKey - The key to use to store the session in the cache.
+     * @returns A session object.
+     */
     async get(sessionKey) {
         let session = await this.sessions.get(sessionKey);
         if(session === undefined || session.endDate === undefined || !this.checkExpiration(session.endDate)) {
@@ -161,18 +189,34 @@ class Sessions {
         return session;
     }
 
+    /**
+     * Check if the current time is less than or equal to the end date
+     * @param endDate - The date that the token expires.
+     * @returns The boolean value of the checkExpiration function.
+     */
     checkExpiration(endDate) {
         return Date.now() <= endDate;
     }
 
+    /**
+     * Forget() removes a key from the sessions map
+     * @param key - The key to store the session under.
+     */
     forget(key) {
         this.sessions.delete(key);
     }
 
+    /**
+     * Truncate session
+     */
     truncate() {
         this.sessions.truncate(key);
     }
 
+    /**
+     * Create a new session and add it to the sessions map
+     * @returns A session object.
+     */
     createSession() {
         let sessionKey = sha1(Date.now() + '_' + Math.random().toString(36));
         let session = {
@@ -185,6 +229,11 @@ class Sessions {
         return session;
     }
 
+    /**
+     * Save a session to the database
+     * @param [session] - The session object to be saved.
+     * @returns The promise of the set method.
+     */
     async save(session = {}) {
         if(session.sessionKey === undefined) {
             return false;

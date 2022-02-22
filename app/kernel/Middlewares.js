@@ -1,11 +1,20 @@
 const Loader = require('./Loader');
 const Middleware = require('./Middleware');
 class Middlewares extends Loader {
+    /**
+     * Loads all the middlewares in the middlewares directory
+     * @param [dirName=middlewares] - The directory name where the middleware files are located.
+     */
     constructor(dirName = 'middlewares') {
         super();
         this.load(dirName);
     }
 
+    /**
+     * It loads all the files in the given directory and checks if they are middlewares. If they are, they
+     * are loaded into the global object
+     * @param dirName - The directory name where the middleware files are located.
+     */
     load(dirName) {
         try{
             globalThis['_middlewares'] = {};
