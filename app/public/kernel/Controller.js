@@ -4,7 +4,21 @@ import {Parser} from '/kernel/Parser.min.js';
  * Every page base class
  */
 export class Controller {
-    //Constructor
+    /**
+     * The constructor function creates a new instance of the Controller class. It takes a config
+     * object as an argument. If the config object has an id property, it will set the id property of
+     * the new instance to the value of the id property of the config object. If the config object has
+     * a parent property, it will set the parent property of the new instance to the value of the
+     * parent property of the config object. If the config object has a name property, it will set the
+     * name property of the new instance to the value of the name property of the config object. If the
+     * config object has a view property, it will set the view property of the new instance to the
+     * value of the view property of the config object. If the config object has a showOnLoad property,
+     * it will set the showOnLoad property of the new instance to the value of the showOnLoad property
+     * of the config object. If the config object has a app property, it will set the app property of
+     * the new
+     * @param [config] - {
+     * @returns The controller object.
+     */
     constructor(config = {}) {
         if(config.id === undefined) {
             console.error('You most give a id');
@@ -59,6 +73,10 @@ export class Controller {
         return this;
     }
 
+    /**
+     * If the view has a URL, fetch the view from the server and load it. Otherwise, load the view from the
+     * DOM
+     */
     init() {
         try {
             if(this.url) {
@@ -79,7 +97,11 @@ export class Controller {
         }
     }
 
-    //Update view
+    /**
+     * Update the view by updating the DOM
+     * @param view - The view to be updated.
+     * @returns Nothing.
+     */
     updateView(view) {
         if(typeof view != 'string') {
             console.error('View should be a string');
@@ -89,7 +111,11 @@ export class Controller {
         return this.updateDOM(view);
     }
 
-    //Update DOM existing dom element
+    /**
+     * Update the DOM with the view
+     * @param view - The view to be loaded into the DOM.
+     * @returns Nothing.
+     */
     updateDOM(view) {
         if(this.element == null) {
             if(this.createDOM()) {
@@ -110,7 +136,10 @@ export class Controller {
         return true;
     }
 
-    //Create new DOM element
+    /**
+     * Create the DOM element for this object
+     * @returns Nothing.
+     */
     createDOM() {
         if(this.parent == null) {
             if(document.getElementById('content') == undefined) {
@@ -132,17 +161,26 @@ export class Controller {
         return true;
     }
 
-    //On hide function
+    /**
+     * The onHide function is called when the component is hidden
+     */
     onHide() {
 
     }
 
-    //On show function
+    /**
+     * This function is called when the component is shown
+     */
     onShow() {
 
     }
 
-    //Show
+    /**
+     * This function will show or hide the element with the given id
+     * @param [isShow=true] - Boolean, true if the element should be shown, false if it should be hidden.
+     * @param [time=0] - The time in milliseconds.
+     * @returns Nothing.
+     */
     show(isShow = true, time = 0) {
         this.element = document.getElementById(this.id);
         if(isShow) {
@@ -155,23 +193,37 @@ export class Controller {
         return this;
     }
 
-    //Get HTML
+    /**
+     * Return the innerHTML of the element
+     * @returns The innerHTML of the element.
+     */
     getHTML() {
         return this.element.innerHTML;
     }
 
-    //Set HTML
+    /**
+     * It takes a string as an argument and sets the innerHTML of the element to that string
+     * @param str - The string to be displayed.
+     */
     html(str) {
         this.element.innerHTML = str;
     }
 
-    //Hide
+    /**
+     * Hide the element
+     * @param [time=0] - The time in milliseconds.
+     * @returns Nothing is being returned.
+     */
     hide(time = 0) {
         this.onHide();
         return this.show(false, time);
     }
 
-    //Toggle
+    /**
+     * If the element is hidden, show it. If the element is visible, hide it
+     * @param [time=100] - The time in milliseconds.
+     * @returns The object itself.
+     */
     toggle(time = 100) {
         if(this.element.style.display == 'none') {
             this.show(true, time);
@@ -182,7 +234,12 @@ export class Controller {
         return this;
     }
 
-    //Add classes
+    /**
+     * Adds a class to the element
+     * @param classes - The class name to add to the element.
+     * @param [returnThis=true] - If you want to return the element, set this to true.
+     * @returns Nothing.
+     */
     addClass(classes, returnThis = true) {
         this.classes = classes;
 
@@ -204,6 +261,10 @@ export class Controller {
         return true;
     }
 
+    /**
+     * It takes the current view and compiles it into a tree
+     * @returns Nothing.
+     */
     refresh() {
         let view = globalThis.views.find(el => el.url == this.url);
         if(globalThis.views.length > 0) {
@@ -216,7 +277,15 @@ export class Controller {
         return false;
     }
 
-    //Load view from file
+    /**
+     * It takes a response and a url, and if the url is in the globalThis.views array, it updates the view
+     * with the compiled tree. Otherwise, it compiles the response and updates the view with the compiled
+     * tree
+     * @param response - The response from the server.
+     * @param url - The url of the view to load.
+     * @param [tree=false] - If true, the response will be parsed as a tree.
+     * @returns Nothing.
+     */
     loadView(response, url, tree = false) {
         let view = globalThis.views.find(el => el.url == url);
         if(globalThis.views.length > 0) {
@@ -235,6 +304,11 @@ export class Controller {
         return this;        
     }
 
+    /**
+     * It takes a URL and returns the view's HTML
+     * @param url - The url of the view to fetch.
+     * @returns Nothing.
+     */
     async fetchView(url) {
         let view = globalThis.views.find(el => el.url == url);
         if(globalThis.views.length > 0 && view) {
@@ -249,6 +323,10 @@ export class Controller {
         }
     }
 
+    /**
+     * It takes a URL, fetches the view from the server, compiles it into a tree, and then updates the view
+     * @param url - The URL of the view to load.
+     */
     async view(url) {
         if(typeof url !== 'string') {
             throw 'Wrong URL';
@@ -266,7 +344,10 @@ export class Controller {
         .catch(error => console.error(error));
     }
 
-    // App count how many loaded
+    /**
+     * When the view is loaded, the app calls the view's onViewLoaded function
+     * @returns Nothing.
+     */
     onViewLoaded() {
         if(this.app && this.name) {
             this.app.viewLoaded(this.name);
@@ -275,15 +356,21 @@ export class Controller {
         return this.onUpdate();
     }
 
+    /**
+     * The request function is used to send a request to the server
+     * @param name - The name of the request.
+     * @param data - The data to be sent to the server.
+     * @param callback - The callback function that will be called when the request is completed.
+     */
     request(name, data, callback) {
         this.app.request(name, data, callback);
     }
 
-    //Compile loaded view
     /**
-     * 
-     * @param {string} view 
-     * @param {boolean} load if yes -> this.loadView -> this.updateView
+     * It takes a view and a url, and returns a compiled view
+     * @param view - The view to compile.
+     * @param url - The url of the view.
+     * @returns The compiled template.
      */
     compile(view, url) {
         let tree = this.parser.clear().makeTreeFromString(view);
@@ -299,6 +386,12 @@ export class Controller {
         return this.parser.clear().parse(false, this);
     }
 
+    /**
+     * It takes a tree and a url, and returns a JavaScript object
+     * @param tree - The tree to compile.
+     * @param url - The url of the view.
+     * @returns The return value is the result of the parse() method.
+     */
     compileFromTree(tree, url) {
         if(url) {
             //Save tree in globalThis for this session

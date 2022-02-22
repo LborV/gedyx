@@ -1,4 +1,9 @@
 class Application {
+   /**
+    * The constructor function takes in a configuration object and sets up the application
+    * @param configuration - The configuration object that is passed to the constructor.
+    * @returns The instance of the application.
+    */
     constructor(configuration) {
         this.controllers = {};    
         this.useSockets = false;
@@ -69,6 +74,13 @@ class Application {
         }
     }
 
+    /**
+     * Set a cookie with a value and an expiration date
+     * @param cname - The name of the cookie.
+     * @param cvalue - The value of the cookie.
+     * @param seconds - The number of seconds in the future from the time the cookie is created until it
+     * expires.
+     */
     setCookie(cname, cvalue, seconds) {
         const d = new Date();
         d.setTime(d.getTime() + seconds);
@@ -76,10 +88,20 @@ class Application {
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
 
+    /**
+     * Delete a cookie by setting its expiration date to sometime in the past
+     * @param cname - The name of the cookie to be deleted.
+     * @returns Nothing.
+     */
     deleteCookie(cname) {
         return this.setCookie(cname, '', -1);
     }
 
+    /**
+     * Given a cookie name, return the value of the cookie
+     * @param cname - The name of the cookie.
+     * @returns The value of the cookie.
+     */
     getCookie(cname) {
         let name = cname + "=";
         let decodedCookie = decodeURIComponent(document.cookie);
@@ -97,6 +119,11 @@ class Application {
         return "";
     }
 
+    /**
+     * Get the search parameters from a URL
+     * @param [url=false] - The URL to parse.
+     * @returns An object with the search parameters as keys and their values as values.
+     */
     getSearchParams(url = false) {
         let newUrl = false;
         if(url) {
@@ -116,6 +143,11 @@ class Application {
         return [];
     }
 
+    /**
+     * It takes a URL and returns the view that corresponds to that URL
+     * @param url - The url of the view to fetch.
+     * @returns The template.
+     */
     async fetchTemplate(url) {
         if(globalThis.views === undefined) {
             globalThis.views = [];
@@ -136,6 +168,10 @@ class Application {
         }
     }
 
+   /**
+    * The function loads the controllers that are needed for the current route
+    * @returns Nothing.
+    */
     async loadControllers() {
         this.controllersToLoad = [];
         this.urlConfiguration = [];
@@ -249,10 +285,20 @@ class Application {
         }
     }
 
+    /**
+     * Set the title of the current page
+     * @param title - The title of the page.
+     * @returns Nothing is being returned.
+     */
     setTitle(title) {
         return document.title = title;
     }
 
+    /**
+     * AddStyle() adds a style tag to the head of the document
+     * @param style - The URL of the style sheet to add.
+     * @returns Nothing.
+     */
     addStyle(style) {
         if(typeof style !== 'string') {
             console.error('Incorrect style url');
@@ -265,6 +311,10 @@ class Application {
         document.getElementsByTagName('head')[0].appendChild(styleTag);
     }
 
+    /**
+     * Create a new meta tag and append it to the head of the document
+     * @param meta - A dictionary of meta tags to add to the head of the document.
+     */
     setMetaTag(meta) {
         let metaTag = document.createElement('meta');
         for(const [key, value] of Object.entries(meta)) {
@@ -274,6 +324,11 @@ class Application {
         document.getElementsByTagName('head')[0].appendChild(metaTag);
     }
 
+    /**
+     * When a view is loaded, the controller is loaded and the view is shown
+     * @param controllerName - The name of the controller that was loaded.
+     * @returns Nothing.
+     */
     viewLoaded(controllerName) {
         if(this.appStarted == true) {
             return;
@@ -297,26 +352,45 @@ class Application {
         }
     }
 
+    /**
+     * This function is called when the controller is loaded
+     * @param name - The name of the controller.
+     */
     onControllerLoaded(name) {
 
     }
 
+    /**
+     * It redefines the startup function.
+     */
     onStartApp() {
         console.info('Redefine startup function');
     }
 
+    /**
+     * The `onSocketConnected` function is called when the socket is connected
+     */
     onSocketConnected() {
         console.info('Custom callback on socket connected');
     }
 
+    /**
+     * When the socket is disconnected, this function is called
+     */
     onSocketDisconnected() {
         console.info('Custom callback on socket disconnected');
     }
 
+    /**
+     * The `onSocketConnectionError` function is called when the socket connection fails
+     */
     onSocketConnectionError() {
         console.info('Custom callback on socket connection Error');
     }
 
+    /**
+     * The socket is created and the events are bound
+     */
     startApplication() {
         this.socket = undefined;
         this.socketConnected = false;
@@ -368,6 +442,10 @@ class Application {
         }
     }
 
+    /**
+     * Register all the socket requests that are defined in the `socketRequests` array
+     * @returns The instance of the class.
+     */
     registerSocketRequests() {
         if(Array.isArray(this.socketListeners)) {
             this.socketListeners.forEach(req => {
@@ -386,6 +464,12 @@ class Application {
         return this;
     }
 
+    /**
+     * Add a callback to the socketListeners array
+     * @param name - The name of the socket event.
+     * @param callback - The function that will be called when the socket receives a message.
+     * @returns The socket object.
+     */
     addSocketListener(name, callback) {
         if(this.socketListeners === undefined) {
             this.socketListeners = [];
@@ -401,6 +485,12 @@ class Application {
         return this;
     }
 
+    /**
+     * Add a socket request to the queue
+     * @param name - The name of the socket request.
+     * @param data - The data to be sent to the server.
+     * @returns The current instance of the class.
+     */
     addSocketRequest(name, data) {
         if(this.socketRequests === undefined) {
             this.socketRequests = [];
@@ -416,6 +506,14 @@ class Application {
         return this;
     }
 
+    /**
+     * If the socket is not connected, add the request to the socket queue. If the socket is connected,
+     * send the request to the socket
+     * @param name - The name of the socket event.
+     * @param data - The data to be sent to the server.
+     * @param callback - The callback function that will be called when the response is received.
+     * @returns Nothing.
+     */
     request(name, data, callback) {
         if(typeof data === 'object' && data.sessionKey === undefined && this.useSession && this.sessionKey) {
             data.sessionKey = this.sessionKey;
@@ -433,10 +531,19 @@ class Application {
         return this;
     }
 
+    /**
+     * Get the controller with the given name
+     * @param name - The name of the controller.
+     * @returns The controller object.
+     */
     getController(name) {
         return this.controllers[name];
     }
 
+    /**
+     * Given a route, this function will change the current page to the page specified by the route
+     * @param route - The route to change to.
+     */
     changePath(route) {
         let url;
         if(!(route instanceof URL)) {
@@ -484,10 +591,19 @@ class Application {
 
     }
 
+    /**
+     * It shows a 404 error message.
+     */
     show404() {
         console.error('This method is for 404 error');
     }
 
+    /**
+     * It takes a URL and a list of arguments, and creates a new URL with the arguments appended to the URL
+     * @param [url] - The URL to redirect to.
+     * @param [args] - An object containing the parameters to be appended to the URL.
+     * @returns A boolean value.
+     */
     redirect(url = '', args = []) {
         try{
             let newUrl = new URL(url, location.href);
