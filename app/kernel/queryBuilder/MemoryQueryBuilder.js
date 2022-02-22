@@ -1,9 +1,9 @@
 const QueryBuilder = require('./QueryBuilder');
 class MemoryQueryBuilder extends QueryBuilder {
-        /**
-        * It creates a new instance of the class and passes in the config object.
-        * @param config - The configuration object passed to the constructor.
-        */
+    /**
+    * It creates a new instance of the class and passes in the config object.
+    * @param config - The configuration object passed to the constructor.
+    */
     constructor(config) {
         super();
         this.connection = config.connection;
