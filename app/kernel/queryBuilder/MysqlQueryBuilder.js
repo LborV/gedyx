@@ -301,7 +301,9 @@ class MysqlQueryBuilder extends QueryBuilder {
                     if(typeof where.a2 === 'string' && (where.a2.match(/\./g) || []).length === 1) {
                         where.a2 = SqlString.escapeId(where.a2);
                     } else if(where.operator !== 'IN') {
-                        where.a2 = this.escape(where.a2);
+                        if(where.a2 !== 'NULL') {
+                            where.a2 = this.escape(where.a2);
+                        }
                     }
 
                     sql += `${where.a1} ${where.operator} ${where.a2} `;
