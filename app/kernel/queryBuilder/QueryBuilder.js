@@ -23,7 +23,7 @@ class QueryBuilder {
             insert: [],
             delete: false,
             union: null,
-            group: null,
+            group: [],
             forUpdate: false,
             forShare: false
         };
@@ -115,11 +115,11 @@ class QueryBuilder {
         for(var i = 0; i < arguments.length; i++) {
             let arg = arguments[i];
             if(Array.isArray(arg)) {
-                arg.forEach(item =>{
+                arg.forEach(item => {
                     this.select(item);
                 });
-            } else if (typeof arg === 'string') {
-                this.queryObject.select.push(arg);                
+            } else if(typeof arg === 'string') {
+                this.queryObject.select.push(arg);
             } else {
                 throw 'Inccorect input';
             }
@@ -163,9 +163,9 @@ class QueryBuilder {
                     subWhere: arguments[0](new QueryBuilder()).getQueryObject(),
                     isOr: isOr
                 });
-           
+
                 return this;
-            } 
+            }
         }
 
         if(arguments.length == 2) {
@@ -180,7 +180,7 @@ class QueryBuilder {
                     subWhere: arguments[1](new QueryBuilder()).getQueryObject(),
                     isOr: isOr
                 });
-           
+
                 return this;
             }
 
@@ -206,7 +206,7 @@ class QueryBuilder {
                     subWhere: arguments[2](new QueryBuilder()).getQueryObject(),
                     isOr: isOr
                 });
-           
+
                 return this;
             }
 
@@ -237,7 +237,7 @@ class QueryBuilder {
             throw 'Incorrect input';
         }
 
-        this.queryObject.order.push({value: a1, type: 'ASC'});
+        this.queryObject.order.push({ value: a1, type: 'ASC' });
         return this;
     }
 
@@ -251,7 +251,7 @@ class QueryBuilder {
             throw 'Incorrect input';
         }
 
-        this.queryObject.order.push({value: a1, type: 'DESC'});
+        this.queryObject.order.push({ value: a1, type: 'DESC' });
         return this;
     }
 
@@ -325,8 +325,8 @@ class QueryBuilder {
         if(typeof a1 !== 'string' || !Array.isArray(a2)) {
             throw 'Incorrect input';
         }
-        
-        return this.where(a1, 'IN', '('+a2.map((item) => {return typeof item === 'string' ? `'${item}'` : item}).join(', ')+')');
+
+        return this.where(a1, 'IN', '(' + a2.map((item) => { return typeof item === 'string' ? `'${item}'` : item }).join(', ') + ')');
     }
 
     /**
@@ -338,8 +338,8 @@ class QueryBuilder {
         if(typeof a1 !== 'string' || !Array.isArray(a2)) {
             throw 'Incorrect input';
         }
-        
-        return this.where(a1, 'NOT IN', '('+a2.map((item) => {
+
+        return this.where(a1, 'NOT IN', '(' + a2.map((item) => {
             if(typeof item === 'string') {
                 return `'${item}'`;
             }
@@ -349,7 +349,7 @@ class QueryBuilder {
             }
 
             throw 'Incorrect input';
-        }).join(', ')+')');
+        }).join(', ') + ')');
     }
 
     /**
@@ -425,7 +425,7 @@ class QueryBuilder {
      */
     unionAll(callback) {
         if(typeof callback !== 'function') {
-            throw 'Inccorect input';
+            throw 'Incorrect input';
         }
 
         this.queryObject.union = {
@@ -446,7 +446,7 @@ class QueryBuilder {
             throw 'Inccorect input';
         }
 
-        this.queryObject.group = a1;
+        this.queryObject.group.push(a1);
 
         return this;
     }

@@ -24,8 +24,8 @@ class MysqlQueryBuilder extends QueryBuilder {
      */
     setConnection(connection) {
         return this.connection = connection;
-    } 
-    
+    }
+
     /**
      * Get a connection to the database
      * @returns The connection object.
@@ -52,7 +52,7 @@ class MysqlQueryBuilder extends QueryBuilder {
      */
     async commit(connection = null) {
         let res = await this.executeRaw('COMMIT;', connection);
-        
+
         if(connection !== null && typeof connection.release === 'function') {
             await connection.release();
         } else {
@@ -72,7 +72,7 @@ class MysqlQueryBuilder extends QueryBuilder {
      */
     async rollback(connection = null) {
         let res = await this.executeRaw('ROLLBACK;', connection);
-        
+
         if(connection !== null && typeof connection.release === 'function') {
             await connection.release();
         } else {
@@ -108,7 +108,7 @@ class MysqlQueryBuilder extends QueryBuilder {
         this.resetQuery();
 
         if(this.tableName) {
-            this.table(this.tableName); 
+            this.table(this.tableName);
         }
 
         return Object.values(JSON.parse(JSON.stringify(res[0])));
@@ -127,11 +127,11 @@ class MysqlQueryBuilder extends QueryBuilder {
 
         this.resetQuery();
         if(this.tableName) {
-            this.table(this.tableName); 
+            this.table(this.tableName);
         }
 
         let res = [];
-        
+
         if(connection != null) {
             res = await connection.query(sql);
         } else {
@@ -177,7 +177,7 @@ class MysqlQueryBuilder extends QueryBuilder {
                 if(index === obj.select.length - 1) {
                     delimiter = '';
                 }
-    
+
                 if(typeof element === 'string') {
                     if((element.match(/\./g) || []).length === 1) {
                         element = SqlString.escapeId(element);
@@ -192,7 +192,7 @@ class MysqlQueryBuilder extends QueryBuilder {
             sql += `SELECT \`${obj.table}\`.* `;
             obj.select = [''];
         }
-   
+
         if(obj.table.length) {
             sql += `FROM \`${obj.table}\` `;
         }
@@ -220,7 +220,7 @@ class MysqlQueryBuilder extends QueryBuilder {
             sql += 'UNION ';
             if(obj.union.all) {
                 sql += 'ALL ';
-            } 
+            }
             sql += this.makeSelectQuery(obj.union.value);
         }
 
@@ -232,12 +232,20 @@ class MysqlQueryBuilder extends QueryBuilder {
                     delimiter = '';
                 }
 
-                sql += `\`${order.value}\` ${order.type}${delimiter} `
+                sql += `${SqlString.escapeId(order.value)} ${order.type}${delimiter} `;
             });
         }
 
-        if(obj.group) {
-            sql += `GROUP BY \`${obj.group}\``; 
+        if(obj.group.length) {
+            sql += 'GROUP BY ';
+            let delimiter = ',';
+            obj.group.forEach((group, index) => {
+                if(index === obj.group.length - 1) {
+                    delimiter = '';
+                }
+
+                sql += `${SqlString.escapeId(group)}${delimiter} `;
+            });
         }
 
         if(obj.limit) {
@@ -246,7 +254,7 @@ class MysqlQueryBuilder extends QueryBuilder {
             } else {
                 sql += `LIMIT ${obj.limit.limit} `;
             }
-        } 
+        }
 
         if(subWhere) {
             return sql;
@@ -255,20 +263,20 @@ class MysqlQueryBuilder extends QueryBuilder {
         return this.sql = sql + ';';
     }
 
-   /**
-    * It takes an object with the following properties:
-    * 
-    * where: An array of objects with the following properties:
-    * 
-    * a1: The column name
-    * a2: The value to compare to
-    * operator: The comparison operator
-    * subWhere: An object with the same properties as the where object
-    * delimiter: The delimiter to use between conditions
-    * isOr: Whether to use OR instead of AND
-    * @param obj - The object that contains the query parameters.
-    * @returns The SQL string.
-    */
+    /**
+     * It takes an object with the following properties:
+     * 
+     * where: An array of objects with the following properties:
+     * 
+     * a1: The column name
+     * a2: The value to compare to
+     * operator: The comparison operator
+     * subWhere: An object with the same properties as the where object
+     * delimiter: The delimiter to use between conditions
+     * isOr: Whether to use OR instead of AND
+     * @param obj - The object that contains the query parameters.
+     * @returns The SQL string.
+     */
     makeWhere(obj) {
         let sql = '';
         if(obj.where.length) {
@@ -308,7 +316,7 @@ class MysqlQueryBuilder extends QueryBuilder {
                                 where.a2 = this.escape(where.a2);
                             }
                         }
-    
+
                         sql += `${where.a1} ${where.operator} ${where.a2} `;
                     }
                 }
@@ -320,8 +328,8 @@ class MysqlQueryBuilder extends QueryBuilder {
                     delimiter = where.delimiter;
                 }
 
-                if(obj.where[index+1]) {
-                    if(obj.where[index+1].isOr) {
+                if(obj.where[index + 1]) {
+                    if(obj.where[index + 1].isOr) {
                         delimiter = 'OR ';
                     }
                 }
@@ -367,7 +375,7 @@ class MysqlQueryBuilder extends QueryBuilder {
             if(index === this.queryObject.insert.length - 1) {
                 delimiter = '';
             }
-            
+
             sql += `\`${item[0]}\`${delimiter} `;
         });
 
@@ -426,10 +434,10 @@ class MysqlQueryBuilder extends QueryBuilder {
      */
     getSql() {
         this.queryToSql();
-        
+
         this.resetQuery();
         if(this.tableName) {
-            this.table(this.tableName); 
+            this.table(this.tableName);
         }
 
         return this.sql;
