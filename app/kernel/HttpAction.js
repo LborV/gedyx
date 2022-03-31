@@ -1,15 +1,15 @@
 const Middleware = require('./Middleware');
 class HttpAction {
-   /**
-    * It creates a new instance of the class.
-    * @param route - The route to be registered.
-    * @param server - The server object that will be used to register the route.
-    * @param [method=get] - The HTTP method to register the route with.
-    * @param [middlewaresBefore] - An array of middlewares that will be executed before the route.
-    * @param [middlewaresAfter] - An array of middlewares that will be executed after the route is
-    * executed.
-    * @returns The instance of the class.
-    */
+    /**
+     * It creates a new instance of the class.
+     * @param route - The route to be registered.
+     * @param server - The server object that will be used to register the route.
+     * @param [method=get] - The HTTP method to register the route with.
+     * @param [middlewaresBefore] - An array of middlewares that will be executed before the route.
+     * @param [middlewaresAfter] - An array of middlewares that will be executed after the route is
+     * executed.
+     * @returns The instance of the class.
+     */
     constructor(route, server, method = 'get', middlewaresBefore = [], middlewaresAfter = []) {
         this.middlewaresBefore = middlewaresBefore;
         this.middlewaresAfter = middlewaresAfter;
@@ -20,7 +20,7 @@ class HttpAction {
             if(method) {
                 if(typeof method === 'string') {
                     this.registerMethod(method, route);
-                } else if(Array.isArray(method)){                    
+                } else if(Array.isArray(method)) {
                     method.forEach(m => {
                         this.registerMethod(m, route);
                     });
@@ -38,46 +38,47 @@ class HttpAction {
      * @returns Nothing.
      */
     registerMethod(method, route) {
-       const allowedMethods = [
-        'checkout',
-        'copy',
-        'delete',
-        'get',
-        'head',
-        'lock',
-        'merge',
-        'mkactivity',
-        'mkcol',
-        'move',
-        'm-search',
-        'notify',
-        'options',
-        'patch',
-        'post',
-        'purge',
-        'put',
-        'report',
-        'search',
-        'subscribe',
-        'trace',
-        'unlock',
-        'unsubscribe',
-       ];
+        const allowedMethods = [
+            'checkout',
+            'copy',
+            'delete',
+            'get',
+            'head',
+            'lock',
+            'merge',
+            'mkactivity',
+            'mkcol',
+            'move',
+            'm-search',
+            'notify',
+            'options',
+            'patch',
+            'post',
+            'purge',
+            'put',
+            'report',
+            'search',
+            'subscribe',
+            'trace',
+            'unlock',
+            'unsubscribe',
+        ];
 
-       if(method === '*') {
+        if(method === '*') {
             allowedMethods.forEach(method => {
                 this.registerMethod(method, route)
             });
 
             return;
-       }
+        }
 
-       if(allowedMethods.includes(method, route)) {
+        if(allowedMethods.includes(method, route)) {
             this.server[method](route, async (req, res) => {
                 this.method = method;
-                this.requestIn(req, res)
+                let data = await this.requestIn(req, res);
+                return await res.send(data);
             });
-       }
+        }
     }
 
     /**
@@ -89,8 +90,6 @@ class HttpAction {
      * @returns The response.
      */
     async requestIn(data, response) {
-        this.res = response;        
-        
         for(let i = 0; i < this.middlewaresBefore.length; i++) {
             let middleware = this.middlewaresBefore[i];
             if(!(middleware instanceof Middleware)) {
@@ -100,14 +99,14 @@ class HttpAction {
             data = await middleware.beforeRequest(data);
         }
 
-        return this.response(await this.request(data));
+        return await this.response(await this.request(data));
     }
 
-  /**
-   * The request method returns the data object
-   * @param data - The data to be sent to the server.
-   * @returns The data that was passed in.
-   */
+    /**
+     * The request method returns the data object
+     * @param data - The data to be sent to the server.
+     * @returns The data that was passed in.
+     */
     async request(data) {
         console.log('Request method can be overwritten');
         return data;
@@ -129,7 +128,7 @@ class HttpAction {
             data = await middleware.afterRequest(data);
         }
 
-        return this.res.send(data);
+        return data;
     }
 }
 
