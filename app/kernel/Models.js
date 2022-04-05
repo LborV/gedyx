@@ -1,4 +1,4 @@
-const Loader = require('./Loader');
+const Loader = require('gedyx-loader');
 const QueryBuilder = require('./queryBuilder/QueryBuilder');
 class Models extends Loader {
     /**
@@ -9,14 +9,14 @@ class Models extends Loader {
         super();
         this.load(dirName);
     }
-    
+
     /**
      * Loads all the files in the specified directory and instantiates the QueryBuilder class
      * @param dirName - The directory name where the models are located.
      */
     load(dirName) {
-        try{
-            let normalizedPath = require("path").join('', dirName);                        
+        try {
+            let normalizedPath = require("path").join('', dirName);
             this.getFiles(normalizedPath).forEach((file) => {
                 if(!file.includes('.js')) {
                     return;

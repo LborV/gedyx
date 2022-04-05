@@ -1,4 +1,4 @@
-const Loader = require('./Loader');
+const Loader = require('gedyx-loader');
 const Middleware = require('./Middleware');
 class Middlewares extends Loader {
     /**
@@ -16,7 +16,7 @@ class Middlewares extends Loader {
      * @param dirName - The directory name where the middleware files are located.
      */
     load(dirName) {
-        try{
+        try {
             globalThis['_middlewares'] = {};
             let normalizedPath = require("path").join('', dirName);
             this.getFiles(normalizedPath).forEach((file) => {

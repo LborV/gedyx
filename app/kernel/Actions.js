@@ -2,7 +2,7 @@
 folder */
 const Action = require('./Action');
 globalThis.Middlewares = require('./Middlewares');
-const Loader = require('./Loader');
+const Loader = require('gedyx-loader');
 
 class Actions extends Loader {
     /**
@@ -11,13 +11,13 @@ class Actions extends Loader {
      * @param [dirName=actions] - The name of the directory where the actions are located.
      * @returns Nothing.
      */
-    constructor(configs, dirName = 'actions') {       
+    constructor(configs, dirName = 'actions') {
         super();
 
         if(!configs.io) {
-            return; 
-         }
- 
+            return;
+        }
+
         this.actionList = [];
         this.load(dirName);
 
@@ -28,7 +28,7 @@ class Actions extends Loader {
 
         this.io = configs.io;
     }
-    
+
     /**
      * It creates a new instance of the Sessions class and calls the init method on it.
      * @returns The listener is being returned.
@@ -53,7 +53,7 @@ class Actions extends Loader {
                 globalThis.MiddlewaresPool = new Middlewares();
             }
 
-            let normalizedPath = require("path").join('', dirName);         
+            let normalizedPath = require("path").join('', dirName);
             this.getFiles(normalizedPath).forEach((file) => {
                 if(!file.includes('.js')) {
                     return;
@@ -93,8 +93,8 @@ class Actions extends Loader {
      * @param sessionKey - The session key to be used.
      */
     async initSession(socket, sessionKey) {
-        socket.session = await this.sessions.get(sessionKey);        
-        socket.emit('getSession', {sessionKey: socket.session.sessionKey, liveTime: socket.session.liveTime});
+        socket.session = await this.sessions.get(sessionKey);
+        socket.emit('getSession', { sessionKey: socket.session.sessionKey, liveTime: socket.session.liveTime });
         socket.session.set = async (key, value) => {
             return await this.sessions.setValue(socket.session.sessionKey, key, value)
         }
@@ -105,7 +105,7 @@ class Actions extends Loader {
             if(key === undefined) {
                 return session;
             }
-            
+
             return session[key];
         }
 

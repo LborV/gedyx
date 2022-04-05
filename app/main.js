@@ -4,7 +4,7 @@ globalThis.QueryBuilder = require('./kernel/queryBuilder/QueryBuilder');
 globalThis.Actions = require('./kernel/Actions');
 globalThis.HttpActions = require('./kernel/HttpActions');
 globalThis.Models = require('./kernel/Models');
-globalThis.CronJobs = require('./kernel/CronJobs');
+globalThis.CronManager = require('gedyx-cron-manager');
 
 async function main() {
     // Mysql Connection
@@ -36,14 +36,14 @@ async function main() {
     if(config.redis) {
         const redis = require('redis');
         const util = require('util');
-    
+
         for(connectionName in config.redis) {
             let connection = config.redis[connectionName];
             if(connection.port && connection.host) {
                 try {
                     globalThis[connectionName] = redis.createClient(connection);
                     globalThis[connectionName].get = util.promisify(globalThis[connectionName].get);
-                } catch (error) {
+                } catch(error) {
                     console.error(error);
                 }
             }
@@ -64,7 +64,7 @@ async function main() {
             });
 
             await globalThis.actionsPool.init();
-        } catch (error) {
+        } catch(error) {
             console.error(error);
         }
     }
@@ -74,7 +74,7 @@ async function main() {
 
     // Register Cron tasks
     if(config.cron) {
-        globalThis.cronJobsPool = new CronJobs();
+        globalThis.cronJobsPool = new CronManager();
     }
 
     // HTTP server
@@ -98,7 +98,7 @@ async function main() {
                 console.error(error);
             }
         }
-        
+
         try {
             globalThis.httpActionsPool = new HttpActions();
         } catch(error) {
@@ -116,7 +116,7 @@ async function main() {
                     if(http.index && typeof http.index == 'string') {
                         path = http.index;
                     }
-    
+
                     res.sendFile(__dirname + path);
                 });
             }

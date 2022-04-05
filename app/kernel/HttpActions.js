@@ -1,6 +1,6 @@
 const HttpAction = require('./HttpAction');
 globalThis.Middlewares = require('./Middlewares');
-const Loader = require('./Loader');
+const Loader = require('gedyx-loader');
 
 class HttpActions extends Loader {
     /**
@@ -8,13 +8,13 @@ class HttpActions extends Loader {
      * @param [dirName=httpActions] - The name of the directory where the actions are stored.
      * @returns The return value is the httpActions object.
      */
-    constructor(dirName = 'httpActions') {       
+    constructor(dirName = 'httpActions') {
         super();
         this.actionList = [];
 
         return this.load(dirName);
     }
-    
+
     /**
      * It loads all the files from the given directory and then it checks if the file is a JavaScript
      * file. If it is, it will load the file and then it will check if the file is an instance of
@@ -27,7 +27,7 @@ class HttpActions extends Loader {
                 globalThis.MiddlewaresPool = new Middlewares();
             }
 
-            let normalizedPath = require("path").join('', dirName);         
+            let normalizedPath = require("path").join('', dirName);
             this.getFiles(normalizedPath).forEach((file) => {
                 if(!file.includes('.js')) {
                     return;
