@@ -1,0 +1,19 @@
+{
+  "name": "gedyx-cron-manager",
+  "version": "1.0.4",
+  "description": "Cron manager for GEDYX framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cron",
+    "gedyx"
+  ],
+  "author": "LborV",
+  "license": "ISC",
+  "dependencies": {
+    "gedyx-cron": "^1.0.1",
+    "gedyx-loader": "^1.0.1"
+  }
+}

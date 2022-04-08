@@ -1,0 +1,41 @@
+{
+  "name": "gedyx-installer",
+  "description": "GEDYX framework CLI tool",
+  "version": "1.0.0",
+  "author": "LborV (Boris Djumajev)",
+  "bin": {
+    "gedyx": "./bin/run"
+  },
+  "bugs": "https://github.com/LborV/gedyx-installer/issues",
+  "devDependencies": {
+    "@oclif/dev-cli": "^1.26.0"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    "/bin",
+    "/src"
+  ],
+  "homepage": "https://github.com/LborV/gedyx-installer",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "SEE LICENSE IN LICENSE",
+  "main": "src/index.js",
+  "oclif": {
+    "bin": "gedyx"
+  },
+  "repository": "LborV/gedyx-installer",
+  "scripts": {
+    "prepack": "oclif-dev readme",
+    "test": "echo NO TESTS",
+    "version": "oclif-dev readme && git add README.md"
+  },
+  "dependencies": {
+    "@oclif/command": "^1.8.3",
+    "@oclif/config": "^1.17.1",
+    "@oclif/plugin-help": "^3.2.5",
+    "download-git-repo": "^3.0.2"
+  }
+}

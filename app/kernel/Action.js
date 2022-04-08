@@ -45,7 +45,7 @@ class Action {
         if(this.parent.useSession && this.socket.session === undefined && data.sessionKey) {
             await this.parent.initSession(socket, data?.sessionKey);
         }
-        
+
         for(let i = 0; i < this.middlewaresBefore.length; i++) {
             let middleware = this.middlewaresBefore[i];
             if(!(middleware instanceof Middleware)) {
@@ -55,7 +55,7 @@ class Action {
             data = await middleware.beforeRequest(data, this.socket);
         }
 
-        this.request(data);
+        return this.response(await this.request(data));
     }
 
     /**

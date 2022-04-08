@@ -7,15 +7,15 @@ function main(arg) {
 
     try {
         if(!checkDir()) {
-            return './cronJobs directory can\'t be found';
+            return './crons directory can\'t be found';
         }
 
         arg.splice(0, 2);
 
         arg.forEach(cronName => {
-            fs.open('./cronJobs/' + cronName + '.js', 'wx+', (err, file) => {
+            fs.open('./crons/' + cronName + '.js', 'wx+', (err, file) => {
                 if(err) {
-                    console.log('Something wrong with ./cronJobs/' + cronName + '.js file, check it out');
+                    console.log('Something wrong with ./crons/' + cronName + '.js file, check it out');
                     return;
                 }
 
@@ -26,11 +26,11 @@ function main(arg) {
 
                 fs.write(file, buf, 0, len, 0, (err) => {
                     if(err) {
-                        console.log('Can\'t write content to file ./cronJobs/' + cronName + '.js');
+                        console.log('Can\'t write content to file ./crons/' + cronName + '.js');
                         return;
                     }
 
-                    console.log('File ./cronJobs/' + cronName + '.js created!');
+                    console.log('File ./crons/' + cronName + '.js created!');
                 });
             });
         });
@@ -60,7 +60,7 @@ module.exports = obj;
 `;
 }
 
-function checkDir(path = './cronJobs') {
+function checkDir(path = './crons') {
     return fs.existsSync(path);
 }
 

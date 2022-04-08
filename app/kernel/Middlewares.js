@@ -24,7 +24,7 @@ class Middlewares extends Loader {
                     return;
                 }
 
-                let middleware = require(`../${file}`);
+                let middleware = require(file);
                 if(middleware instanceof Middleware) {
                     let middlewareName = file.split('/').pop().replace('.js', '');
                     globalThis['_middlewares'][middlewareName] = middleware;

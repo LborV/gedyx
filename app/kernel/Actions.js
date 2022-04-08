@@ -59,7 +59,7 @@ class Actions extends Loader {
                     return;
                 }
 
-                let action = require(`../${file}`).setParent(this);
+                let action = require(file).setParent(this);
                 if(action instanceof Action) {
                     let actionName = action.getName();
                     this.actionList[actionName] = action;

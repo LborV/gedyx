@@ -22,7 +22,7 @@ class Models extends Loader {
                     return;
                 }
 
-                let model = require(`../${file}`);
+                let model = require(file);
                 if(model instanceof QueryBuilder) {
                     let modelName = file.split('/').pop().replace('.js', '');
                     globalThis[modelName] = model;

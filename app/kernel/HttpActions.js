@@ -33,7 +33,7 @@ class HttpActions extends Loader {
                     return;
                 }
 
-                let action = require(`../${file}`);
+                let action = require(file);
                 if(action instanceof HttpAction) {
                     this.actionList.push(action);
                 } else {
