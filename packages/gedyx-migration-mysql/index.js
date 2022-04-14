@@ -1,9 +1,9 @@
-const MysqlQueryBuilder = require("../queryBuilder/MysqlQueryBuilder");
+const MysqlQueryBuilder = require("gedyx-query-builder-mysql");
 
 class MysqlMigration extends MysqlQueryBuilder {
-   /**
-    * Create a table called `migrations` in the database
-    */
+    /**
+     * Create a table called `migrations` in the database
+     */
     async createMigrationsTable() {
         await this.executeRaw("CREATE TABLE `migrations` (`name` TEXT, `c_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP());");
         console.info('Migrations table created!');
@@ -68,15 +68,15 @@ class MysqlMigration extends MysqlQueryBuilder {
 
             await this.insertMigration(name);
             if(migrationResult) {
-                console.info('Migration return: ', migrationResult);``
+                console.info('Migration return: ', migrationResult); ``
             }
-            
+
             console.info('\x1b[32m%s\x1b[0m', `${name} migration successfuly migrated!`);
         }
     }
 
     /* This is a placeholder for the customer to overwrite. */
-    async migrate() {}
+    async migrate() { }
 }
 
 module.exports = MysqlMigration;

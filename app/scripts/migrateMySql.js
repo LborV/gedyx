@@ -1,5 +1,5 @@
-const Loader = require('../kernel/Loader');
-const MysqlMigration = require('../kernel/migrations/MysqlMigration');
+const Loader = require('gedyx-loader');
+const MysqlMigration = require('gedyx-migration-mysql');
 const main = require('../main');
 
 class MysqlMigrateOperation extends Loader {
@@ -11,14 +11,14 @@ class MysqlMigrateOperation extends Loader {
     }
 
     load(dirName = 'migrations') {
-        try{
+        try {
             let normalizedPath = require("path").join('', dirName);
             this.getFiles(normalizedPath).forEach((file) => {
                 if(!file.includes('.js')) {
                     return;
                 }
 
-                let model = require(`../${file}`);
+                let model = require(file);
                 let modelName = file.replace('.js', '');
                 this.migrations[modelName] = model;
             });
@@ -29,7 +29,7 @@ class MysqlMigrateOperation extends Loader {
 
     async migrate(connection) {
         for(let key of Object.keys(this.migrations).sort()) {
-            let migration = new this.migrations[key]({connection: connection, table: 'migrations'});
+            let migration = new this.migrations[key]({ connection: connection, table: 'migrations' });
 
             if(migration instanceof MysqlMigration) {
                 try {
@@ -44,7 +44,7 @@ class MysqlMigrateOperation extends Loader {
 
 main().then(() => {
     let mysqlConnection = undefined;
-    
+
     if(config.mysql) {
         mysqlConnection = globalThis[Object.keys(config.mysql)[0]];
     }
