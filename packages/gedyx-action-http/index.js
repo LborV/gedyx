@@ -1,5 +1,5 @@
-const Middleware = require('./Middleware');
-class HttpAction {
+const Action = require('gedyx-action');
+class ActionHttp extends Action {
     /**
      * It creates a new instance of the class.
      * @param route - The route to be registered.
@@ -11,8 +11,7 @@ class HttpAction {
      * @returns The instance of the class.
      */
     constructor(route, server, method = 'get', middlewaresBefore = [], middlewaresAfter = []) {
-        this.middlewaresBefore = middlewaresBefore;
-        this.middlewaresAfter = middlewaresAfter;
+        super(route, middlewaresBefore, middlewaresAfter);
 
         if(server && typeof server == 'function') {
             this.server = server;
@@ -80,56 +79,6 @@ class HttpAction {
             });
         }
     }
-
-    /**
-     * This function is called when a request is made to the server. 
-     * It takes the data from the request and passes it to the request function. 
-     * It then takes the response from the request function and passes it to the response function
-     * @param data - The data that will be sent to the server.
-     * @param response - The response object that will be returned to the client.
-     * @returns The response.
-     */
-    async requestIn(data, response) {
-        for(let i = 0; i < this.middlewaresBefore.length; i++) {
-            let middleware = this.middlewaresBefore[i];
-            if(!(middleware instanceof Middleware)) {
-                throw 'Middleware should extend Middleware class!';
-            }
-
-            data = await middleware.beforeRequest(data);
-        }
-
-        return await this.response(await this.request(data));
-    }
-
-    /**
-     * The request method returns the data object
-     * @param data - The data to be sent to the server.
-     * @returns The data that was passed in.
-     */
-    async request(data) {
-        console.log('Request method can be overwritten');
-        return data;
-    }
-
-    /**
-     * It takes the data from the request and passes it to all the middlewares that are after the request
-     * @param data - The data that will be sent to the client.
-     * @returns Nothing.
-     */
-    async response(data) {
-        for(let i = 0; i < this.middlewaresAfter.length; i++) {
-            let middleware = this.middlewaresAfter[i];
-
-            if(!(middleware instanceof Middleware)) {
-                throw 'Middleware should extend Middleware class!';
-            }
-
-            data = await middleware.afterRequest(data);
-        }
-
-        return data;
-    }
 }
 
-module.exports = HttpAction;
+module.exports = ActionHttp;

@@ -1,12 +1,19 @@
 const Loader = require('gedyx-loader');
-const QueryBuilder = require('./queryBuilder/QueryBuilder');
+const QueryBuilder = require('gedyx-query-builder');
+
 class Models extends Loader {
     /**
      * It creates a new instance of the class and loads the models from the models directory.
      * @param [dirName=models] - The directory name where the models are stored.
      */
-    constructor(dirName = 'models') {
+    constructor(dirName = 'models', namespace = undefined) {
         super();
+
+        this.namespace = namespace;
+        if(!this.namespace) {
+            this.namespace = this;
+        }
+
         this.load(dirName);
     }
 
@@ -25,7 +32,7 @@ class Models extends Loader {
                 let model = require(file);
                 if(model instanceof QueryBuilder) {
                     let modelName = file.split('/').pop().replace('.js', '');
-                    globalThis[modelName] = model;
+                    this.namespace[modelName] = model;
                 } else {
                     throw 'Incorrect class!';
                 }

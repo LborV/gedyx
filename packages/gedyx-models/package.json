@@ -1,0 +1,16 @@
+{
+  "name": "gedyx-models",
+  "version": "1.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "gedyx-loader": "^1.0.2",
+    "gedyx-query-builder": "^1.0.0"
+  }
+}

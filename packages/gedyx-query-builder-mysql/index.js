@@ -1,4 +1,6 @@
-const QueryBuilder = require('./QueryBuilder');
+const QueryBuilder = require('gedyx-query-builder');
+const SqlString = require('sqlstring');
+
 class MysqlQueryBuilder extends QueryBuilder {
     /**
      * The constructor function creates a new instance of the class. 

@@ -1,4 +1,5 @@
-const QueryBuilder = require('./QueryBuilder');
+const QueryBuilder = require('gedyx-query-builder');
+
 class RedisQueryBuilder extends QueryBuilder {
     /**
      * The constructor function creates a new instance of the class and assigns the connection object to
@@ -45,7 +46,7 @@ class RedisQueryBuilder extends QueryBuilder {
         if(connection == null) {
             await this.connection.get(key).then((data) => {
                 result = data ? JSON.parse(data) : [];
-            });        
+            });
         } else {
             await connection.get(key).then((data) => {
                 result = data ? JSON.parse(data) : [];
@@ -73,7 +74,7 @@ class RedisQueryBuilder extends QueryBuilder {
 
         return connection.del(key);
     }
-    
+
     /**
      * It flushes the database
      * @param [connection=null] - A connection to a Redis server. If not provided, the default connection will be

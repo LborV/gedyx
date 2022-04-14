@@ -1,38 +1,6 @@
-const Middleware = require('./Middleware');
-class Action {
-    /**
-     * @param actionName - The name of the action.
-     * @param [middlewaresBefore] - An array of middleware functions that will be executed before the
-     * action is called.
-     * @param [middlewaresAfter] - An array of middleware functions that will be executed after the action
-     * is executed.
-     * @returns The object.
-     */
-    constructor(actionName, middlewaresBefore = [], middlewaresAfter = []) {
-        this.actionName = actionName;
-        this.middlewaresBefore = middlewaresBefore;
-        this.middlewaresAfter = middlewaresAfter;
-        return this;
-    }
-
-    /**
-     * Set the parent of this object to the given parent
-     * @param parent - The parent of the current node.
-     * @returns Nothing.
-     */
-    setParent(parent) {
-        this.parent = parent;
-        return this;
-    }
-
-    /**
-     * Get the name of the action
-     * @returns The action name.
-     */
-    getName() {
-        return this.actionName;
-    }
-
+const Middleware = require('gedyx-middleware');
+const Action = require('gedyx-action');
+class ActionSocket extends Action {
     /**
      * This function is called when a request is received from the client. 
      * It will run all the middlewares before the request is processed.
@@ -56,14 +24,6 @@ class Action {
         }
 
         return this.response(await this.request(data));
-    }
-
-    /**
-     * A function that can be overwritten.
-     * @param data - The data to be sent to the server.
-     */
-    async request(data) {
-        console.log('Request method can be overwritten');
     }
 
     /**
@@ -114,4 +74,4 @@ class Action {
     }
 }
 
-module.exports = Action;
+module.exports = ActionSocket;

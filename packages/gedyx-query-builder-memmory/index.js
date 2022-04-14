@@ -1,4 +1,5 @@
-const QueryBuilder = require('./QueryBuilder');
+const QueryBuilder = require('gedyx-query-builder');
+
 class MemoryQueryBuilder extends QueryBuilder {
     /**
     * It creates a new instance of the class and passes in the config object.

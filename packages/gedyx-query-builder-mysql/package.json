@@ -1,0 +1,16 @@
+{
+  "name": "gedyx-query-builder-mysql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "gedyx-query-builder": "^1.0.0",
+    "sqlstring": "^2.3.3"
+  }
+}

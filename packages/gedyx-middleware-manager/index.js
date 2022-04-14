@@ -1,12 +1,18 @@
 const Loader = require('gedyx-loader');
-const Middleware = require('./Middleware');
+const Middleware = require('gedyx-middleware');
 class Middlewares extends Loader {
     /**
      * Loads all the middlewares in the middlewares directory
      * @param [dirName=middlewares] - The directory name where the middleware files are located.
      */
-    constructor(dirName = 'middlewares') {
+    constructor(dirName = 'middlewares', namespace = undefined) {
         super();
+
+        this.namespace = namespace;
+        if(!this.namespace) {
+            this.namespace = this;
+        }
+
         this.load(dirName);
     }
 
@@ -17,7 +23,6 @@ class Middlewares extends Loader {
      */
     load(dirName) {
         try {
-            globalThis['_middlewares'] = {};
             let normalizedPath = require("path").join('', dirName);
             this.getFiles(normalizedPath).forEach((file) => {
                 if(!file.includes('.js')) {
@@ -27,13 +32,13 @@ class Middlewares extends Loader {
                 let middleware = require(file);
                 if(middleware instanceof Middleware) {
                     let middlewareName = file.split('/').pop().replace('.js', '');
-                    globalThis['_middlewares'][middlewareName] = middleware;
+                    this.namespace[middlewareName] = middleware;
                 } else {
                     throw 'Incorrect class!';
                 }
             });
         } catch(e) {
-            console.error(e);
+            throw e;
         }
     }
 }

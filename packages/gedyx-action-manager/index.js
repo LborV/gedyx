@@ -1,7 +1,7 @@
 /* The Actions class is a class that is used to load and manage all the actions that are in the actions
 folder */
-const Action = require('./Action');
-globalThis.Middlewares = require('./Middlewares');
+const Action = require('gedyx-action');
+const Middlewares = require('gedyx-middleware-manager');
 const Loader = require('gedyx-loader');
 
 class Actions extends Loader {
@@ -11,22 +11,25 @@ class Actions extends Loader {
      * @param [dirName=actions] - The name of the directory where the actions are located.
      * @returns Nothing.
      */
-    constructor(configs, dirName = 'actions') {
+    constructor(configs, dirName = 'actions', namespace = undefined) {
         super();
 
-        if(!configs.io) {
-            return;
+        if(configs.io) {
+            if(configs.useSession == true) {
+                this.useSession = true;
+                this.sessionConfigs = configs.session;
+            }
+
+            this.io = configs.io;
+        }
+
+        this.namespace = namespace;
+        if(!this.namespace) {
+            this.namespace = this;
         }
 
         this.actionList = [];
         this.load(dirName);
-
-        if(configs.useSession == true) {
-            this.useSession = true;
-            this.sessionConfigs = configs.session;
-        }
-
-        this.io = configs.io;
     }
 
     /**
@@ -35,7 +38,7 @@ class Actions extends Loader {
      */
     async init() {
         if(this.sessionConfigs && this.useSession) {
-            const Sessions = require('./Sessions');
+            const Sessions = require('gedyx-session');
             this.sessions = await (new Sessions()).init(this.sessionConfigs);
         }
 
@@ -49,8 +52,8 @@ class Actions extends Loader {
      */
     load(dirName) {
         try {
-            if(globalThis.MiddlewaresPool === undefined) {
-                globalThis.MiddlewaresPool = new Middlewares();
+            if(this.namespace.MiddlewaresPool === undefined) {
+                this.namespace.MiddlewaresPool = new Middlewares();
             }
 
             let normalizedPath = require("path").join('', dirName);
@@ -76,14 +79,14 @@ class Actions extends Loader {
      * A callback function that is called when the connection is established.
      */
     onConnect() {
-        console.log("onConnect method can be overwritten");
+        throw "onConnect method can be overwritten";
     }
 
     /**
      * The onDisconnect() method is called when the client disconnects from the server
      */
     onDisconnect() {
-        console.log("onDisconnect method can be overwritten");
+        throw "onDisconnect method can be overwritten";
     }
 
     /**
@@ -130,6 +133,10 @@ class Actions extends Loader {
      * @returns Nothing.
      */
     listener() {
+        if(typeof this.io?.on !== 'function') {
+            return this;
+        }
+
         this.io.on('connection', (socket) => {
             this.onConnect(socket);
 
@@ -147,13 +154,9 @@ class Actions extends Loader {
 
             socket.on('disconnect', () => {
                 this.onDisconnect(socket);
-                try {
-                    socket.disconnect();
-                    socket.removeAllListeners();
-                    socket = null;
-                } catch(err) {
-                    console.error(err);
-                }
+                socket.disconnect();
+                socket.removeAllListeners();
+                socket = null;
             });
         });
 

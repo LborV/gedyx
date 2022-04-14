@@ -5,7 +5,7 @@ class Middleware {
      * @param socket - the socket that is making the request
      */
     async beforeRequest(request, socket) {
-        console.log("beforeRequest method can be overwritten");
+        throw "beforeRequest method can be overwritten";
     }
 
     /**
@@ -14,7 +14,7 @@ class Middleware {
      * @param socket - the socket that initiated the request
      */
     async afterRequest(response, socket) {
-        console.log("afterRequest method can be overwritten");
+        throw "afterRequest method can be overwritten";
     }
 }
 

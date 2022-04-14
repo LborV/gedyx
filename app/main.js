@@ -1,15 +1,12 @@
 // In this file will be automatically included your models
 globalThis.config = require('./configs/config.js');
-globalThis.QueryBuilder = require('./kernel/queryBuilder/QueryBuilder');
-globalThis.Actions = require('./kernel/Actions');
-globalThis.HttpActions = require('./kernel/HttpActions');
-globalThis.Models = require('./kernel/Models');
+globalThis.Actions = require('gedyx-action-manager');
+globalThis.Models = require('gedyx-models');
 globalThis.CronManager = require('gedyx-cron-manager');
 
 async function main() {
     // Mysql Connection
     if(config.mysql) {
-        globalThis.SqlString = require('sqlstring');
         const mysql = require('mysql2/promise');
 
         for(connectionName in config.mysql) {
@@ -50,33 +47,6 @@ async function main() {
         }
     }
 
-    // Single thread
-    if(config.socket && config.socket.port) {
-        try {
-            const { Server } = require("socket.io");
-            const io = new Server(config.socket.server ?? {});
-            io.listen(config.socket.port);
-
-            globalThis.actionsPool = new Actions({
-                io: io,
-                useSession: config.socket?.useSession,
-                session: config.socket?.session
-            });
-
-            await globalThis.actionsPool.init();
-        } catch(error) {
-            console.error(error);
-        }
-    }
-
-    // Register Models
-    globalThis.modelsPool = new Models();
-
-    // Register Cron tasks
-    if(config.cron) {
-        globalThis.cronJobsPool = new CronManager();
-    }
-
     // HTTP server
     if(config.http) {
         const express = require('express');
@@ -100,7 +70,17 @@ async function main() {
         }
 
         try {
-            globalThis.httpActionsPool = new HttpActions();
+            const { Server } = require("socket.io");
+            const io = new Server(config.socket.server ?? {});
+            io.listen(config.socket.port);
+
+            globalThis.actionsPool = new Actions({
+                io: io,
+                useSession: config.socket?.useSession,
+                session: config.socket?.session
+            });
+
+            await globalThis.actionsPool.init();
         } catch(error) {
             console.error(error);
         }
@@ -127,6 +107,14 @@ async function main() {
                 });
             }
         }
+    }
+
+    // Register Models
+    globalThis.modelsPool = new Models();
+
+    // Register Cron tasks
+    if(config.cron) {
+        globalThis.cronJobsPool = new CronManager();
     }
 }
 

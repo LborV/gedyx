@@ -1,7 +1,7 @@
 /* Sessions is a class that handles the creation of sessions */
-const MemoryStorage = require('./queryBuilder/MemoryQueryBuilder');
-const MysqlQueryBuilder = require('./queryBuilder/MysqlQueryBuilder');
-const RedisQueryBuilder = require('./queryBuilder/RedisQueryBuilder');
+const MemoryStorage = require('gedyx-query-builder-memmory');
+const MysqlQueryBuilder = require('gedyx-query-builder-mysql');
+const RedisQueryBuilder = require('gedyx-query-builder-redis');
 var sha1 = require('sha1');
 
 class Sessions {
@@ -19,7 +19,7 @@ class Sessions {
      * @returns The return value is the object that is being created.
      */
     async init(config) {
-        this.expiration = 1000*60*60;
+        this.expiration = 1000 * 60 * 60;
         if(config.expiration != undefined && config.expiration) {
             this.expiration = parseInt(config.expiration);
         }
@@ -27,11 +27,11 @@ class Sessions {
         let connectionName = undefined;
 
         switch(config.type) {
-            case 'redis': 
+            case 'redis':
                 if(globalThis.config && globalThis.config.redis) {
                     connectionName = Object.keys(globalThis.config.redis)[0];
                 }
-            
+
                 if(config.connection) {
                     if(typeof config.connection === 'string') {
                         connectionName = config.connection;
@@ -45,14 +45,14 @@ class Sessions {
                 }
 
                 if(connection) {
-                    this.sessions = new RedisQueryBuilder({connection: connection});            
+                    this.sessions = new RedisQueryBuilder({ connection: connection });
                 }
                 break;
             case 'mysql':
                 if(globalThis.config && globalThis.config.mysql) {
                     connectionName = Object.keys(globalThis.config.mysql)[0];
                 }
-            
+
                 if(config.connection) {
                     if(typeof config.connection === 'string') {
                         connectionName = config.connection;
@@ -66,7 +66,7 @@ class Sessions {
                 }
 
                 if(connection) {
-                    this.sessions = new MysqlQueryBuilder({connection: connection, table: 'sessions'});            
+                    this.sessions = new MysqlQueryBuilder({ connection: connection, table: 'sessions' });
                     let tables = await this.sessions.executeRaw(`
                         SELECT 
                             TABLE_NAME 
@@ -86,7 +86,7 @@ class Sessions {
                                 );
                             `);
 
-                            console.log('Created "sessions" table in database!');   
+                            console.log('Created "sessions" table in database!');
                         } catch(error) {
                             console.error(error);
                         }
@@ -114,7 +114,7 @@ class Sessions {
                         try {
                             let session = await this.sessions.get(sessionKey, connection);
                             let result = undefined;
-                            
+
                             if(session === undefined) {
                                 result = await this.sessions
                                     .insert({
@@ -133,7 +133,7 @@ class Sessions {
 
                             await this.sessions.commit(connection);
                             return result;
-                        } catch (err) {
+                        } catch(err) {
                             this.sessions.rollback(connection);
                             console.error(err);
                         }
@@ -142,7 +142,7 @@ class Sessions {
                 break;
 
             default:
-                this.sessions = new MemoryStorage({connection: null});            
+                this.sessions = new MemoryStorage({ connection: null });
         }
 
         return this;
