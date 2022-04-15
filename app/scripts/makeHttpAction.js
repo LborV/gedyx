@@ -7,7 +7,7 @@ function main(arg) {
     }
 
     if(!checkDir()) {
-        return './httpActions directory can\'t be found';
+        return './actions directory can\'t be found';
     }
 
     arg.splice(0, 2);
@@ -18,9 +18,9 @@ function main(arg) {
     }
 
     arg.forEach(actionName => {
-        fs.open('./httpActions/' + actionName + '.js', 'wx+', (err, file) => {
+        fs.open('./actions/' + actionName + '.js', 'wx+', (err, file) => {
             if(err) {
-                console.log('Something wrong with ./httpActions/' + actionName + '.js file, check it out');
+                console.log('Something wrong with ./actions/' + actionName + '.js file, check it out');
                 return;
             }
 
@@ -29,11 +29,11 @@ function main(arg) {
 
             fs.write(file, buf, 0, len, 0, (err) => {
                 if(err) {
-                    console.log('Can\'t write content to file ./httpActions/' + actionName + '.js');
+                    console.log('Can\'t write content to file ./actions/' + actionName + '.js');
                     return;
                 }
 
-                console.log('File ./httpActions/' + actionName + '.js created!');
+                console.log('File ./actions/' + actionName + '.js created!');
             });
         });
     });
@@ -57,7 +57,7 @@ module.exports = obj;
 `;
 }
 
-function checkDir(path = './httpActions') {
+function checkDir(path = './actions') {
     return fs.existsSync(path);
 }
 
