@@ -31,6 +31,7 @@ class Middlewares extends Loader {
 
                 let middleware = require(file);
                 if(middleware instanceof Middleware) {
+                    middleware.setParent(this);
                     let middlewareName = file.split('/').pop().replace('.js', '');
                     this.namespace[middlewareName] = middleware;
                 } else {

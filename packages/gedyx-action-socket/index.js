@@ -59,6 +59,10 @@ class ActionSocket extends Action {
         return data;
     }
 
+    useIO() {
+        return true;
+    }
+
     /**
      * It calls the parent's call function with the action name and data
      * @param actionName - The name of the action to call.

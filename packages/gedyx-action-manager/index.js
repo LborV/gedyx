@@ -147,9 +147,11 @@ class Actions extends Loader {
             }
 
             for(let actionName in this.actionList) {
-                socket.on(actionName, async (data) => {
-                    this.actionList[actionName].requestIn(data, socket);
-                });
+                if(this.actionList[actionName].useIO() === true) {
+                    socket.on(actionName, async (data) => {
+                        this.actionList[actionName].requestIn(data, socket);
+                    });
+                }
             }
 
             socket.on('disconnect', () => {

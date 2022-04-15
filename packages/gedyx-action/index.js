@@ -33,6 +33,10 @@ class Action {
         return this.actionName;
     }
 
+    useIO() {
+        return false;
+    }
+
     /**
      * This function is called when a request is received from the client. 
      * It will run all the middlewares before the request is processed.

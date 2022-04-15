@@ -8,6 +8,10 @@ class Middleware {
         throw "beforeRequest method can be overwritten";
     }
 
+    setParent(parent) {
+        this.parent = parent;
+    }
+
     /**
      * This function is called after the request is made
      * @param response - the response object returned by the server.

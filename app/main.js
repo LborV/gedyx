@@ -70,16 +70,22 @@ async function main() {
         }
 
         try {
-            const { Server } = require("socket.io");
-            const io = new Server(config.socket.server ?? {});
-            io.listen(config.socket.port);
+            let ioSettings = {};
 
-            globalThis.actionsPool = new Actions({
-                io: io,
-                useSession: config.socket?.useSession,
-                session: config.socket?.session
-            });
+            if(config.socket && config.socket.port) {
+                const { Server } = require("socket.io");
+                const io = new Server(config.socket.server ?? {});
+                io.listen(config.socket.port);
 
+                console.log(`Sockets listening on port: ${config.socket.port}`);
+                ioSettings = {
+                    io: io,
+                    useSession: config.socket?.useSession,
+                    session: config.socket?.session
+                };
+            }
+
+            globalThis.actionsPool = new Actions(ioSettings, 'actions', globalThis);
             await globalThis.actionsPool.init();
         } catch(error) {
             console.error(error);
@@ -110,7 +116,7 @@ async function main() {
     }
 
     // Register Models
-    globalThis.modelsPool = new Models();
+    globalThis.modelsPool = new Models('models', globalThis);
 
     // Register Cron tasks
     if(config.cron) {

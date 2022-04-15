@@ -24,9 +24,9 @@
   "license": "SEE LICENSE IN ../LICENSE",
   "dependencies": {
     "express": "^4.17.2",
-    "gedyx-action": "^1.0.1",
+    "gedyx-action": "^1.0.2",
     "gedyx-action-http": "^1.0.1",
-    "gedyx-action-manager": "^1.0.2",
+    "gedyx-action-manager": "^1.0.3",
     "gedyx-action-socket": "^1.0.0",
     "gedyx-cron": "^1.0.1",
     "gedyx-cron-manager": "^1.0.2",
