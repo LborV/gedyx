@@ -22,7 +22,7 @@ var configs = {
         port: 3030,
         useSession: true,
         session: {
-            expiration: 1000*60*60,
+            expiration: 1000 * 60 * 60,
             type: 'redis'
         },
         server: {
@@ -35,7 +35,7 @@ var configs = {
             port: 6379,
             host: "redis",
             password: "",
-        }   
+        }
     },
     // You want only one node to run cron
     "cron": process.argv.slice(2)[1] === 'cronEnabled',
@@ -48,7 +48,10 @@ var configs = {
             'static': false,
             'port': 8001
         }
-    }
+    },
+    "models": 'models', // Directroy with Your models
+    "actions": 'actions', // Directroy with Your actions
+    "crons": 'crons' // Directroy with Your cron jobs
 };
 
 module.exports = configs;
