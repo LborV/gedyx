@@ -1,0 +1,30 @@
+{
+  "name": "gedyx",
+  "version": "1.0.5",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3",
+    "gedyx-action": "^1.0.2",
+    "gedyx-action-http": "^1.0.1",
+    "gedyx-action-manager": "^1.0.5",
+    "gedyx-cron": "^1.0.2",
+    "gedyx-cron-manager": "^1.0.4",
+    "gedyx-middleware": "^1.0.3",
+    "gedyx-middleware-manager": "^1.0.1",
+    "gedyx-models": "^1.0.1",
+    "gedyx-query-builder": "^1.0.0",
+    "gedyx-query-builder-mysql": "^1.0.0",
+    "gedyx-query-builder-redis": "^1.0.1",
+    "mysql2": "^2.3.3",
+    "redis": "^4.0.6",
+    "sha1": "^1.1.1",
+    "socket.io": "^4.4.1"
+  }
+}

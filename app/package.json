@@ -23,21 +23,13 @@
   "author": "LborV(Boris Djumajev)",
   "license": "SEE LICENSE IN ../LICENSE",
   "dependencies": {
-    "express": "^4.17.2",
-    "gedyx-action": "^1.0.2",
+    "gedyx": "^1.0.5",
     "gedyx-action-http": "^1.0.1",
-    "gedyx-action-manager": "^1.0.3",
-    "gedyx-action-socket": "^1.0.0",
-    "gedyx-cron": "^1.0.1",
-    "gedyx-cron-manager": "^1.0.2",
-    "gedyx-middleware": "^1.0.2",
-    "gedyx-middleware-manager": "^1.0.0",
-    "gedyx-migration-mysql": "^1.0.0",
-    "gedyx-models": "^1.0.1",
-    "mysql2": "^2.3.3",
-    "redis": "^3.1.2",
-    "sha1": "^1.1.1",
-    "socket.io": "^4.4.1"
+    "gedyx-action-socket": "^1.0.1",
+    "gedyx-cron": "^1.0.2",
+    "gedyx-query-builder-memmory": "^1.0.0",
+    "gedyx-query-builder-mysql": "^1.0.0",
+    "gedyx-query-builder-redis": "^1.0.1"
   },
   "devDependencies": {
     "gulp": "^4.0.2",

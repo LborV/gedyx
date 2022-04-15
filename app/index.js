@@ -1,11 +1,7 @@
-const main = require('./main.js');
+const Gedyx = require('gedyx');
+const configs = require('./configs/config');
 
-main().then(async ()=>{
-    actionsPool.onConnect = (socket) => {
-        console.log('Client Connected');
-    }
 
-    actionsPool.onDisconnect = (socket) => {
-        console.log('Client Disconnected');
-    }
-});
+globalThis.app = new Gedyx(configs);
+
+globalThis.app.init();

@@ -1,5 +1,4 @@
 const fs = require("fs");
-const config = require('../configs/config');
 
 function main(arg) {
     if(arg.length <= 2) {
@@ -12,10 +11,7 @@ function main(arg) {
 
     arg.splice(0, 2);
 
-    let http = 'api';
-    if(config.http) {
-        http = Object.keys(config.http)[0];
-    }
+    let http = 'app.[connectionName]';
 
     arg.forEach(actionName => {
         fs.open('./actions/' + actionName + '.js', 'wx+', (err, file) => {

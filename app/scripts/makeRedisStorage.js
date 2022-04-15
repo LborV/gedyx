@@ -1,5 +1,4 @@
 const fs = require("fs");
-const config = require('../configs/config');
 
 function main(arg) {
     if(arg.length <= 2) {
@@ -13,10 +12,7 @@ function main(arg) {
 
         arg.splice(0, 2);
 
-        let connection = 'redisConnection';
-        if(config.redis) {
-            connection = Object.keys(config.redis)[0];
-        }
+        let connection = 'app.[connectionName]';
 
         arg.forEach(modelName => {
             fs.open('./models/' + modelName + '.js', 'wx+', (err, file) => {

@@ -1,6 +1,5 @@
 const Loader = require('gedyx-loader');
 const MysqlMigration = require('gedyx-migration-mysql');
-const main = require('../main');
 
 class MysqlMigrateOperation extends Loader {
     constructor() {
