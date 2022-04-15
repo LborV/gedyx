@@ -42,7 +42,7 @@ function main(arg) {
 
 function makeFileContent(cronName, cron_name) {
     return `
-var CronJob = require('gedyx-cron');
+const CronJob = require('gedyx-cron');
 
 class ${cron_name} extends CronJob {
     onTick() {

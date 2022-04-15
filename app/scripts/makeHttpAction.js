@@ -41,10 +41,7 @@ function main(arg) {
 
 function makeFileContent(actionName, http) {
     return `
-//This file was automaticaly generated
-//Feel free to edit :)
-
-var HttpAction = require('../kernel/HttpAction');
+const HttpAction = require('gedyx-action-http');
 
 class ${actionName} extends HttpAction {
     async request(data) {
@@ -61,7 +58,7 @@ module.exports = obj;
 }
 
 function checkDir(path = './httpActions') {
-   return fs.existsSync(path);
+    return fs.existsSync(path);
 }
 
 main(process.argv);

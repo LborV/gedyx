@@ -44,10 +44,8 @@ function main(arg) {
 
 function makeFileContent(modelName, model_name) {
     return `
-//This file was automatically generated
-//Feel free to edit :)
-
 const MysqlMigration = require('gedyx-migration-mysql');    
+
 class ${model_name} extends MysqlMigration {
     async migrate() {
         this.executeRaw("");

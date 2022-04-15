@@ -37,10 +37,7 @@ function main(arg) {
 
 function makeFileContent(actionName, action_name) {
     return `
-//This file was automatically generated
-//Feel free to edit :)
-
-var Action = require('../kernel/Action');
+var Action = require('gedyx-action-socket');
 
 class ${actionName} extends Action {
     async request(data) {
@@ -54,7 +51,7 @@ module.exports = obj;
 }
 
 function checkDir(path = './actions') {
-   return fs.existsSync(path);
+    return fs.existsSync(path);
 }
 
 main(process.argv);
