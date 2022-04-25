@@ -190,7 +190,7 @@ class MysqlQueryBuilder extends QueryBuilder {
                     sql += `${element.value}${delimiter} `;
                 }
             });
-        } else {
+        } else if(!subWhere) {
             sql += `SELECT \`${obj.table}\`.* `;
             obj.select = [''];
         }
