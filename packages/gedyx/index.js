@@ -1,6 +1,7 @@
 const Actions = require('gedyx-action-manager');
 const Models = require('gedyx-models');
 const CronManager = require('gedyx-cron-manager');
+const path = require('path');
 
 class Gedyx {
     constructor(configs = {}, namespace = undefined) {
@@ -99,12 +100,12 @@ class Gedyx {
 
             if(http.static) {
                 this.namespace[http.name].get('*', (req, res) => {
-                    let path = '/public/index.html';
+                    let indexFile = 'index.html';
                     if(http.index && typeof http.index == 'string') {
-                        path = http.index;
+                        indexFile = http.index;
                     }
 
-                    res.sendFile(__dirname + path);
+                    res.sendFile(path.join(path.join(process.cwd(), 'public'), indexFile));
                 });
             }
 
