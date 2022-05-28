@@ -1,0 +1,14 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "compile",
+			"path": "app/",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: compile - app",
+			"detail": "npm run compile:views && npm run compile:gulp"
+		}
+	]
+}

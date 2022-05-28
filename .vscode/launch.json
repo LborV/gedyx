@@ -12,7 +12,11 @@
             "cwd": "${workspaceFolder}/app",
             "restart": true,
             "runtimeExecutable": "nodemon",
-            "runtimeArgs": ["run-script", "start"]
+            "runtimeArgs": [
+                "run-script",
+                "start"
+            ],
+            // "preLaunchTask": "npm: compile - app"
         }
     ]
 }

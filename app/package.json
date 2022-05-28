@@ -23,12 +23,12 @@
   "author": "LborV(Boris Djumajev)",
   "license": "SEE LICENSE IN ../LICENSE",
   "dependencies": {
-    "gedyx": "^1.0.5",
+    "gedyx": "^1.0.6",
     "gedyx-action-http": "^1.0.1",
     "gedyx-action-socket": "^1.0.1",
     "gedyx-cron": "^1.0.2",
     "gedyx-query-builder-memmory": "^1.0.0",
-    "gedyx-query-builder-mysql": "^1.0.0",
+    "gedyx-query-builder-mysql": "^1.0.1",
     "gedyx-query-builder-redis": "^1.0.1"
   },
   "devDependencies": {
