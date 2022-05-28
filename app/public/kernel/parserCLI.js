@@ -3,6 +3,25 @@ const fs = require('fs');
 module.exports = class Parser {
     constructor(config = {}) {
         this.tree = config.tree || [];
+        this.noClosingTags = [
+            'area',
+            'base',
+            'br',
+            'col',
+            'command',
+            'embed',
+            'hr',
+            'img',
+            'input',
+            'keygen',
+            'link',
+            'meta',
+            'param',
+            'source',
+            'track',
+            'wbr'
+        ];
+
         this.result = '';
     }
 
@@ -40,12 +59,31 @@ module.exports = class Parser {
             } catch(e) {
                 console.log(e);
             }
-        } 
+        }
 
-        return this.interact(this.tree[0], this.tree[0].childs[0], string, 0);
+        this.interact(this.tree[0], this.tree[0].childs[0], string, 0);
+        this.tree = this.clearEmptyNodes(this.tree);
+
+        return this;
     }
 
-    interact(parent, node, string, index = 0) {
+    clearEmptyNodes(tree) {
+        for(let i = 0; i < tree.length; i++) {
+            if(tree[i].value === '' && tree[i].childs.length === 0) {
+                tree.splice(i, 1);
+                i--;
+                continue;
+            }
+
+            if(tree[i].childs.length) {
+                tree[i].childs = this.clearEmptyNodes(tree[i].childs);
+            }
+        }
+
+        return tree;
+    }
+
+    interact(parent, node, string, index = 0, tagClosed = true) {
         //Get params for loop
         if(node.type === 'params') {
             node.value = [];
@@ -73,13 +111,70 @@ module.exports = class Parser {
                 }
             }
         }
-        
+
         for(; index < string.length; index++) {
             let ch = string[index];
-            let nextCh = string[index+1];
+            let nextCh = string[index + 1];
 
-            // if special characters
-            if(ch == '{') {
+            // Parse HTML nodes
+            if(ch == '<') {
+                if(nextCh === '/') {
+                    for(; index < string.length; index++) {
+                        if(string[index] === '>') {
+                            if(tagClosed) {
+                                this.addChild(parent.childs[parent.childs.length - 1], 'text');
+                                return this.interact(parent, parent.childs[parent.childs.length - 1], string, index + 2);
+                            }
+
+                            return index;
+                        }
+                    }
+                }
+
+                let isClosing = false;
+                for(let tagIndex in this.noClosingTags) {
+                    let isSame = false;
+                    for(let i = 0; i < this.noClosingTags[tagIndex].length; i++) {
+                        if(string[index + 1 + i] === this.noClosingTags[tagIndex][i]) {
+                            isSame = true;
+                        } else {
+                            isSame = false;
+                        }
+                    }
+
+                    if(isSame) {
+                        isClosing = true;
+                        break;
+                    }
+                }
+
+                if(isClosing) {
+                    this.addChild(parent, 'noClosingTag');
+                    index += 1;
+                    for(; index < string.length; index++) {
+                        parent.childs[parent.childs.length - 1].value += string[index];
+
+                        if(string[index + 1] === '>') {
+                            this.addChild(parent, 'text');
+                            return this.interact(parent, parent.childs[parent.childs.length - 1], string, index + 2);
+                        }
+                    }
+
+                }
+
+                this.addChild(parent, 'tag');
+                index += 1;
+                for(; index < string.length; index++) {
+                    parent.childs[parent.childs.length - 1].value += string[index];
+                    if(string[index + 1] === '>') {
+                        this.addChild(parent.childs[parent.childs.length - 1], 'text');
+
+                        index = this.interact(parent.childs[parent.childs.length - 1], parent.childs[parent.childs.length - 1].childs[0], string, index + 2, false);
+                        return this.interact(parent, parent.childs[parent.childs.length - 1], string, index + 2);
+                    }
+                }
+
+            } else if(ch == '{') {
                 switch(nextCh) {
                     //Variable
                     case '{':
@@ -87,7 +182,7 @@ module.exports = class Parser {
                         this.addChild(parent, 'variable');
 
                         //Parse while var not closed
-                        index = this.interact(parent, parent.childs[parent.childs.length - 1], string, index+2);
+                        index = this.interact(parent, parent.childs[parent.childs.length - 1], string, index + 2);
                         //Parent new child text 
                         this.addChild(parent, 'text');
 
@@ -102,7 +197,7 @@ module.exports = class Parser {
                         this.addChild(parent.childs[parent.childs.length - 1], 'params');
 
                         //Parse while loop not closed
-                        index = this.interact(parent.childs[parent.childs.length - 1], parent.childs[parent.childs.length - 1].childs[0], string, index+3);
+                        index = this.interact(parent.childs[parent.childs.length - 1], parent.childs[parent.childs.length - 1].childs[0], string, index + 3);
                         this.addChild(parent, 'text');
 
                         //Go next
@@ -116,7 +211,7 @@ module.exports = class Parser {
                         this.addChild(parent.childs[parent.childs.length - 1], 'params');
 
                         //Parse while if not closed
-                        index = this.interact(parent.childs[parent.childs.length - 1], parent.childs[parent.childs.length - 1].childs[0], string, index+3);
+                        index = this.interact(parent.childs[parent.childs.length - 1], parent.childs[parent.childs.length - 1].childs[0], string, index + 3);
                         this.addChild(parent, 'text');
 
                         //Go next
@@ -128,9 +223,9 @@ module.exports = class Parser {
                 }
             } else if(ch == '}' && nextCh == '}') {
                 return index + 2;
-            } else if((ch == ':' && string[index-1] !== '\\') && nextCh == '!' && string[index+2] == '}') {
+            } else if((ch == ':' && string[index - 1] !== '\\') && nextCh == '!' && string[index + 2] == '}') {
                 return index + 3;
-            } else if((ch == ':' && string[index-1] !== '\\') && parent.type == 'if') {
+            } else if((ch == ':' && string[index - 1] !== '\\') && parent.type == 'if') {
                 this.addChild(parent, 'else');
 
                 this.addChild(parent.childs[parent.childs.length - 1], 'text');

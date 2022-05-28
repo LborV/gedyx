@@ -18,13 +18,13 @@ export class Parser {
      * @param [_this=false] - the current object, which is the object that contains the template.
      * @returns The result of the parsing.
      */
-    parse(tree = false, _this = false) {
+    parse(tree = false, _this = false, html = false) {
         let t = this.tree[0];
         if(tree) {
             t = tree;
         }
 
-        if(t.childs.length == 0) {
+        if(t.childs.length == 0 && !html) {
             return false;
         }
 
@@ -93,6 +93,18 @@ export class Parser {
                     }
                 }
 
+                return;
+            }
+
+            if(child.type === 'noClosingTag') {
+                this.result += '<' + child.value + ' />';
+                return;
+            }
+
+            if(child.type === 'tag') {
+                this.result += '<' + child.value + '>';
+                this.parse(child, _this, true);
+                this.result += '</' + child.value + ' >';
                 return;
             }
         });
