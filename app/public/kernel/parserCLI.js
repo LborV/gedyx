@@ -83,7 +83,7 @@ module.exports = class Parser {
         return tree;
     }
 
-    interact(parent, node, string, index = 0, tagClosed = true) {
+    interact(parent, node, string, index = 0) {
         //Get params for loop
         if(node.type === 'params') {
             node.value = [];
@@ -121,11 +121,6 @@ module.exports = class Parser {
                 if(nextCh === '/') {
                     for(; index < string.length; index++) {
                         if(string[index] === '>') {
-                            if(tagClosed) {
-                                this.addChild(parent.childs[parent.childs.length - 1], 'text');
-                                return this.interact(parent, parent.childs[parent.childs.length - 1], string, index + 2);
-                            }
-
                             return index;
                         }
                     }
@@ -135,6 +130,11 @@ module.exports = class Parser {
                 for(let tagIndex in this.noClosingTags) {
                     let isSame = false;
                     for(let i = 0; i < this.noClosingTags[tagIndex].length; i++) {
+                        if(string[index + 1 + i] === '>') {
+                            isSame = false;
+                            break;
+                        }
+
                         if(string[index + 1 + i] === this.noClosingTags[tagIndex][i]) {
                             isSame = true;
                         } else {
@@ -169,7 +169,8 @@ module.exports = class Parser {
                     if(string[index + 1] === '>') {
                         this.addChild(parent.childs[parent.childs.length - 1], 'text');
 
-                        index = this.interact(parent.childs[parent.childs.length - 1], parent.childs[parent.childs.length - 1].childs[0], string, index + 2, false);
+                        index = this.interact(parent.childs[parent.childs.length - 1], parent.childs[parent.childs.length - 1].childs[0], string, index + 2);
+                        this.addChild(parent, 'text');
                         return this.interact(parent, parent.childs[parent.childs.length - 1], string, index + 2);
                     }
                 }
@@ -201,7 +202,7 @@ module.exports = class Parser {
                         this.addChild(parent, 'text');
 
                         //Go next
-                        return this.interact(parent, parent.childs[parent.childs.length - 1], string, index);
+                        return this.interact(parent, parent.childs[parent.childs.length - 1], string, index + 1);
                     //If
                     case 'i':
                         //Parent new child if
@@ -215,7 +216,7 @@ module.exports = class Parser {
                         this.addChild(parent, 'text');
 
                         //Go next
-                        return this.interact(parent, parent.childs[parent.childs.length - 1], string, index);
+                        return this.interact(parent, parent.childs[parent.childs.length - 1], string, index + 1);
                     //Just text
                     default:
                         node.value += ch != '\\' ? ch : '';
