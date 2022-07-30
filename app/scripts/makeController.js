@@ -40,7 +40,7 @@ function main(arg) {
 
 function makeFileContent(controllerName) {
     return `
-import {Controller} from '/kernel/Controller.min.js';
+import {Controller} from '/build/kernel/Controller.min.js';
 
 export default class ${controllerName} extends Controller{
     constructor(settings) {

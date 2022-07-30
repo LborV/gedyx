@@ -1,5 +1,7 @@
 const minify = require('gulp-minify');
 const { src, dest } = require('gulp');
+const run = require('gulp-run'); 
+const gulp = require('gulp');
 
 function minifyClientCore() {
     return src([
@@ -13,7 +15,7 @@ function minifyClientCore() {
                 min:'.min.js'
             }
         }))
-        .pipe(dest('public/kernel/'));
+        .pipe(dest('public/build/kernel/'));
 }
 
 function minifyClientConfiguration() {
@@ -28,12 +30,48 @@ function minifyClientConfiguration() {
                 min:'.min.js'
             }
         }))
-        .pipe(dest('public/js/'));
+        .pipe(dest('public/build/js/'));
 }
 
-(async () => {
-    minifyClientCore();
-    minifyClientConfiguration();
+function minifyControllers() {
+    return src([
+        'public/js/controllers/*.js',
+    ])
+    .pipe(minify({
+        ext:{
+            src:'.js',
+            min:'.min.js'
+        }
+    }))
+    .pipe(dest('public/build/js/controllers/'));
+}
 
-    // Write Your own code here
-})();
+gulp.task('compileKernel', () => {
+    return minifyClientCore();
+});
+
+gulp.task('compileViews', () => {
+    return run('npm run compile:views').exec();
+});
+
+gulp.task('compileControllers', () => {
+    return minifyControllers();
+});
+
+gulp.task('compileConfiguration', () => {
+    return minifyClientConfiguration();
+});
+
+gulp.task('watch', function() {
+    // Kernel
+    gulp.watch(['public/kernel/*.js',], {delay: 500}, gulp.series(['compileKernel']));
+
+    // Configuration
+    gulp.watch(['public/js/*.js'], {delay: 500}, gulp.series(['compileConfiguration']));
+
+    // Controllers
+    gulp.watch(['public/js/controllers/**/*.js'], {delay: 500}, gulp.series(['compileControllers']));
+
+    // Views
+    gulp.watch(['public/views/**/*.html'], {delay: 500}, gulp.series(['compileViews']));
+});
