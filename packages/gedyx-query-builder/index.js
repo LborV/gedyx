@@ -228,6 +228,20 @@ class QueryBuilder {
     }
 
     /**
+     * Add an raw order by clause to the query
+     * @param a1 - The field to order by.
+     * @returns The query object.
+     */
+    orderRaw(a1) {
+        if(typeof a1 !== 'string') {
+            throw 'Incorrect input';
+        }
+
+        this.queryObject.order.push({ value: a1, type: 'RAW' });
+        return this;
+    }
+
+    /**
      * Add an order by clause to the query
      * @param a1 - The field to order by.
      * @returns The query object.

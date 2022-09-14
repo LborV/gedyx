@@ -234,7 +234,11 @@ class MysqlQueryBuilder extends QueryBuilder {
                     delimiter = '';
                 }
 
-                sql += `${SqlString.escapeId(order.value)} ${order.type}${delimiter} `;
+                if(order.type === 'RAW') {
+                    sql += `${order.value} ${delimiter} `;
+                } else {
+                    sql += `${SqlString.escapeId(order.value)} ${order.type}${delimiter} `;
+                }
             });
         }
 
