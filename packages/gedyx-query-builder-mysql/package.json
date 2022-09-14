@@ -1,6 +1,6 @@
 {
   "name": "gedyx-query-builder-mysql",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "gedyx-query-builder": "^1.0.0",
+    "gedyx-query-builder": "^1.0.1",
     "sqlstring": "^2.3.3"
   }
 }
