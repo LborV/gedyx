@@ -127,22 +127,17 @@ module.exports = class Parser {
                 }
 
                 let isClosing = false;
-                for(let tagIndex in this.noClosingTags) {
-                    let isSame = false;
-                    for(let i = 0; i < this.noClosingTags[tagIndex].length; i++) {
-                        if(string[index + 1 + i] === '>') {
-                            isSame = false;
-                            break;
-                        }
-
-                        if(string[index + 1 + i] === this.noClosingTags[tagIndex][i]) {
-                            isSame = true;
-                        } else {
-                            isSame = false;
-                        }
+                let tagName = '';
+                for(let i = index; i < string.length; i++) {
+                    tagName += string[i];
+                    
+                    if(string[1 + i] === '>') {
+                        break;
                     }
+                }
 
-                    if(isSame) {
+                for(let tagIndex in this.noClosingTags) {
+                    if(tagName.split(' ')[0].includes(this.noClosingTags[tagIndex])) {
                         isClosing = true;
                         break;
                     }
@@ -171,7 +166,7 @@ module.exports = class Parser {
 
                         index = this.interact(parent.childs[parent.childs.length - 1], parent.childs[parent.childs.length - 1].childs[0], string, index + 2);
                         this.addChild(parent, 'text');
-                        return this.interact(parent, parent.childs[parent.childs.length - 1], string, index + 2);
+                        return this.interact(parent, parent.childs[parent.childs.length - 1], string, index + 1);
                     }
                 }
 
