@@ -202,7 +202,12 @@ class MysqlQueryBuilder extends QueryBuilder {
         if(obj.join.length) {
             this.isJoin = true;
             obj.join.forEach(j => {
-                sql += j.operator + ` ${SqlString.escapeId(j.table)} `;
+                if(j.tableRaw) {
+                    sql += j.operator + ` ${j.table} `;
+                } else {
+                    sql += j.operator + ` ${SqlString.escapeId(j.table)} `;
+                }
+
                 sql += this.makeWhere(j.value);
             });
             this.isJoin = false;

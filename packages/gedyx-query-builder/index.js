@@ -472,13 +472,14 @@ class QueryBuilder {
      * @param callback - A function that returns a QueryBuilder object.
      * @returns The query builder object.
      */
-    join(table, callback) {
+    join(table, callback, tableRaw = false) {
         if(typeof table !== 'string' || typeof callback !== 'function') {
             throw 'Inccorect input';
         }
 
         this.queryObject.join.push({
             table: table,
+            tableRaw: tableRaw,
             value: callback(new QueryBuilder()).getQueryObject(),
             operator: 'JOIN'
         });
@@ -494,13 +495,14 @@ class QueryBuilder {
      * @param callback - A function that will be called with a new QueryBuilder instance.
      * @returns The query builder object.
      */
-    leftJoin(table, callback) {
+    leftJoin(table, callback, tableRaw = false) {
         if(typeof table !== 'string' || typeof callback !== 'function') {
             throw 'Inccorect input';
         }
 
         this.queryObject.join.push({
             table: table,
+            tableRaw: tableRaw,
             value: callback(new QueryBuilder()).getQueryObject(),
             operator: 'LEFT JOIN'
         });
@@ -514,13 +516,14 @@ class QueryBuilder {
      * @param callback - A function that returns a QueryBuilder object.
      * @returns The query builder object.
      */
-    rightJoin(table, callback) {
+    rightJoin(table, callback, tableRaw = false) {
         if(typeof table !== 'string' || typeof callback !== 'function') {
             throw 'Inccorect input';
         }
 
         this.queryObject.join.push({
             table: table,
+            tableRaw: tableRaw,
             value: callback(new QueryBuilder()).getQueryObject(),
             operator: 'RIGHT JOIN'
         });
@@ -536,13 +539,14 @@ class QueryBuilder {
      * @param callback - A function that takes a QueryBuilder as an argument.
      * @returns The query builder object.
      */
-    innerJoin(table, callback) {
+    innerJoin(table, callback, tableRaw = false) {
         if(typeof table !== 'string' || typeof callback !== 'function') {
             throw 'Inccorect input';
         }
 
         this.queryObject.join.push({
             table: table,
+            tableRaw: tableRaw,
             value: callback(new QueryBuilder()).getQueryObject(),
             operator: 'INNER JOIN'
         });
