@@ -540,6 +540,10 @@ class Application {
         return this.controllers[name];
     }
 
+    getControllers() {
+        return this.controllers;
+    }
+
     /**
      * Given a route, this function will change the current page to the page specified by the route
      * @param route - The route to change to.
