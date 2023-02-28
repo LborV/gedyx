@@ -11,6 +11,11 @@ class MysqlQueryBuilder extends QueryBuilder {
     constructor(config) {
         super();
         this.connection = config.connection;
+        
+        if(typeof this.connection.getConnection === 'function') {
+            this.pool = this.connection;
+        }
+        
         this.sql = '';
 
         if(config.table) {
@@ -104,7 +109,13 @@ class MysqlQueryBuilder extends QueryBuilder {
         if(connection != null) {
             res = await connection.query(this.getSql());
         } else {
-            res = await this.connection.query(this.getSql());
+            if(this.pool) {
+                connection = await this.pool.getConnection();
+                res = await connection.query(this.getSql()); 
+                await connection.release();
+            } else {
+                res = await this.connection.query(this.getSql());
+            }
         }
 
         this.resetQuery();
@@ -137,7 +148,13 @@ class MysqlQueryBuilder extends QueryBuilder {
         if(connection != null) {
             res = await connection.query(sql);
         } else {
-            res = await this.connection.query(sql);
+            if(this.pool) {
+                connection = await this.pool.getConnection();
+                res = await connection.query(this.getSql()); 
+                await connection.release();
+            } else {
+                res = await this.connection.query(this.getSql());
+            }
         }
 
         return Object.values(JSON.parse(JSON.stringify(res[0])));
